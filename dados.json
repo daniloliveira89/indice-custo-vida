@@ -15,6 +15,48 @@
     "paisNome": "Qatar"
   },
   {
+  "bandeira": "🇪🇸",
+  "cidade": "Murcia",
+  "moeda": "$",
+  "salario": 1550,
+  "aluguel": 600,
+  "alimentacao": 250,
+  "internet": 30,
+  "academia": 20,
+  "extras": 65,
+  "parcela": 460,
+  "iphone": 1092,
+  "entrada": 5800
+},
+  {
+    "bandeira": "🇺🇸",
+    "cidade": "Des Moines",
+    "moeda": "$",
+    "salario": 4100,
+    "aluguel": 800,
+    "alimentacao": 350,
+    "internet": 50,
+    "academia": 20,
+    "extras": 150,
+    "parcela": 520,
+    "iphone": 829,
+    "entrada": 6000
+  },
+  {
+    "bandeira": "🇺🇸",
+    "cidade": "Newport Beach",
+    "moeda": "$",
+    "salario": 6800,
+    "aluguel": 1500,
+    "alimentacao": 450,
+    "internet": 65,
+    "academia": 75,
+    "extras": 450,
+    "parcela": 650,
+    "iphone": 829,
+    "entrada": 7500
+  },
+  {
     "bandeira": "🇦🇪",
     "cidade": "Abu Dhabi",
     "moeda": "$",
