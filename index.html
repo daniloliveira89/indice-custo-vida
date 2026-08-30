@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Índice de Viabilidade Econômica (IVFR)</title>
+  <style>
+    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
+    .container { max-width: 1100px; margin: 0 auto; }
+    h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
+    p.sub { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    
+    table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid #334155; }
+    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
+    th { background: #020617; color: #94a3b8; user-select: none; }
+    
+    .flag { font-size: 1.25rem; margin-right: 0.4rem; vertical-align: middle; }
+    .score { font-size: 0.95rem; font-weight: bold; }
+    .score-high { color: #4ade80; }
+    .score-mid { color: #facc15; }
+    .score-low { color: #f87171; }
+    
+    /* Tooltips explicativos */
+    .has-tooltip { position: relative; cursor: help; border-bottom: 1px dotted #64748b; }
+    .has-tooltip:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 125%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #020617;
+      color: #f8fafc;
+      padding: 0.4rem 0.6rem;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      white-space: normal;
+      width: max-content;
+      max-width: 220px;
+      z-index: 10;
+      border: 1px solid #475569;
+      line-height: 1.2;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Índice de Viabilidade Econômica (IVFR)</h1>
+    <p class="sub">Dados sincronizados automaticamente do repositório. Passe o mouse sobre os cabeçalhos com pontilhado para ver as definições.</p>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>País</th>
+          <th><span class="has-tooltip" data-tooltip="Salário médio líquido na moeda local após impostos.">Salário Líq.</span></th>
+          <th><span class="has-tooltip" data-tooltip="Custo mensal de subsistência: Aluguel 1Q fora do centro + Parcela Carro + Alimentação básica.">Custo Fixo</span></th>
+          <th><span class="has-tooltip" data-tooltip="Valor livre que sobra no mês (Salário Líquido - Custo Fixo).">Sobra Líquida</span></th>
+          <th><span class="has-tooltip" data-tooltip="Percentual retido como margem discricionária livre.">Margem Livre</span></th>
+          <th><span class="has-tooltip" data-tooltip="Meses de sobra líquida necessários para quitar a entrada do carro + 1 eletrônico.">Meses p/ Bens</span></th>
+          <th><span class="has-tooltip" data-tooltip="Fator de viabilidade de 0 a 100. Pondera margem livre e velocidade de compra de bens essenciais.">Fator IVFR</span></th>
+        </tr>
+      </thead>
+      <tbody id="tabelaCorpo"></tbody>
+    </table>
+  </div>
+
+  <script>
+    function calcularScore(item) {
+      const custoFixo = item.aluguel + item.parcela + item.alimentacao;
+      const sobra = item.salario - custoFixo;
+      
+      if (sobra <= 0) {
+        return { 
+          custoFixo: custoFixo.toLocaleString(), 
+          sobra: sobra.toLocaleString(), 
+          margem: "0%", 
+          mesesBens: "Inviável", 
+          ivfr: 0, 
+          classe: "score-low" 
+        };
+      }
+
+      const margem = (sobra / item.salario);
+      const custoBens = item.entrada + item.eletronico;
+      const mesesBens = custoBens / sobra;
+      
+      const penalidadeTempo = 1 / (1 + Math.log(1 + mesesBens));
+      const ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
+      const classe = ivfr >= 50 ? "score-high" : (ivfr >= 25 ? "score-mid" : "score-low");
+
+      return {
+        custoFixo: custoFixo.toLocaleString(undefined, {maximumFractionDigits: 0}),
+        sobra: sobra.toLocaleString(undefined, {maximumFractionDigits: 0}),
+        margem: (margem * 100).toFixed(1) + "%",
+        mesesBens: mesesBens.toFixed(1) + " m",
+        ivfr: ivfr.toFixed(1),
+        classe
+      };
+    }
+
+    fetch('./paises.json')
+      .then(res => res.json())
+      .then(dados => {
+        const tbody = document.getElementById("tabelaCorpo");
+        tbody.innerHTML = "";
+        
+        dados.forEach(item => {
+          const res = calcularScore(item);
+          tbody.insertAdjacentHTML("beforeend", `
+            <tr>
+              <td><span class="flag">${item.bandeira || "🌐"}</span><strong>${item.pais}</strong></td>
+              <td>${item.salario.toLocaleString()}</td>
+              <td>${res.custoFixo}</td>
+              <td class="${res.classe}"><strong>${res.sobra}</strong></td>
+              <td>${res.margem}</td>
+              <td>${res.mesesBens}</td>
+              <td><span class="score ${res.classe}">${res.ivfr}</span> / 100</td>
+            </tr>
+          `);
+        });
+      })
+      .catch(err => {
+        document.getElementById("tabelaCorpo").innerHTML = `
+          <tr><td colspan="7" style="text-align:center; color:#f87171;">
+            Aguardando a primeira execução do coletor.py para gerar os dados.
+          </td></tr>`;
+      });
+  </script>
+</body>
+</html>
