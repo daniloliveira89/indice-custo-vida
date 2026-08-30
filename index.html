@@ -104,7 +104,6 @@
         <div><label id="lblRent">Aluguel</label><input id="aluguel" type="number" value="1000"></div>
         <div><label id="lblCarInstallment">Parcela Carro</label><input id="parcela" type="number" value="300"></div>
         <div><label id="lblFood">Alimentação</label><input id="alimentacao" type="number" value="400"></div>
-        <div><label id="lblCarDown">Entrada Carro</label><input id="entrada" type="number" value="4000"></div>
         <div><label><span class="has-tooltip" id="lblTech" data-tip="">Eletrônico Ref.</span></label><input id="eletronico" type="number" value="1000"></div>
       </div>
       <div class="btn-group">
@@ -122,7 +121,7 @@
           <th onclick="ordenarColuna('custoFixo')"><span id="thFixed">Custo Fixo</span> <span id="sort_custoFixo">↕</span></th>
           <th onclick="ordenarColuna('sobra')"><span id="thSurplus">Sobra Líquida</span> <span id="sort_sobra">↕</span></th>
           <th onclick="ordenarColuna('margem')"><span id="thMargin">Margem Livre</span> <span id="sort_margem">↕</span></th>
-          <th onclick="ordenarColuna('mesesBens')"><span class="has-tooltip" id="thMonths" data-tip="">Meses p/ Bens</span> <span id="sort_mesesBens">↕</span></th>
+          <th onclick="ordenarColuna('mesesBens')"><span class="has-tooltip" id="thMonths" data-tip="">Meses p/ Eletrônico</span> <span id="sort_mesesBens">↕</span></th>
           <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr" data-tip="">Fator IVFR (0-100)</span> <span id="sort_ivfr">↕</span></th>
           <th class="no-sort" id="thActions">Ações</th>
         </tr>
@@ -152,9 +151,8 @@
         lblRent: "Aluguel",
         lblCarInstallment: "Parcela Carro",
         lblFood: "Alimentação",
-        lblCarDown: "Entrada Carro",
         lblTech: "Eletrônico Ref.",
-        lblTechTooltip: "Custo de um bem de capital/tecnologia padrão internacional (ex: smartphone topo de linha ou notebook de trabalho).",
+        lblTechTooltip: "Preço de um smartphone ou computador de trabalho padrão global na moeda local.",
         btnSubmitAdd: "Salvar",
         btnSubmitUpdate: "Atualizar",
         btnSubmitTooltip: "Grava e comita as alterações diretamente no arquivo dados.json do seu repositório GitHub.",
@@ -164,10 +162,10 @@
         thFixed: "Custo Fixo",
         thSurplus: "Sobra Líquida",
         thMargin: "Margem Livre",
-        thMonths: "Meses p/ Bens",
-        thMonthsTooltip: "Meses de sobra líquida necessários para comprar 1 eletrônico de referência e pagar a entrada de um carro popular.",
+        thMonths: "Meses p/ Eletrônico",
+        thMonthsTooltip: "Meses de sobra líquida necessários para comprar o eletrônico de referência à vista.",
         thIvfr: "Fator IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético (0 a 100) que pondera a margem livre retida e penaliza o tempo de acesso a bens duráveis. Pontuações acima de 5.0 ficam em destaque verde.",
+        thIvfrTooltip: "Índice sintético (0 a 100) que pondera a margem livre retida e a velocidade de compra do eletrônico de referência. Pontuações >= 5.0 ficam em destaque verde.",
         thActions: "Ações",
         btnEdit: "Editar",
         btnDelete: "✕",
@@ -190,9 +188,8 @@
         lblRent: "Rent",
         lblCarInstallment: "Car Installment",
         lblFood: "Groceries",
-        lblCarDown: "Car Down Payment",
         lblTech: "Ref. Tech",
-        lblTechTooltip: "Cost of a standard high-end tech good (e.g. flagship smartphone or work laptop).",
+        lblTechTooltip: "Price of a flagship smartphone or standard work laptop in local currency.",
         btnSubmitAdd: "Save",
         btnSubmitUpdate: "Update",
         btnSubmitTooltip: "Saves and commits changes directly to the dados.json file in your GitHub repository.",
@@ -202,10 +199,10 @@
         thFixed: "Fixed Costs",
         thSurplus: "Net Surplus",
         thMargin: "Free Margin",
-        thMonths: "Months to Goods",
-        thMonthsTooltip: "Months of net surplus required to buy reference electronics and pay the down payment for a car.",
+        thMonths: "Months to Tech",
+        thMonthsTooltip: "Months of net surplus required to buy the reference tech good upfront.",
         thIvfr: "IVFR Factor (0-100)",
-        thIvfrTooltip: "Synthetic score (0 to 100) balancing free cashflow and penalizing asset acquisition delay. Scores 5.0+ are highlighted green.",
+        thIvfrTooltip: "Synthetic score (0 to 100) balancing free cashflow and acquisition speed of reference tech. Scores 5.0+ are highlighted green.",
         thActions: "Actions",
         btnEdit: "Edit",
         btnDelete: "✕",
@@ -228,9 +225,8 @@
         lblRent: "Alquiler",
         lblCarInstallment: "Cuota Coche",
         lblFood: "Alimentación",
-        lblCarDown: "Entrada Coche",
         lblTech: "Electrónica Ref.",
-        lblTechTooltip: "Coste de un bien tecnológico de referencia estándar (ej: smartphone de alta gama o portátil de trabajo).",
+        lblTechTooltip: "Precio de un smartphone o portátil de gama alta en moneda local.",
         btnSubmitAdd: "Guardar",
         btnSubmitUpdate: "Actualizar",
         btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de tu repositorio GitHub.",
@@ -240,10 +236,10 @@
         thFixed: "Coste Fijo",
         thSurplus: "Sobrante Neto",
         thMargin: "Margen Libre",
-        thMonths: "Meses para Bienes",
-        thMonthsTooltip: "Meses de ahorro neto necesarios para adquirir electrónica de referencia y la entrada de un coche.",
+        thMonths: "Meses para Electrónica",
+        thMonthsTooltip: "Meses de ahorro neto necesarios para adquirir el producto electrónico de referencia al contado.",
         thIvfr: "Factor IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético (0 a 100) que pondera el margen libre y penaliza el retraso en bienes de capital. Puntuaciones 5.0+ se destacan en verde.",
+        thIvfrTooltip: "Índice sintético (0 a 100) que pondera el margen libre y la velocidad de compra del bien tecnológico. Puntuaciones 5.0+ se destacan en verde.",
         thActions: "Acciones",
         btnEdit: "Editar",
         btnDelete: "✕",
@@ -261,7 +257,6 @@
     let colunaOrdenada = "ivfr";
     let ordemAscendente = false;
 
-    // Normalização inicial para suporte a cidade e moeda
     function normalizarItem(item) {
       let cidadeNome = item.cidade || item.pais || "Cidade";
       cidadeNome = cidadeNome.replace(/EUA\s*\(|\)|Brasil\s*\(|Espanha\s*\(|Alemanha\s*\(/g, '').trim();
@@ -291,7 +286,6 @@
       document.getElementById("lblRent").innerText = t.lblRent;
       document.getElementById("lblCarInstallment").innerText = t.lblCarInstallment;
       document.getElementById("lblFood").innerText = t.lblFood;
-      document.getElementById("lblCarDown").innerText = t.lblCarDown;
       document.getElementById("lblTech").innerText = t.lblTech;
       document.getElementById("lblTech").setAttribute("data-tip", t.lblTechTooltip);
 
@@ -339,8 +333,8 @@
       }
 
       const margem = sobra / item.salario;
-      const custoBens = (item.entrada || 0) + (item.eletronico || 0);
-      const mesesBens = custoBens / sobra;
+      const custoEletronico = item.eletronico || 1000;
+      const mesesBens = custoEletronico / sobra;
       
       const penalidadeTempo = 1 / (1 + Math.log(1 + mesesBens));
       const ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
@@ -490,7 +484,6 @@
         aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
         parcela: parseFloat(document.getElementById("parcela").value) || 0,
         alimentacao: parseFloat(document.getElementById("alimentacao").value) || 0,
-        entrada: parseFloat(document.getElementById("entrada").value) || 0,
         eletronico: parseFloat(document.getElementById("eletronico").value) || 0
       };
 
@@ -522,7 +515,6 @@
       document.getElementById("aluguel").value = item.aluguel;
       document.getElementById("parcela").value = item.parcela;
       document.getElementById("alimentacao").value = item.alimentacao;
-      document.getElementById("entrada").value = item.entrada;
       document.getElementById("eletronico").value = item.eletronico;
 
       document.getElementById("btnSubmit").innerText = t.btnSubmitUpdate;
@@ -546,7 +538,7 @@
       }
     }
 
-    // Gerenciador global de tooltips flutuantes (resolve sobreposição)
+    // Gerenciador global de tooltips flutuantes
     const tipBox = document.getElementById("globalTooltip");
     document.addEventListener("mouseover", (e) => {
       const target = e.target.closest("[data-tip]");
