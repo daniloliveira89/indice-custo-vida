@@ -5,7 +5,7 @@
   <title>Índice de Viabilidade Econômica (IVFR)</title>
   <style>
     body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; margin: 0; }
-    .container { max-width: 1200px; margin: 0 auto; }
+    .container { max-width: 1250px; margin: 0 auto; }
     
     .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     h1 { font-size: 1.6rem; margin: 0 0 0.3rem 0; }
@@ -20,7 +20,7 @@
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
     .card { background: #1e293b; padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #334155; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.8rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(115px, 1fr)); gap: 0.8rem; }
     label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem; }
     input { width: 100%; padding: 0.45rem; background: #334155; border: 1px solid #475569; color: #fff; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
     
@@ -32,13 +32,13 @@
     button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; display: none; }
 
     table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; border: 1px solid #334155; }
-    th, td { padding: 0.75rem 0.9rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
+    th, td { padding: 0.75rem 0.8rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
     th { background: #020617; color: #94a3b8; user-select: none; cursor: pointer; }
     th:hover { color: #f8fafc; background: #0f172a; }
     th.no-sort { cursor: default; }
     th.no-sort:hover { background: #020617; color: #94a3b8; }
     
-    .flag { font-size: 1.25rem; margin-right: 0.4rem; vertical-align: middle; }
+    .flag { font-size: 1.2rem; margin-right: 0.35rem; vertical-align: middle; }
     .score { font-size: 0.95rem; font-weight: bold; }
     .score-high { color: #4ade80; } /* Verde >= 5.0 */
     .score-mid { color: #facc15; }  /* Amarelo 2.0 - 4.9 */
@@ -63,7 +63,7 @@
       border: 1px solid #475569;
       line-height: 1.35;
       z-index: 999999;
-      max-width: 260px;
+      max-width: 270px;
       pointer-events: none;
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
     }
@@ -97,14 +97,15 @@
     <div class="card">
       <input type="hidden" id="editIndex" value="-1">
       <div class="grid">
-        <div style="max-width:70px"><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
+        <div style="max-width:65px"><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
         <div><label id="lblCity">Cidade</label><input id="cidade" value="Nova Cidade"></div>
-        <div style="max-width:70px"><label id="lblCurrency">Moeda</label><input id="moeda" value="$" maxlength="5"></div>
+        <div style="max-width:65px"><label id="lblCurrency">Moeda</label><input id="moeda" value="$" maxlength="5"></div>
         <div><label id="lblSalary">Salário Líq.</label><input id="salario" type="number" value="3000"></div>
-        <div><label id="lblRent">Aluguel</label><input id="aluguel" type="number" value="1000"></div>
-        <div><label id="lblCarInstallment">Parcela Carro</label><input id="parcela" type="number" value="300"></div>
+        <div><label id="lblRent">Aluguel (1Q)</label><input id="aluguel" type="number" value="1000"></div>
         <div><label id="lblFood">Alimentação</label><input id="alimentacao" type="number" value="400"></div>
-        <div><label><span class="has-tooltip" id="lblTech" data-tip="">Eletrônico Ref.</span></label><input id="eletronico" type="number" value="1000"></div>
+        <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parcela Carro</span></label><input id="parcela" type="number" value="300"></div>
+        <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone Atual</span></label><input id="iphone" type="number" value="1000"></div>
+        <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro</span></label><input id="entrada" type="number" value="4000"></div>
       </div>
       <div class="btn-group">
         <button id="btnSubmit" class="btn-main has-tooltip" onclick="salvarPais()" data-tip="">Salvar</button>
@@ -118,10 +119,11 @@
         <tr>
           <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
           <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
-          <th onclick="ordenarColuna('custoFixo')"><span id="thFixed">Custo Fixo</span> <span id="sort_custoFixo">↕</span></th>
+          <th onclick="ordenarColuna('custoFixo')"><span class="has-tooltip" id="thFixed" data-tip="">Custo Fixo</span> <span id="sort_custoFixo">↕</span></th>
           <th onclick="ordenarColuna('sobra')"><span id="thSurplus">Sobra Líquida</span> <span id="sort_sobra">↕</span></th>
           <th onclick="ordenarColuna('margem')"><span id="thMargin">Margem Livre</span> <span id="sort_margem">↕</span></th>
-          <th onclick="ordenarColuna('mesesBens')"><span class="has-tooltip" id="thMonths" data-tip="">Meses p/ Eletrônico</span> <span id="sort_mesesBens">↕</span></th>
+          <th onclick="ordenarColuna('mesesIphone')"><span class="has-tooltip" id="thMonthsIphone" data-tip="">Meses p/ iPhone</span> <span id="sort_mesesIphone">↕</span></th>
+          <th onclick="ordenarColuna('mesesCarro')"><span class="has-tooltip" id="thMonthsCar" data-tip="">Meses Entrada Carro</span> <span id="sort_mesesCarro">↕</span></th>
           <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr" data-tip="">Fator IVFR (0-100)</span> <span id="sort_ivfr">↕</span></th>
           <th class="no-sort" id="thActions">Ações</th>
         </tr>
@@ -148,11 +150,14 @@
         lblCity: "Cidade",
         lblCurrency: "Moeda",
         lblSalary: "Salário Líq.",
-        lblRent: "Aluguel",
-        lblCarInstallment: "Parcela Carro",
+        lblRent: "Aluguel (1Q)",
         lblFood: "Alimentação",
-        lblTech: "Eletrônico Ref.",
-        lblTechTooltip: "Preço de um smartphone ou computador de trabalho padrão global na moeda local.",
+        lblCarInstallment: "Parcela Carro",
+        lblCarInstallmentTooltip: "Parcela média mensal do financiamento de um carro popular (ex: VW Golf / Toyota Corolla).",
+        lblIphone: "iPhone Atual",
+        lblIphoneTooltip: "Preço à vista do modelo base do iPhone de última geração na moeda local.",
+        lblCarDown: "Entrada Carro",
+        lblCarDownTooltip: "Entrada média de 20% do valor de um carro padrão popular novo/seminovo.",
         btnSubmitAdd: "Salvar",
         btnSubmitUpdate: "Atualizar",
         btnSubmitTooltip: "Grava e comita as alterações diretamente no arquivo dados.json do seu repositório GitHub.",
@@ -160,12 +165,15 @@
         thCity: "Cidade",
         thSalary: "Salário Líq.",
         thFixed: "Custo Fixo",
+        thFixedTooltip: "Aluguel fora do centro + Alimentação mensal + Parcela do carro.",
         thSurplus: "Sobra Líquida",
         thMargin: "Margem Livre",
-        thMonths: "Meses p/ Eletrônico",
-        thMonthsTooltip: "Meses de sobra líquida necessários para comprar o eletrônico de referência à vista.",
+        thMonthsIphone: "Meses p/ iPhone",
+        thMonthsIphoneTooltip: "Meses de sobra líquida necessários para comprar o iPhone à vista.",
+        thMonthsCar: "Meses Entrada Carro",
+        thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro padrão.",
         thIvfr: "Fator IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético (0 a 100) que pondera a margem livre retida e a velocidade de compra do eletrônico de referência. Pontuações >= 5.0 ficam em destaque verde.",
+        thIvfrTooltip: "Índice que pondera a margem livre retida e a velocidade para comprar o iPhone e pagar a entrada do carro. Pontuações >= 5.0 ficam em verde.",
         thActions: "Ações",
         btnEdit: "Editar",
         btnDelete: "✕",
@@ -185,11 +193,14 @@
         lblCity: "City",
         lblCurrency: "Currency",
         lblSalary: "Net Salary",
-        lblRent: "Rent",
-        lblCarInstallment: "Car Installment",
+        lblRent: "Rent (1 Bed)",
         lblFood: "Groceries",
-        lblTech: "Ref. Tech",
-        lblTechTooltip: "Price of a flagship smartphone or standard work laptop in local currency.",
+        lblCarInstallment: "Car Installment",
+        lblCarInstallmentTooltip: "Average monthly car financing installment (e.g. VW Golf / Toyota Corolla).",
+        lblIphone: "Current iPhone",
+        lblIphoneTooltip: "Retail price of the latest base iPhone model in local currency.",
+        lblCarDown: "Car Down Payment",
+        lblCarDownTooltip: "Average 20% down payment for a standard car.",
         btnSubmitAdd: "Save",
         btnSubmitUpdate: "Update",
         btnSubmitTooltip: "Saves and commits changes directly to the dados.json file in your GitHub repository.",
@@ -197,12 +208,15 @@
         thCity: "City",
         thSalary: "Net Salary",
         thFixed: "Fixed Costs",
+        thFixedTooltip: "Rent + Groceries + Car Installment.",
         thSurplus: "Net Surplus",
         thMargin: "Free Margin",
-        thMonths: "Months to Tech",
-        thMonthsTooltip: "Months of net surplus required to buy the reference tech good upfront.",
+        thMonthsIphone: "Months to iPhone",
+        thMonthsIphoneTooltip: "Months of net surplus required to buy the latest iPhone upfront.",
+        thMonthsCar: "Months to Car Down",
+        thMonthsCarTooltip: "Months of net surplus required to save the 20% car down payment.",
         thIvfr: "IVFR Factor (0-100)",
-        thIvfrTooltip: "Synthetic score (0 to 100) balancing free cashflow and acquisition speed of reference tech. Scores 5.0+ are highlighted green.",
+        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed of both iPhone and car down payment. Scores 5.0+ are green.",
         thActions: "Actions",
         btnEdit: "Edit",
         btnDelete: "✕",
@@ -222,11 +236,14 @@
         lblCity: "Ciudad",
         lblCurrency: "Moneda",
         lblSalary: "Salario Neto",
-        lblRent: "Alquiler",
-        lblCarInstallment: "Cuota Coche",
+        lblRent: "Alquiler (1D)",
         lblFood: "Alimentación",
-        lblTech: "Electrónica Ref.",
-        lblTechTooltip: "Precio de un smartphone o portátil de gama alta en moneda local.",
+        lblCarInstallment: "Cuota Coche",
+        lblCarInstallmentTooltip: "Cuota mensual promedio de financiación de coche estándar (ej: VW Golf / Toyota Corolla).",
+        lblIphone: "iPhone Actual",
+        lblIphoneTooltip: "Precio al contado del último modelo base de iPhone en moneda local.",
+        lblCarDown: "Entrada Coche",
+        lblCarDownTooltip: "Entrada del 20% para la compra de un coche estándar.",
         btnSubmitAdd: "Guardar",
         btnSubmitUpdate: "Actualizar",
         btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de tu repositorio GitHub.",
@@ -234,12 +251,15 @@
         thCity: "Ciudad",
         thSalary: "Salario Neto",
         thFixed: "Coste Fijo",
+        thFixedTooltip: "Alquiler + Alimentación + Cuota del Coche.",
         thSurplus: "Sobrante Neto",
         thMargin: "Margen Libre",
-        thMonths: "Meses para Electrónica",
-        thMonthsTooltip: "Meses de ahorro neto necesarios para adquirir el producto electrónico de referencia al contado.",
+        thMonthsIphone: "Meses para iPhone",
+        thMonthsIphoneTooltip: "Meses de ahorro neto necesarios para comprar el último iPhone al contado.",
+        thMonthsCar: "Meses Entrada Coche",
+        thMonthsCarTooltip: "Meses de ahorro neto necesarios para pagar la entrada del 20% del coche.",
         thIvfr: "Factor IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético (0 a 100) que pondera el margen libre y la velocidad de compra del bien tecnológico. Puntuaciones 5.0+ se destacan en verde.",
+        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad para el iPhone y la entrada del coche. Puntuaciones 5.0+ se destacan en verde.",
         thActions: "Acciones",
         btnEdit: "Editar",
         btnDelete: "✕",
@@ -265,7 +285,13 @@
         if (cidadeNome.includes("São Paulo") || cidadeNome.includes("Brasil")) moeda = "R$";
         else if (cidadeNome.includes("Madri") || cidadeNome.includes("Berlim")) moeda = "€";
       }
-      return { ...item, cidade: cidadeNome, moeda: moeda };
+      return {
+        ...item,
+        cidade: cidadeNome,
+        moeda: moeda,
+        iphone: item.iphone || item.eletronico || 1000,
+        entrada: item.entrada || 4000
+      };
     }
 
     function mudarIdioma(lang) {
@@ -284,10 +310,14 @@
       document.getElementById("lblCurrency").innerText = t.lblCurrency;
       document.getElementById("lblSalary").innerText = t.lblSalary;
       document.getElementById("lblRent").innerText = t.lblRent;
-      document.getElementById("lblCarInstallment").innerText = t.lblCarInstallment;
       document.getElementById("lblFood").innerText = t.lblFood;
-      document.getElementById("lblTech").innerText = t.lblTech;
-      document.getElementById("lblTech").setAttribute("data-tip", t.lblTechTooltip);
+      
+      document.getElementById("lblCarInstallment").innerText = t.lblCarInstallment;
+      document.getElementById("lblCarInstallment").setAttribute("data-tip", t.lblCarInstallmentTooltip);
+      document.getElementById("lblIphone").innerText = t.lblIphone;
+      document.getElementById("lblIphone").setAttribute("data-tip", t.lblIphoneTooltip);
+      document.getElementById("lblCarDown").innerText = t.lblCarDown;
+      document.getElementById("lblCarDown").setAttribute("data-tip", t.lblCarDownTooltip);
 
       const btnSubmit = document.getElementById("btnSubmit");
       btnSubmit.innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
@@ -297,10 +327,13 @@
       document.getElementById("thCity").innerText = t.thCity;
       document.getElementById("thSalary").innerText = t.thSalary;
       document.getElementById("thFixed").innerText = t.thFixed;
+      document.getElementById("thFixed").setAttribute("data-tip", t.thFixedTooltip);
       document.getElementById("thSurplus").innerText = t.thSurplus;
       document.getElementById("thMargin").innerText = t.thMargin;
-      document.getElementById("thMonths").innerText = t.thMonths;
-      document.getElementById("thMonths").setAttribute("data-tip", t.thMonthsTooltip);
+      document.getElementById("thMonthsIphone").innerText = t.thMonthsIphone;
+      document.getElementById("thMonthsIphone").setAttribute("data-tip", t.thMonthsIphoneTooltip);
+      document.getElementById("thMonthsCar").innerText = t.thMonthsCar;
+      document.getElementById("thMonthsCar").setAttribute("data-tip", t.thMonthsCarTooltip);
       document.getElementById("thIvfr").innerText = t.thIvfr;
       document.getElementById("thIvfr").setAttribute("data-tip", t.thIvfrTooltip);
       document.getElementById("thActions").innerText = t.thActions;
@@ -314,7 +347,7 @@
     }
 
     function calcularValoresCompletos(item) {
-      const custoFixo = (item.aluguel || 0) + (item.parcela || 0) + (item.alimentacao || 0);
+      const custoFixo = (item.aluguel || 0) + (item.alimentacao || 0) + (item.parcela || 0);
       const sobra = (item.salario || 0) - custoFixo;
       const t = i18n[idiomaAtual];
 
@@ -325,18 +358,24 @@
           sobra,
           margem: 0,
           margemStr: "0.0%",
-          mesesBens: 999,
-          mesesBensStr: t.msgInfeasible,
+          mesesIphone: 999,
+          mesesIphoneStr: t.msgInfeasible,
+          mesesCarro: 999,
+          mesesCarroStr: t.msgInfeasible,
           ivfr: 0.0,
           classe: "score-low"
         };
       }
 
       const margem = sobra / item.salario;
-      const custoEletronico = item.eletronico || 1000;
-      const mesesBens = custoEletronico / sobra;
+      const precoIphone = item.iphone || 1000;
+      const precoEntrada = item.entrada || 4000;
       
-      const penalidadeTempo = 1 / (1 + Math.log(1 + mesesBens));
+      const mesesIphone = precoIphone / sobra;
+      const mesesCarro = precoEntrada / sobra;
+      const tempoTotalBens = (precoIphone + precoEntrada) / sobra;
+      
+      const penalidadeTempo = 1 / (1 + Math.log(1 + tempoTotalBens));
       const ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
 
       let classe = "score-low";
@@ -349,8 +388,10 @@
         sobra,
         margem,
         margemStr: (margem * 100).toFixed(1) + "%",
-        mesesBens,
-        mesesBensStr: mesesBens.toFixed(1) + " m",
+        mesesIphone,
+        mesesIphoneStr: mesesIphone.toFixed(1) + " m",
+        mesesCarro,
+        mesesCarroStr: mesesCarro.toFixed(1) + " m",
         ivfr: parseFloat(ivfr.toFixed(1)),
         classe
       };
@@ -371,7 +412,7 @@
       tbody.innerHTML = "";
       const t = i18n[idiomaAtual];
 
-      ["cidade", "salario", "custoFixo", "sobra", "margem", "mesesBens", "ivfr"].forEach(col => {
+      ["cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "ivfr"].forEach(col => {
         const el = document.getElementById("sort_" + col);
         if (el) {
           el.innerText = (colunaOrdenada === col) ? (ordemAscendente ? "▲" : "▼") : "↕";
@@ -389,7 +430,7 @@
         let vB = b[colunaOrdenada];
 
         if (typeof vA === "string") {
-          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(vA);
+          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(a[colunaOrdenada]);
         }
         return ordemAscendente ? (vA - vB) : (vB - vA);
       });
@@ -403,7 +444,8 @@
             <td>${m}${item.custoFixo.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
             <td class="${item.classe}"><strong>${m}${item.sobra.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong></td>
             <td>${item.margemStr}</td>
-            <td>${item.mesesBensStr}</td>
+            <td>${item.mesesIphoneStr}</td>
+            <td>${item.mesesCarroStr}</td>
             <td><span class="score ${item.classe}">${item.ivfr.toFixed(1)}</span> / 100</td>
             <td>
               <button class="btn-action" onclick="carregarParaEdicao(${item.originalIndex})">${t.btnEdit}</button>
@@ -482,9 +524,10 @@
         moeda: document.getElementById("moeda").value || "$",
         salario: parseFloat(document.getElementById("salario").value) || 0,
         aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
-        parcela: parseFloat(document.getElementById("parcela").value) || 0,
         alimentacao: parseFloat(document.getElementById("alimentacao").value) || 0,
-        eletronico: parseFloat(document.getElementById("eletronico").value) || 0
+        parcela: parseFloat(document.getElementById("parcela").value) || 0,
+        iphone: parseFloat(document.getElementById("iphone").value) || 0,
+        entrada: parseFloat(document.getElementById("entrada").value) || 0
       };
 
       if (index >= 0) baseDados[index] = dados;
@@ -513,9 +556,10 @@
       document.getElementById("moeda").value = item.moeda || "$";
       document.getElementById("salario").value = item.salario;
       document.getElementById("aluguel").value = item.aluguel;
-      document.getElementById("parcela").value = item.parcela;
       document.getElementById("alimentacao").value = item.alimentacao;
-      document.getElementById("eletronico").value = item.eletronico;
+      document.getElementById("parcela").value = item.parcela;
+      document.getElementById("iphone").value = item.iphone;
+      document.getElementById("entrada").value = item.entrada;
 
       document.getElementById("btnSubmit").innerText = t.btnSubmitUpdate;
       document.getElementById("btnCancel").style.display = "inline-block";
@@ -538,7 +582,6 @@
       }
     }
 
-    // Gerenciador global de tooltips flutuantes
     const tipBox = document.getElementById("globalTooltip");
     document.addEventListener("mouseover", (e) => {
       const target = e.target.closest("[data-tip]");
@@ -549,7 +592,7 @@
           tipBox.style.display = "block";
           const rect = target.getBoundingClientRect();
           tipBox.style.top = Math.max(10, rect.top - tipBox.offsetHeight - 8) + "px";
-          tipBox.style.left = Math.min(window.innerWidth - 280, Math.max(10, rect.left + (rect.width/2) - (tipBox.offsetWidth/2))) + "px";
+          tipBox.style.left = Math.min(window.innerWidth - 290, Math.max(10, rect.left + (rect.width/2) - (tipBox.offsetWidth/2))) + "px";
         }
       }
     });
@@ -560,7 +603,6 @@
       }
     });
 
-    // Inicialização
     const tokenSalvo = localStorage.getItem("gh_pat");
     if (tokenSalvo) document.getElementById("ghToken").value = tokenSalvo;
     mudarIdioma(idiomaAtual);
