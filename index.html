@@ -330,12 +330,7 @@
 
     function normalizarItem(item) {
       let cidadeNome = item.cidade || item.pais || "Cidade";
-      cidadeNome = cidadeNome.replace(/EUA\s*\(|\)|Brasil\s*\(|Espanha\s*\(|Alemanha\s*\(/g, '').trim();
       let moeda = item.moeda || "$";
-      if (!item.moeda) {
-        if (cidadeNome.includes("São Paulo") || cidadeNome.includes("Brasil")) moeda = "R$";
-        else if (cidadeNome.includes("Madri") || cidadeNome.includes("Berlim")) moeda = "€";
-      }
       return {
         ...item,
         cidade: cidadeNome,
@@ -502,7 +497,7 @@
         let vB = b[colunaOrdenada];
 
         if (typeof vA === "string") {
-          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(a[colunaOrdenada]);
+          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(vA);
         }
         return ordemAscendente ? (vA - vB) : (vB - vA);
       });
