@@ -77,6 +77,7 @@
     th.no-sort:hover { background: var(--th-bg); color: var(--subtext); }
     
     .flag { font-size: 1.25rem; margin-right: 0.4rem; vertical-align: middle; }
+    img.flag { width: 1.4rem; height: auto; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
     .score { font-size: 0.95rem; font-weight: bold; }
     .score-high { color: var(--score-high); }
     .score-mid { color: var(--score-mid); }
@@ -348,19 +349,49 @@
     let colunaOrdenada = "ivfr";
     let ordemAscendente = false;
 
-    // Função "Mágica" que descobre o nome do país a partir do emoji da bandeira
-    function getCountryFromFlag(flag, langCode) {
+    // Extrai o código ISO de 2 letras (ex: "BR", "US") a partir do emoji da bandeira.
+    // Usado tanto para descobrir o nome do país quanto para montar a URL da imagem
+    // da bandeira (via flagcdn.com), já que o emoji de bandeira não renderiza
+    // corretamente em muitos navegadores/versões do Windows (falta a fonte de emoji
+    // de bandeiras, então ele cai no fallback mostrando só as letras "US", "BR" etc.)
+    function getRegionCodeFromFlag(flag) {
       if (!flag || flag === "🌐") return "";
       try {
         const codePoints = [...flag].map(c => c.codePointAt(0));
-        // Checa se os caracteres são Códigos Indicadores Regionais (letras de bandeira)
         if (codePoints.length >= 2 && codePoints[0] >= 127462 && codePoints[0] <= 127487) {
-          const regionCode = String.fromCharCode(codePoints[0] - 127397) + String.fromCharCode(codePoints[1] - 127397);
-          const regionNames = new Intl.DisplayNames([langCode], {type: 'region'});
-          return regionNames.of(regionCode) || "";
+          return String.fromCharCode(codePoints[0] - 127397) + String.fromCharCode(codePoints[1] - 127397);
         }
       } catch(e) { return ""; }
       return "";
+    }
+
+    // Função "Mágica" que descobre o nome do país a partir do emoji da bandeira
+    function getCountryFromFlag(flag, langCode) {
+      const regionCode = getRegionCodeFromFlag(flag);
+      if (!regionCode) return "";
+      try {
+        const regionNames = new Intl.DisplayNames([langCode], {type: 'region'});
+        return regionNames.of(regionCode) || "";
+      } catch(e) { return ""; }
+    }
+
+    // Monta a URL da imagem da bandeira (flagcdn.com) a partir do emoji.
+    // Retorna null se não for possível identificar o país (ex: 🌐).
+    function getFlagImageUrl(flag) {
+      const regionCode = getRegionCodeFromFlag(flag);
+      if (!regionCode) return null;
+      return `https://flagcdn.com/w40/${regionCode.toLowerCase()}.png`;
+    }
+
+    // Renderiza a bandeira como imagem (flagcdn.com) para funcionar em qualquer SO/navegador.
+    // Se não for possível identificar o país (ex: 🌐 ou valor customizado), usa o emoji original.
+    function renderizarBandeira(bandeira) {
+      const flag = bandeira || "🌐";
+      const url = getFlagImageUrl(flag);
+      if (url) {
+        return `<img class="flag" src="${url}" alt="${flag}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${flag}'))">`;
+      }
+      return `<span class="flag">${flag}</span>`;
     }
 
     function normalizarItem(item) {
@@ -571,7 +602,7 @@
         const m = item.moeda ? item.moeda + " " : "";
         tbody.insertAdjacentHTML("beforeend", `
           <tr>
-            <td><span class="flag">${item.bandeira || "🌐"}</span> <strong>${item.paisNome}</strong></td>
+            <td>${renderizarBandeira(item.bandeira)} <strong>${item.paisNome}</strong></td>
             <td><strong>${item.cidade}</strong></td>
             <td>${m}${item.salario.toLocaleString()}</td>
             <td>${m}${item.custoFixo.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
