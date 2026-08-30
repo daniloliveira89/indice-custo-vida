@@ -47,6 +47,15 @@
     .top-actions { display: flex; gap: 0.4rem; align-items: center; }
     select.lang-select, .btn-icon { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
     .btn-icon:hover, select.lang-select:hover { background: var(--border); }
+
+    .lang-dropdown { position: relative; }
+    .lang-current { display: flex; align-items: center; padding: 0.35rem 0.5rem; }
+    .lang-current .flag-icon { width: 1.4rem; height: auto; display: block; border-radius: 2px; }
+    .lang-menu { display: none; position: absolute; top: calc(100% + 4px); right: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; z-index: 20; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+    .lang-menu.open { display: block; }
+    .lang-option { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; cursor: pointer; font-size: 0.85rem; color: var(--text); white-space: nowrap; }
+    .lang-option:hover { background: var(--border); }
+    .lang-option .flag-icon { width: 1.3rem; height: auto; border-radius: 2px; }
     .last-update { font-size: 0.75rem; color: var(--subtext); }
 
     .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
@@ -60,7 +69,7 @@
     .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
     label { display: block; font-size: 0.75rem; color: var(--subtext); margin-bottom: 0.2rem; }
-    input { width: 100%; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
+    input, .grid select { width: 100%; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
     
     .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
     button.btn-main { background: #2563eb; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
@@ -119,11 +128,21 @@
       <div class="top-right-panel">
         <div class="top-actions">
           <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
-          <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language">
+          <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language" style="display:none;">
             <option value="pt">🇧🇷</option>
             <option value="en">🇺🇸</option>
             <option value="es">🇪🇸</option>
           </select>
+          <div class="lang-dropdown" id="langDropdown">
+            <button type="button" class="btn-icon lang-current" id="langCurrentBtn" onclick="toggleLangMenu()" data-tip="Idioma / Language">
+              <img id="langCurrentFlag" class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="pt">
+            </button>
+            <div class="lang-menu" id="langMenu">
+              <div class="lang-option" onclick="mudarIdioma('pt')"><img class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="pt"> <span>Português</span></div>
+              <div class="lang-option" onclick="mudarIdioma('en')"><img class="flag-icon" src="https://flagcdn.com/w40/us.png" alt="en"> <span>English</span></div>
+              <div class="lang-option" onclick="mudarIdioma('es')"><img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="es"> <span>Español</span></div>
+            </div>
+          </div>
           <button class="btn-icon" onclick="toggleSettings()" data-tip="GitHub PAT">⚙️</button>
         </div>
         <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
@@ -148,7 +167,30 @@
       <div class="grid">
         <div style="max-width:65px"><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
         <div><label id="lblCity">Cidade</label><input id="cidade" value="Nova Cidade"></div>
-        <div style="max-width:65px"><label id="lblCurrency">Moeda</label><input id="moeda" value="$" maxlength="5"></div>
+        <div style="max-width:90px"><label id="lblCurrency">Moeda</label>
+          <select id="moeda">
+            <option value="$">$ — Dólar</option>
+            <option value="R$">R$ — Real</option>
+            <option value="€">€ — Euro</option>
+            <option value="£">£ — Libra</option>
+            <option value="¥">¥ — Iene/Yuan</option>
+            <option value="₹">₹ — Rúpia</option>
+            <option value="₩">₩ — Won</option>
+            <option value="₽">₽ — Rublo</option>
+            <option value="₺">₺ — Lira Turca</option>
+            <option value="₪">₪ — Shekel</option>
+            <option value="₫">₫ — Dong</option>
+            <option value="฿">฿ — Baht</option>
+            <option value="₱">₱ — Peso</option>
+            <option value="₴">₴ — Hryvnia</option>
+            <option value="zł">zł — Zloty</option>
+            <option value="kr">kr — Coroa</option>
+            <option value="Fr">Fr — Franco Suíço</option>
+            <option value="R">R — Rand</option>
+            <option value="﷼">﷼ — Rial</option>
+            <option value="د.إ">د.إ — Dirham</option>
+          </select>
+        </div>
         <div><label id="lblSalary">Salário Líq.</label><input id="salario" type="number" value="3000"></div>
         <div><label id="lblRent">Aluguel</label><input id="aluguel" type="number" value="1000"></div>
         <div><label id="lblFood">Comida</label><input id="alimentacao" type="number" value="400"></div>
@@ -204,6 +246,7 @@
         btnAddCity: "➕ Adicionar",
         lblFlag: "Bandeira",
         lblCity: "Cidade",
+        defaultCityName: "Nova Cidade",
         lblCurrency: "Moeda",
         lblSalary: "Salário Líq.",
         lblRent: "Aluguel",
@@ -253,6 +296,7 @@
         btnAddCity: "➕ Add City",
         lblFlag: "Flag",
         lblCity: "City",
+        defaultCityName: "New City",
         lblCurrency: "Currency",
         lblSalary: "Net Salary",
         lblRent: "Rent",
@@ -302,6 +346,7 @@
         btnAddCity: "➕ Añadir",
         lblFlag: "Bandera",
         lblCity: "Ciudad",
+        defaultCityName: "Nueva Ciudad",
         lblCurrency: "Moneda",
         lblSalary: "Salario Neto",
         lblRent: "Alquiler",
@@ -432,10 +477,26 @@
       document.body.classList.add("light-theme");
     }
 
+    function toggleLangMenu() {
+      document.getElementById("langMenu").classList.toggle("open");
+    }
+
+    document.addEventListener("click", (e) => {
+      const dropdown = document.getElementById("langDropdown");
+      const menu = document.getElementById("langMenu");
+      if (dropdown && !dropdown.contains(e.target)) {
+        menu.classList.remove("open");
+      }
+    });
+
+    const langFlagUrls = { pt: "https://flagcdn.com/w40/br.png", en: "https://flagcdn.com/w40/us.png", es: "https://flagcdn.com/w40/es.png" };
+
     function mudarIdioma(lang) {
       idiomaAtual = lang;
       localStorage.setItem("ivfr_lang", lang);
       document.getElementById("langSelector").value = lang;
+      document.getElementById("langCurrentFlag").src = langFlagUrls[lang];
+      document.getElementById("langMenu").classList.remove("open");
       const t = i18n[lang];
 
       document.getElementById("txtTitle").innerText = t.title;
@@ -465,6 +526,16 @@
       const btnSubmit = document.getElementById("btnSubmit");
       btnSubmit.innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
       btnSubmit.setAttribute("data-tip", t.btnSubmitTooltip);
+
+      // Se o formulário está aberto para adicionar uma cidade nova (não editando),
+      // atualiza o nome padrão do campo Cidade para o idioma selecionado.
+      if (document.getElementById("editIndex").value === "-1") {
+        const cidadeInput = document.getElementById("cidade");
+        const nomesDefaultConhecidos = Object.values(i18n).map(d => d.defaultCityName);
+        if (nomesDefaultConhecidos.includes(cidadeInput.value)) {
+          cidadeInput.value = t.defaultCityName;
+        }
+      }
       document.getElementById("btnCancel").innerText = t.btnCancel;
       
       document.getElementById("thCountry").innerText = t.thCountry;
@@ -495,6 +566,12 @@
       document.getElementById("btnToggleForm").style.display = "none";
       document.getElementById("editIndex").value = "-1";
       document.getElementById("btnSubmit").innerText = i18n[idiomaAtual].btnSubmitAdd;
+      document.getElementById("cidade").value = i18n[idiomaAtual].defaultCityName;
+
+      // Remove opções de moeda "custom" criadas dinamicamente em edições anteriores
+      const moedaSelect = document.getElementById("moeda");
+      Array.from(moedaSelect.options).filter(o => o.dataset.custom).forEach(o => o.remove());
+      moedaSelect.value = "$";
     }
 
     function fecharFormulario() {
@@ -731,6 +808,22 @@
       }
     }
 
+    // Garante que o <select> de moeda tenha uma opção para o valor informado,
+    // criando uma opção dinâmica caso o símbolo não esteja na lista pré-definida
+    // (evita perder um símbolo customizado ao editar uma cidade antiga).
+    function setMoedaSelect(valor) {
+      const select = document.getElementById("moeda");
+      const existe = Array.from(select.options).some(opt => opt.value === valor);
+      if (!existe) {
+        const opt = document.createElement("option");
+        opt.value = valor;
+        opt.textContent = valor;
+        opt.dataset.custom = "1";
+        select.appendChild(opt);
+      }
+      select.value = valor;
+    }
+
     function carregarParaEdicao(index) {
       const item = baseDados[index];
       const t = i18n[idiomaAtual];
@@ -740,7 +833,7 @@
       document.getElementById("editIndex").value = index;
       document.getElementById("bandeira").value = item.bandeira || "🌐";
       document.getElementById("cidade").value = item.cidade;
-      document.getElementById("moeda").value = item.moeda || "$";
+      setMoedaSelect(item.moeda || "$");
       document.getElementById("salario").value = item.salario;
       document.getElementById("aluguel").value = item.aluguel;
       document.getElementById("alimentacao").value = item.alimentacao;
