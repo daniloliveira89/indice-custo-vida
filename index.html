@@ -77,13 +77,15 @@
     .score-mid { color: var(--score-mid); }
     .score-low { color: var(--score-low); }
     
-    .btn-action { background: var(--input-bg); color: var(--subtext); border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-right: 0.2rem; }
+    .btn-action { background: var(--input-bg); color: var(--subtext); border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; margin-right: 0.2rem; }
     .btn-action:hover { background: var(--border); color: var(--text); }
     .btn-delete:hover { background: #ef4444; color: #fff; }
 
     .status-msg { font-size: 0.85rem; color: var(--score-high); display: none; }
 
-    .has-tooltip { border-bottom: 1px dotted var(--subtext); cursor: help; display: inline-block; }
+    .has-tooltip { border-bottom: 1px dotted var(--subtext); display: inline-block; cursor: pointer; }
+    label .has-tooltip { cursor: default; }
+    
     #globalTooltip {
       position: fixed;
       display: none;
@@ -110,14 +112,14 @@
       </div>
       <div class="top-right-panel">
         <div class="top-actions">
-          <button class="btn-icon has-tooltip" onclick="carregarDoGitHub(true)" data-tip="Forçar Atualização">🔄</button>
-          <button class="btn-icon has-tooltip" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
-          <select id="langSelector" class="lang-select has-tooltip" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language">
+          <button class="btn-icon" onclick="carregarDoGitHub(true)" data-tip="Forçar Atualização">🔄</button>
+          <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
+          <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language">
             <option value="pt">🇧🇷</option>
             <option value="en">🇺🇸</option>
             <option value="es">🇪🇸</option>
           </select>
-          <button class="btn-icon has-tooltip" onclick="toggleSettings()" data-tip="GitHub PAT">⚙️</button>
+          <button class="btn-icon" onclick="toggleSettings()" data-tip="GitHub PAT">⚙️</button>
         </div>
         <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
       </div>
@@ -148,7 +150,7 @@
         <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro</span></label><input id="entrada" type="number" value="4000"></div>
       </div>
       <div class="btn-group">
-        <button id="btnSubmit" class="btn-main has-tooltip" onclick="salvarPais()" data-tip="">Salvar</button>
+        <button id="btnSubmit" class="btn-main" onclick="salvarPais()" data-tip="">Salvar</button>
         <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()">Cancelar</button>
         <span id="statusMsg" class="status-msg">Gravando...</span>
       </div>
@@ -218,8 +220,8 @@
         thIvfr: "Fator IVFR (0-100)",
         thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Notas >= 5.0 ficam verdes.",
         thActions: "Ações",
-        btnEdit: "Editar",
-        btnDelete: "✕",
+        tipEdit: "Editar cidade",
+        tipDelete: "Remover cidade",
         msgInfeasible: "Inviável",
         msgSaving: "Gravando no GitHub...",
         msgSaved: "✔️ Gravado com sucesso!",
@@ -264,8 +266,8 @@
         thIvfr: "IVFR Factor (0-100)",
         thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Scores >= 5.0 are green.",
         thActions: "Actions",
-        btnEdit: "Edit",
-        btnDelete: "✕",
+        tipEdit: "Edit city",
+        tipDelete: "Delete city",
         msgInfeasible: "Infeasible",
         msgSaving: "Committing to GitHub...",
         msgSaved: "✔️ Saved to GitHub!",
@@ -310,8 +312,8 @@
         thIvfr: "Factor IVFR (0-100)",
         thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Notas >= 5.0 se destacan en verde.",
         thActions: "Acciones",
-        btnEdit: "Editar",
-        btnDelete: "✕",
+        tipEdit: "Editar ciudad",
+        tipDelete: "Eliminar ciudad",
         msgInfeasible: "Inviable",
         msgSaving: "Guardando en GitHub...",
         msgSaved: "✔️ ¡Guardado con éxito!",
@@ -500,7 +502,7 @@
         let vB = b[colunaOrdenada];
 
         if (typeof vA === "string") {
-          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(vA);
+          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(a[colunaOrdenada]);
         }
         return ordemAscendente ? (vA - vB) : (vB - vA);
       });
@@ -518,8 +520,8 @@
             <td>${item.mesesCarroStr}</td>
             <td><span class="score ${item.classe}">${item.ivfr.toFixed(1)}</span> / 100</td>
             <td>
-              <button class="btn-action" onclick="carregarParaEdicao(${item.originalIndex})">${t.btnEdit}</button>
-              <button class="btn-action btn-delete" onclick="removerPais(${item.originalIndex})">${t.btnDelete}</button>
+              <button class="btn-action" onclick="carregarParaEdicao(${item.originalIndex})" data-tip="${t.tipEdit}">✏️</button>
+              <button class="btn-action btn-delete" onclick="removerPais(${item.originalIndex})" data-tip="${t.tipDelete}">✕</button>
             </td>
           </tr>
         `);
