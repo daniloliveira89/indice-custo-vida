@@ -52,7 +52,11 @@
     .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
-    .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+    .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+    .search-input { max-width: 300px; padding: 0.55rem; }
+
+    /* O card do formulário inicia oculto (display: none) via JS ou style inline, mas deixamos a classe pronta */
+    .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
     label { display: block; font-size: 0.75rem; color: var(--subtext); margin-bottom: 0.2rem; }
     input { width: 100%; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
@@ -131,8 +135,13 @@
         <button class="btn-sec" onclick="salvarToken()" id="txtBtnSaveToken">Salvar Token</button>
       </div>
     </div>
+
+    <div class="table-toolbar">
+      <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="Buscar cidade...">
+      <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()">➕ Adicionar</button>
+    </div>
     
-    <div class="card">
+    <div class="card" id="formCard">
       <input type="hidden" id="editIndex" value="-1">
       <div class="grid">
         <div style="max-width:65px"><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
@@ -150,7 +159,7 @@
       </div>
       <div class="btn-group">
         <button id="btnSubmit" class="btn-main" onclick="salvarPais()" data-tip="">Salvar</button>
-        <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()">Cancelar</button>
+        <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()" style="display: inline-block;">Cancelar</button>
         <span id="statusMsg" class="status-msg">Gravando...</span>
       </div>
     </div>
@@ -187,6 +196,8 @@
         lastSync: "Last Sync: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Salvar Token",
+        searchPlaceholder: "🔍 Buscar cidade ou país...",
+        btnAddCity: "➕ Adicionar",
         lblFlag: "Bandeira",
         lblCity: "Cidade",
         lblCurrency: "Moeda",
@@ -233,6 +244,8 @@
         lastSync: "Last Sync: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Save Token",
+        searchPlaceholder: "🔍 Search city or country...",
+        btnAddCity: "➕ Add City",
         lblFlag: "Flag",
         lblCity: "City",
         lblCurrency: "Currency",
@@ -279,6 +292,8 @@
         lastSync: "Last Sync: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Guardar Token",
+        searchPlaceholder: "🔍 Buscar ciudad o país...",
+        btnAddCity: "➕ Añadir Ciudad",
         lblFlag: "Bandera",
         lblCity: "Ciudad",
         lblCurrency: "Moneda",
@@ -368,6 +383,9 @@
       document.getElementById("txtSubtitle").innerText = t.subtitle;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("txtBtnSaveToken").innerText = t.btnSaveToken;
+      document.getElementById("searchInput").placeholder = t.searchPlaceholder;
+      document.getElementById("btnToggleForm").innerText = t.btnAddCity;
+      
       document.getElementById("lblFlag").innerText = t.lblFlag;
       document.getElementById("lblCity").innerText = t.lblCity;
       document.getElementById("lblCurrency").innerText = t.lblCurrency;
@@ -410,6 +428,18 @@
     function toggleSettings() {
       const modal = document.getElementById("tokenModal");
       modal.style.display = modal.style.display === "block" ? "none" : "block";
+    }
+
+    function abrirFormulario() {
+      document.getElementById("formCard").style.display = "block";
+      document.getElementById("btnToggleForm").style.display = "none";
+      document.getElementById("editIndex").value = "-1";
+      document.getElementById("btnSubmit").innerText = i18n[idiomaAtual].btnSubmitAdd;
+    }
+
+    function fecharFormulario() {
+      document.getElementById("formCard").style.display = "none";
+      document.getElementById("btnToggleForm").style.display = "inline-block";
     }
 
     function calcularValoresCompletos(item) {
@@ -477,6 +507,7 @@
       const tbody = document.getElementById("tabelaCorpo");
       tbody.innerHTML = "";
       const t = i18n[idiomaAtual];
+      const termoBusca = document.getElementById("searchInput").value.toLowerCase();
 
       ["cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "ivfr"].forEach(col => {
         const el = document.getElementById("sort_" + col);
@@ -486,10 +517,12 @@
         }
       });
 
-      let dadosProcessados = baseDados.map((item, originalIndex) => ({
-        ...calcularValoresCompletos(normalizarItem(item)),
-        originalIndex
-      }));
+      let dadosProcessados = baseDados
+        .map((item, originalIndex) => ({
+          ...calcularValoresCompletos(normalizarItem(item)),
+          originalIndex
+        }))
+        .filter(item => item.cidade.toLowerCase().includes(termoBusca));
 
       dadosProcessados.sort((a, b) => {
         let vA = a[colunaOrdenada];
@@ -585,6 +618,7 @@
           fileSha = result.content.sha;
           msg.style.color = "var(--score-high)";
           msg.innerText = t.msgSaved;
+          fecharFormulario();
           carregarDoGitHub();
         } else {
           msg.style.color = "var(--score-low)";
@@ -618,7 +652,6 @@
       if (index >= 0) baseDados[index] = dados;
       else baseDados.push(dados);
 
-      cancelarEdicao();
       renderizarTabela();
       gravarNoGitHub();
     }
@@ -635,6 +668,9 @@
     function carregarParaEdicao(index) {
       const item = baseDados[index];
       const t = i18n[idiomaAtual];
+      
+      abrirFormulario();
+      
       document.getElementById("editIndex").value = index;
       document.getElementById("bandeira").value = item.bandeira || "🌐";
       document.getElementById("cidade").value = item.cidade;
@@ -650,15 +686,11 @@
       document.getElementById("entrada").value = item.entrada;
 
       document.getElementById("btnSubmit").innerText = t.btnSubmitUpdate;
-      document.getElementById("btnCancel").style.display = "inline-block";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
     function cancelarEdicao() {
-      const t = i18n[idiomaAtual];
-      document.getElementById("editIndex").value = "-1";
-      document.getElementById("btnSubmit").innerText = t.btnSubmitAdd;
-      document.getElementById("btnCancel").style.display = "none";
+      fecharFormulario();
     }
 
     function salvarToken() {
