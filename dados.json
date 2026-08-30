@@ -1,0 +1,42 @@
+[
+  {
+    "bandeira": "🇺🇸",
+    "pais": "EUA (Califórnia)",
+    "salario": 3400,
+    "aluguel": 1500,
+    "parcela": 350,
+    "alimentacao": 450,
+    "entrada": 4000,
+    "eletronico": 1000
+  },
+  {
+    "bandeira": "🇪🇸",
+    "pais": "Espanha (Madri)",
+    "salario": 2000,
+    "aluguel": 800,
+    "parcela": 300,
+    "alimentacao": 400,
+    "entrada": 2500,
+    "eletronico": 1000
+  },
+  {
+    "bandeira": "🇩🇪",
+    "pais": "Alemanha (Berlim)",
+    "salario": 2700,
+    "aluguel": 950,
+    "parcela": 300,
+    "alimentacao": 380,
+    "entrada": 3000,
+    "eletronico": 1000
+  },
+  {
+    "bandeira": "🇧🇷",
+    "pais": "Brasil (São Paulo)",
+    "salario": 3000,
+    "aluguel": 2200,
+    "parcela": 1200,
+    "alimentacao": 700,
+    "entrada": 15000,
+    "eletronico": 5000
+  }
+]
