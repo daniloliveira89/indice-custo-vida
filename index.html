@@ -20,20 +20,20 @@
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
     .card { background: #1e293b; padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #334155; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 0.8rem; }
     label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem; }
     input { width: 100%; padding: 0.45rem; background: #334155; border: 1px solid #475569; color: #fff; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
     
     .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
-    button.btn-main { background: #2563eb; color: #fff; border: none; padding: 0.55rem 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+    button.btn-main { background: #2563eb; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
     button.btn-main:hover { background: #1d4ed8; }
     button.btn-sec { background: #059669; color: #fff; border: none; padding: 0.45rem 0.8rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
     button.btn-sec:hover { background: #047857; }
-    button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.55rem 1rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; display: none; }
+    button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; display: none; }
 
-    table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid #334155; }
+    table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; border: 1px solid #334155; }
     th, td { padding: 0.75rem 0.9rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
-    th { background: #020617; color: #94a3b8; user-select: none; cursor: pointer; transition: color 0.15s; }
+    th { background: #020617; color: #94a3b8; user-select: none; cursor: pointer; }
     th:hover { color: #f8fafc; background: #0f172a; }
     th.no-sort { cursor: default; }
     th.no-sort:hover { background: #020617; color: #94a3b8; }
@@ -50,26 +50,22 @@
 
     .status-msg { font-size: 0.85rem; color: #4ade80; display: none; }
 
-    /* Tooltips */
-    .has-tooltip { position: relative; border-bottom: 1px dotted #64748b; }
-    .has-tooltip:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Tooltip flutuante global */
+    .has-tooltip { border-bottom: 1px dotted #64748b; cursor: help; display: inline-block; }
+    #globalTooltip {
+      position: fixed;
+      display: none;
       background: #020617;
       color: #f8fafc;
-      padding: 0.5rem 0.7rem;
+      padding: 0.5rem 0.75rem;
       border-radius: 6px;
       font-size: 0.75rem;
-      white-space: normal;
-      width: max-content;
-      max-width: 250px;
-      z-index: 100;
       border: 1px solid #475569;
-      line-height: 1.3;
-      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.5);
+      line-height: 1.35;
+      z-index: 999999;
+      max-width: 260px;
+      pointer-events: none;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
     }
   </style>
 </head>
@@ -78,7 +74,7 @@
     <div class="header">
       <div>
         <h1 id="txtTitle">Índice de Viabilidade Econômica (IVFR)</h1>
-        <p class="sub" id="txtSubtitle">Controle de qualidade econômica real por poder de compra e despesas correntes.</p>
+        <p class="sub" id="txtSubtitle">Poder de compra real e velocidade de aquisição de bens por cidade.</p>
       </div>
       <div class="top-actions">
         <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)">
@@ -101,17 +97,18 @@
     <div class="card">
       <input type="hidden" id="editIndex" value="-1">
       <div class="grid">
-        <div><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
-        <div><label id="lblCountry">País / Região</label><input id="pais" value="Novo País"></div>
+        <div style="max-width:70px"><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
+        <div><label id="lblCity">Cidade</label><input id="cidade" value="Nova Cidade"></div>
+        <div style="max-width:70px"><label id="lblCurrency">Moeda</label><input id="moeda" value="$" maxlength="5"></div>
         <div><label id="lblSalary">Salário Líq.</label><input id="salario" type="number" value="3000"></div>
         <div><label id="lblRent">Aluguel</label><input id="aluguel" type="number" value="1000"></div>
         <div><label id="lblCarInstallment">Parcela Carro</label><input id="parcela" type="number" value="300"></div>
         <div><label id="lblFood">Alimentação</label><input id="alimentacao" type="number" value="400"></div>
         <div><label id="lblCarDown">Entrada Carro</label><input id="entrada" type="number" value="4000"></div>
-        <div><label id="lblTech">Eletrônico Ref.</label><input id="eletronico" type="number" value="1000"></div>
+        <div><label><span class="has-tooltip" id="lblTech" data-tip="">Eletrônico Ref.</span></label><input id="eletronico" type="number" value="1000"></div>
       </div>
       <div class="btn-group">
-        <button id="btnSubmit" class="btn-main" onclick="salvarPais()">Salvar e Gravar no GitHub</button>
+        <button id="btnSubmit" class="btn-main has-tooltip" onclick="salvarPais()" data-tip="">Salvar</button>
         <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()">Cancelar</button>
         <span id="statusMsg" class="status-msg">Gravando...</span>
       </div>
@@ -120,19 +117,21 @@
     <table id="tabela">
       <thead>
         <tr>
-          <th onclick="ordenarColuna('pais')"><span id="thCountry">País</span> <span id="sort_pais">↕</span></th>
+          <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
           <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
           <th onclick="ordenarColuna('custoFixo')"><span id="thFixed">Custo Fixo</span> <span id="sort_custoFixo">↕</span></th>
           <th onclick="ordenarColuna('sobra')"><span id="thSurplus">Sobra Líquida</span> <span id="sort_sobra">↕</span></th>
           <th onclick="ordenarColuna('margem')"><span id="thMargin">Margem Livre</span> <span id="sort_margem">↕</span></th>
-          <th onclick="ordenarColuna('mesesBens')"><span class="has-tooltip" id="thMonths">Meses p/ Bens</span> <span id="sort_mesesBens">↕</span></th>
-          <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr">Fator IVFR (0-100)</span> <span id="sort_ivfr">↕</span></th>
+          <th onclick="ordenarColuna('mesesBens')"><span class="has-tooltip" id="thMonths" data-tip="">Meses p/ Bens</span> <span id="sort_mesesBens">↕</span></th>
+          <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr" data-tip="">Fator IVFR (0-100)</span> <span id="sort_ivfr">↕</span></th>
           <th class="no-sort" id="thActions">Ações</th>
         </tr>
       </thead>
       <tbody id="tabelaCorpo"></tbody>
     </table>
   </div>
+
+  <div id="globalTooltip"></div>
 
   <script>
     const USUARIO = "daniloliveira89";
@@ -142,22 +141,25 @@
     const i18n = {
       pt: {
         title: "Índice de Viabilidade Econômica (IVFR)",
-        subtitle: "Controle de qualidade econômica real por poder de compra e despesas correntes.",
+        subtitle: "Poder de compra real e velocidade de aquisição de bens por cidade.",
         btnSettings: "GitHub",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Salvar Token",
         lblFlag: "Bandeira",
-        lblCountry: "País / Região",
+        lblCity: "Cidade",
+        lblCurrency: "Moeda",
         lblSalary: "Salário Líq.",
         lblRent: "Aluguel",
         lblCarInstallment: "Parcela Carro",
         lblFood: "Alimentação",
         lblCarDown: "Entrada Carro",
         lblTech: "Eletrônico Ref.",
-        btnSubmitAdd: "Salvar e Gravar no GitHub",
-        btnSubmitUpdate: "Atualizar e Gravar",
+        lblTechTooltip: "Custo de um bem de capital/tecnologia padrão internacional (ex: smartphone topo de linha ou notebook de trabalho).",
+        btnSubmitAdd: "Salvar",
+        btnSubmitUpdate: "Atualizar",
+        btnSubmitTooltip: "Grava e comita as alterações diretamente no arquivo dados.json do seu repositório GitHub.",
         btnCancel: "Cancelar",
-        thCountry: "País",
+        thCity: "Cidade",
         thSalary: "Salário Líq.",
         thFixed: "Custo Fixo",
         thSurplus: "Sobra Líquida",
@@ -165,7 +167,7 @@
         thMonths: "Meses p/ Bens",
         thMonthsTooltip: "Meses de sobra líquida necessários para comprar 1 eletrônico de referência e pagar a entrada de um carro popular.",
         thIvfr: "Fator IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético (0 a 100) que pondera a margem livre retida e penaliza o tempo de acesso a bens duráveis.",
+        thIvfrTooltip: "Índice sintético (0 a 100) que pondera a margem livre retida e penaliza o tempo de acesso a bens duráveis. Pontuações acima de 5.0 ficam em destaque verde.",
         thActions: "Ações",
         btnEdit: "Editar",
         btnDelete: "✕",
@@ -177,22 +179,25 @@
       },
       en: {
         title: "Economic Viability Index (IVFR)",
-        subtitle: "Real economic quality analysis based on purchasing power and fixed living costs.",
+        subtitle: "Real purchasing power and asset acquisition speed by city.",
         btnSettings: "GitHub",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Save Token",
         lblFlag: "Flag",
-        lblCountry: "Country / City",
+        lblCity: "City",
+        lblCurrency: "Currency",
         lblSalary: "Net Salary",
         lblRent: "Rent",
         lblCarInstallment: "Car Installment",
         lblFood: "Groceries",
         lblCarDown: "Car Down Payment",
-        lblTech: "Reference Tech",
-        btnSubmitAdd: "Save and Commit to GitHub",
-        btnSubmitUpdate: "Update and Commit",
+        lblTech: "Ref. Tech",
+        lblTechTooltip: "Cost of a standard high-end tech good (e.g. flagship smartphone or work laptop).",
+        btnSubmitAdd: "Save",
+        btnSubmitUpdate: "Update",
+        btnSubmitTooltip: "Saves and commits changes directly to the dados.json file in your GitHub repository.",
         btnCancel: "Cancel",
-        thCountry: "Country",
+        thCity: "City",
         thSalary: "Net Salary",
         thFixed: "Fixed Costs",
         thSurplus: "Net Surplus",
@@ -200,7 +205,7 @@
         thMonths: "Months to Goods",
         thMonthsTooltip: "Months of net surplus required to buy reference electronics and pay the down payment for a car.",
         thIvfr: "IVFR Factor (0-100)",
-        thIvfrTooltip: "Synthetic score (0 to 100) that balances free retained cashflow and penalizes the time required to acquire capital assets.",
+        thIvfrTooltip: "Synthetic score (0 to 100) balancing free cashflow and penalizing asset acquisition delay. Scores 5.0+ are highlighted green.",
         thActions: "Actions",
         btnEdit: "Edit",
         btnDelete: "✕",
@@ -212,22 +217,25 @@
       },
       es: {
         title: "Índice de Viabilidad Económica (IVFR)",
-        subtitle: "Control de calidad económica real según poder adquisitivo y gastos corrientes.",
+        subtitle: "Poder adquisitivo real y velocidad de adquisición de bienes por ciudad.",
         btnSettings: "GitHub",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Guardar Token",
         lblFlag: "Bandera",
-        lblCountry: "País / Región",
+        lblCity: "Ciudad",
+        lblCurrency: "Moneda",
         lblSalary: "Salario Neto",
         lblRent: "Alquiler",
         lblCarInstallment: "Cuota Coche",
         lblFood: "Alimentación",
         lblCarDown: "Entrada Coche",
         lblTech: "Electrónica Ref.",
-        btnSubmitAdd: "Guardar en GitHub",
-        btnSubmitUpdate: "Actualizar en GitHub",
+        lblTechTooltip: "Coste de un bien tecnológico de referencia estándar (ej: smartphone de alta gama o portátil de trabajo).",
+        btnSubmitAdd: "Guardar",
+        btnSubmitUpdate: "Actualizar",
+        btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de tu repositorio GitHub.",
         btnCancel: "Cancelar",
-        thCountry: "País",
+        thCity: "Ciudad",
         thSalary: "Salario Neto",
         thFixed: "Coste Fijo",
         thSurplus: "Sobrante Neto",
@@ -235,7 +243,7 @@
         thMonths: "Meses para Bienes",
         thMonthsTooltip: "Meses de ahorro neto necesarios para adquirir electrónica de referencia y la entrada de un coche.",
         thIvfr: "Factor IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético (0 a 100) que pondera el margen libre retenido y penaliza el tiempo de acceso a bienes duraderos.",
+        thIvfrTooltip: "Índice sintético (0 a 100) que pondera el margen libre y penaliza el retraso en bienes de capital. Puntuaciones 5.0+ se destacan en verde.",
         thActions: "Acciones",
         btnEdit: "Editar",
         btnDelete: "✕",
@@ -253,6 +261,18 @@
     let colunaOrdenada = "ivfr";
     let ordemAscendente = false;
 
+    // Normalização inicial para suporte a cidade e moeda
+    function normalizarItem(item) {
+      let cidadeNome = item.cidade || item.pais || "Cidade";
+      cidadeNome = cidadeNome.replace(/EUA\s*\(|\)|Brasil\s*\(|Espanha\s*\(|Alemanha\s*\(/g, '').trim();
+      let moeda = item.moeda || "$";
+      if (!item.moeda) {
+        if (cidadeNome.includes("São Paulo") || cidadeNome.includes("Brasil")) moeda = "R$";
+        else if (cidadeNome.includes("Madri") || cidadeNome.includes("Berlim")) moeda = "€";
+      }
+      return { ...item, cidade: cidadeNome, moeda: moeda };
+    }
+
     function mudarIdioma(lang) {
       idiomaAtual = lang;
       localStorage.setItem("ivfr_lang", lang);
@@ -265,25 +285,30 @@
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("txtBtnSaveToken").innerText = t.btnSaveToken;
       document.getElementById("lblFlag").innerText = t.lblFlag;
-      document.getElementById("lblCountry").innerText = t.lblCountry;
+      document.getElementById("lblCity").innerText = t.lblCity;
+      document.getElementById("lblCurrency").innerText = t.lblCurrency;
       document.getElementById("lblSalary").innerText = t.lblSalary;
       document.getElementById("lblRent").innerText = t.lblRent;
       document.getElementById("lblCarInstallment").innerText = t.lblCarInstallment;
       document.getElementById("lblFood").innerText = t.lblFood;
       document.getElementById("lblCarDown").innerText = t.lblCarDown;
       document.getElementById("lblTech").innerText = t.lblTech;
-      document.getElementById("btnSubmit").innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
+      document.getElementById("lblTech").setAttribute("data-tip", t.lblTechTooltip);
+
+      const btnSubmit = document.getElementById("btnSubmit");
+      btnSubmit.innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
+      btnSubmit.setAttribute("data-tip", t.btnSubmitTooltip);
       document.getElementById("btnCancel").innerText = t.btnCancel;
       
-      document.getElementById("thCountry").innerText = t.thCountry;
+      document.getElementById("thCity").innerText = t.thCity;
       document.getElementById("thSalary").innerText = t.thSalary;
       document.getElementById("thFixed").innerText = t.thFixed;
       document.getElementById("thSurplus").innerText = t.thSurplus;
       document.getElementById("thMargin").innerText = t.thMargin;
       document.getElementById("thMonths").innerText = t.thMonths;
-      document.getElementById("thMonths").setAttribute("data-tooltip", t.thMonthsTooltip);
+      document.getElementById("thMonths").setAttribute("data-tip", t.thMonthsTooltip);
       document.getElementById("thIvfr").innerText = t.thIvfr;
-      document.getElementById("thIvfr").setAttribute("data-tooltip", t.thIvfrTooltip);
+      document.getElementById("thIvfr").setAttribute("data-tip", t.thIvfrTooltip);
       document.getElementById("thActions").innerText = t.thActions;
 
       renderizarTabela();
@@ -320,13 +345,9 @@
       const penalidadeTempo = 1 / (1 + Math.log(1 + mesesBens));
       const ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
 
-      // Destaque Verde >= 5.0
       let classe = "score-low";
-      if (ivfr >= 5.0) {
-        classe = "score-high";
-      } else if (ivfr >= 2.0) {
-        classe = "score-mid";
-      }
+      if (ivfr >= 5.0) classe = "score-high";
+      else if (ivfr >= 2.0) classe = "score-mid";
 
       return {
         ...item,
@@ -346,7 +367,7 @@
         ordemAscendente = !ordemAscendente;
       } else {
         colunaOrdenada = campo;
-        ordemAscendente = campo === "pais" ? true : false;
+        ordemAscendente = campo === "cidade" ? true : false;
       }
       renderizarTabela();
     }
@@ -356,8 +377,7 @@
       tbody.innerHTML = "";
       const t = i18n[idiomaAtual];
 
-      // Atualiza setas no cabeçalho
-      ["pais", "salario", "custoFixo", "sobra", "margem", "mesesBens", "ivfr"].forEach(col => {
+      ["cidade", "salario", "custoFixo", "sobra", "margem", "mesesBens", "ivfr"].forEach(col => {
         const el = document.getElementById("sort_" + col);
         if (el) {
           el.innerText = (colunaOrdenada === col) ? (ordemAscendente ? "▲" : "▼") : "↕";
@@ -365,9 +385,8 @@
         }
       });
 
-      // Processa e ordena
       let dadosProcessados = baseDados.map((item, originalIndex) => ({
-        ...calcularValoresCompletos(item),
+        ...calcularValoresCompletos(normalizarItem(item)),
         originalIndex
       }));
 
@@ -382,12 +401,13 @@
       });
 
       dadosProcessados.forEach(item => {
+        const m = item.moeda ? item.moeda + " " : "";
         tbody.insertAdjacentHTML("beforeend", `
           <tr>
-            <td><span class="flag">${item.bandeira || "🌐"}</span><strong>${item.pais}</strong></td>
-            <td>${item.salario.toLocaleString()}</td>
-            <td>${item.custoFixo.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
-            <td class="${item.classe}"><strong>${item.sobra.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong></td>
+            <td><span class="flag">${item.bandeira || "🌐"}</span><strong>${item.cidade}</strong></td>
+            <td>${m}${item.salario.toLocaleString()}</td>
+            <td>${m}${item.custoFixo.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
+            <td class="${item.classe}"><strong>${m}${item.sobra.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong></td>
             <td>${item.margemStr}</td>
             <td>${item.mesesBensStr}</td>
             <td><span class="score ${item.classe}">${item.ivfr.toFixed(1)}</span> / 100</td>
@@ -406,7 +426,7 @@
         const data = await res.json();
         fileSha = data.sha;
         const jsonText = decodeURIComponent(escape(atob(data.content)));
-        baseDados = JSON.parse(jsonText);
+        baseDados = JSON.parse(jsonText).map(normalizarItem);
         renderizarTabela();
       } catch (err) {
         console.warn("Aguardando carregamento de base do GitHub.");
@@ -437,7 +457,7 @@
             "Content-Type": "application/json"
           },
           body: JSON.stringify({
-            message: "Atualização de dados via dashboard web",
+            message: "Atualização de cidades via dashboard",
             content: conteudoBase64,
             sha: fileSha
           })
@@ -464,7 +484,8 @@
       const index = parseInt(document.getElementById("editIndex").value);
       const dados = {
         bandeira: document.getElementById("bandeira").value || "🌐",
-        pais: document.getElementById("pais").value,
+        cidade: document.getElementById("cidade").value,
+        moeda: document.getElementById("moeda").value || "$",
         salario: parseFloat(document.getElementById("salario").value) || 0,
         aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
         parcela: parseFloat(document.getElementById("parcela").value) || 0,
@@ -483,7 +504,7 @@
 
     function removerPais(index) {
       const t = i18n[idiomaAtual];
-      if (confirm(`${t.confirmDelete}${baseDados[index].pais}?`)) {
+      if (confirm(`${t.confirmDelete}${baseDados[index].cidade}?`)) {
         baseDados.splice(index, 1);
         renderizarTabela();
         gravarNoGitHub();
@@ -495,7 +516,8 @@
       const t = i18n[idiomaAtual];
       document.getElementById("editIndex").value = index;
       document.getElementById("bandeira").value = item.bandeira || "🌐";
-      document.getElementById("pais").value = item.pais;
+      document.getElementById("cidade").value = item.cidade;
+      document.getElementById("moeda").value = item.moeda || "$";
       document.getElementById("salario").value = item.salario;
       document.getElementById("aluguel").value = item.aluguel;
       document.getElementById("parcela").value = item.parcela;
@@ -523,6 +545,28 @@
         carregarDoGitHub();
       }
     }
+
+    // Gerenciador global de tooltips flutuantes (resolve sobreposição)
+    const tipBox = document.getElementById("globalTooltip");
+    document.addEventListener("mouseover", (e) => {
+      const target = e.target.closest("[data-tip]");
+      if (target) {
+        const text = target.getAttribute("data-tip");
+        if (text) {
+          tipBox.innerText = text;
+          tipBox.style.display = "block";
+          const rect = target.getBoundingClientRect();
+          tipBox.style.top = Math.max(10, rect.top - tipBox.offsetHeight - 8) + "px";
+          tipBox.style.left = Math.min(window.innerWidth - 280, Math.max(10, rect.left + (rect.width/2) - (tipBox.offsetWidth/2))) + "px";
+        }
+      }
+    });
+
+    document.addEventListener("mouseout", (e) => {
+      if (e.target.closest("[data-tip]")) {
+        tipBox.style.display = "none";
+      }
+    });
 
     // Inicialização
     const tokenSalvo = localStorage.getItem("gh_pat");
