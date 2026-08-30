@@ -52,10 +52,11 @@
     .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
+    /* Barra de ferramentas (Busca e Botão Add) */
     .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
-    .search-input { max-width: 300px; padding: 0.55rem; }
+    .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
 
-    /* O card do formulário inicia oculto (display: none) via JS ou style inline, mas deixamos a classe pronta */
+    /* Formulário inicia oculto (display: none) */
     .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
     label { display: block; font-size: 0.75rem; color: var(--subtext); margin-bottom: 0.2rem; }
@@ -66,7 +67,7 @@
     button.btn-main:hover { background: #1d4ed8; }
     button.btn-sec { background: #059669; color: #fff; border: none; padding: 0.45rem 0.8rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
     button.btn-sec:hover { background: #047857; }
-    button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; display: none; }
+    button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
 
     table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); }
     th, td { padding: 0.75rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
@@ -75,7 +76,7 @@
     th.no-sort { cursor: default; }
     th.no-sort:hover { background: var(--th-bg); color: var(--subtext); }
     
-    .flag { font-size: 1.2rem; margin-right: 0.35rem; vertical-align: middle; }
+    .flag { font-size: 1.25rem; margin-right: 0.4rem; vertical-align: middle; }
     .score { font-size: 0.95rem; font-weight: bold; }
     .score-high { color: var(--score-high); }
     .score-mid { color: var(--score-mid); }
@@ -137,7 +138,7 @@
     </div>
 
     <div class="table-toolbar">
-      <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="Buscar cidade...">
+      <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="🔍 Buscar cidade ou país...">
       <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()">➕ Adicionar</button>
     </div>
     
@@ -159,7 +160,7 @@
       </div>
       <div class="btn-group">
         <button id="btnSubmit" class="btn-main" onclick="salvarPais()" data-tip="">Salvar</button>
-        <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()" style="display: inline-block;">Cancelar</button>
+        <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()">Cancelar</button>
         <span id="statusMsg" class="status-msg">Gravando...</span>
       </div>
     </div>
@@ -167,6 +168,8 @@
     <table id="tabela">
       <thead>
         <tr>
+          <!-- Nova Coluna de País -->
+          <th onclick="ordenarColuna('paisNome')"><span id="thCountry">País</span> <span id="sort_paisNome">↕</span></th>
           <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
           <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
           <th onclick="ordenarColuna('custoFixo')"><span class="has-tooltip" id="thFixed" data-tip="">Custo Fixo Total</span> <span id="sort_custoFixo">↕</span></th>
@@ -193,7 +196,7 @@
       pt: {
         title: "Índice de Viabilidade Econômica (IVFR)",
         subtitle: "Poder de compra real e velocidade de aquisição de bens por cidade.",
-        lastSync: "Last Sync: ",
+        lastSync: "Última Sincronização: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Salvar Token",
         searchPlaceholder: "🔍 Buscar cidade ou país...",
@@ -217,6 +220,7 @@
         btnSubmitUpdate: "Atualizar",
         btnSubmitTooltip: "Grava as alterações diretamente no arquivo dados.json do repositório.",
         btnCancel: "Cancelar",
+        thCountry: "País",
         thCity: "Cidade",
         thSalary: "Salário Líq.",
         thFixed: "Custo Fixo Total",
@@ -265,6 +269,7 @@
         btnSubmitUpdate: "Update",
         btnSubmitTooltip: "Commits changes directly to the dados.json file in your GitHub repo.",
         btnCancel: "Cancel",
+        thCountry: "Country",
         thCity: "City",
         thSalary: "Net Salary",
         thFixed: "Total Fixed Costs",
@@ -289,11 +294,11 @@
       es: {
         title: "Índice de Viabilidad Económica (IVFR)",
         subtitle: "Poder adquisitivo real y velocidad de adquisición de bienes por ciudad.",
-        lastSync: "Last Sync: ",
+        lastSync: "Última Sinc.: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Guardar Token",
         searchPlaceholder: "🔍 Buscar ciudad o país...",
-        btnAddCity: "➕ Añadir Ciudad",
+        btnAddCity: "➕ Añadir",
         lblFlag: "Bandera",
         lblCity: "Ciudad",
         lblCurrency: "Moneda",
@@ -313,6 +318,7 @@
         btnSubmitUpdate: "Actualizar",
         btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de GitHub.",
         btnCancel: "Cancelar",
+        thCountry: "País",
         thCity: "Ciudad",
         thSalary: "Salario Neto",
         thFixed: "Coste Fijo Total",
@@ -342,11 +348,33 @@
     let colunaOrdenada = "ivfr";
     let ordemAscendente = false;
 
+    // Função "Mágica" que descobre o nome do país a partir do emoji da bandeira
+    function getCountryFromFlag(flag, langCode) {
+      if (!flag || flag === "🌐") return "";
+      try {
+        const codePoints = [...flag].map(c => c.codePointAt(0));
+        // Checa se os caracteres são Códigos Indicadores Regionais (letras de bandeira)
+        if (codePoints.length >= 2 && codePoints[0] >= 127462 && codePoints[0] <= 127487) {
+          const regionCode = String.fromCharCode(codePoints[0] - 127397) + String.fromCharCode(codePoints[1] - 127397);
+          const regionNames = new Intl.DisplayNames([langCode], {type: 'region'});
+          return regionNames.of(regionCode) || "";
+        }
+      } catch(e) { return ""; }
+      return "";
+    }
+
     function normalizarItem(item) {
       let cidadeNome = item.cidade || item.pais || "Cidade";
+      let bandeira = item.bandeira || "🌐";
       let moeda = item.moeda || "$";
+      
+      // Converte a bandeira para o nome do país no idioma atual
+      let paisNome = getCountryFromFlag(bandeira, idiomaAtual);
+
       return {
         ...item,
+        bandeira,
+        paisNome,
         cidade: cidadeNome,
         moeda: moeda,
         internet: item.internet || 0,
@@ -408,6 +436,7 @@
       btnSubmit.setAttribute("data-tip", t.btnSubmitTooltip);
       document.getElementById("btnCancel").innerText = t.btnCancel;
       
+      document.getElementById("thCountry").innerText = t.thCountry;
       document.getElementById("thCity").innerText = t.thCity;
       document.getElementById("thSalary").innerText = t.thSalary;
       document.getElementById("thFixed").innerText = t.thFixed;
@@ -498,7 +527,7 @@
         ordemAscendente = !ordemAscendente;
       } else {
         colunaOrdenada = campo;
-        ordemAscendente = campo === "cidade" ? true : false;
+        ordemAscendente = campo === "cidade" || campo === "paisNome" ? true : false;
       }
       renderizarTabela();
     }
@@ -509,7 +538,7 @@
       const t = i18n[idiomaAtual];
       const termoBusca = document.getElementById("searchInput").value.toLowerCase();
 
-      ["cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "ivfr"].forEach(col => {
+      ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "ivfr"].forEach(col => {
         const el = document.getElementById("sort_" + col);
         if (el) {
           el.innerText = (colunaOrdenada === col) ? (ordemAscendente ? "▲" : "▼") : "↕";
@@ -522,7 +551,11 @@
           ...calcularValoresCompletos(normalizarItem(item)),
           originalIndex
         }))
-        .filter(item => item.cidade.toLowerCase().includes(termoBusca));
+        .filter(item => {
+          // Busca tanto no nome do País quanto na Cidade
+          const searchString = `${item.paisNome} ${item.cidade}`.toLowerCase();
+          return searchString.includes(termoBusca);
+        });
 
       dadosProcessados.sort((a, b) => {
         let vA = a[colunaOrdenada];
@@ -538,7 +571,8 @@
         const m = item.moeda ? item.moeda + " " : "";
         tbody.insertAdjacentHTML("beforeend", `
           <tr>
-            <td><span class="flag">${item.bandeira || "🌐"}</span><strong>${item.cidade}</strong></td>
+            <td><span class="flag">${item.bandeira || "🌐"}</span> <strong>${item.paisNome}</strong></td>
+            <td><strong>${item.cidade}</strong></td>
             <td>${m}${item.salario.toLocaleString()}</td>
             <td>${m}${item.custoFixo.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
             <td class="${item.classe}"><strong>${m}${item.sobra.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong></td>
@@ -652,6 +686,7 @@
       if (index >= 0) baseDados[index] = dados;
       else baseDados.push(dados);
 
+      fecharFormulario();
       renderizarTabela();
       gravarNoGitHub();
     }
