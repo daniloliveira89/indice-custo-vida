@@ -42,11 +42,12 @@
     .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     h1 { font-size: 1.6rem; margin: 0 0 0.3rem 0; }
     p.sub { color: var(--subtext); font-size: 0.85rem; margin: 0; }
-    .last-update { font-size: 0.75rem; color: var(--subtext); margin-top: 0.3rem; }
     
-    .top-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
-    select.lang-select, .btn-icon { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+    .top-right-panel { display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; }
+    .top-actions { display: flex; gap: 0.4rem; align-items: center; }
+    select.lang-select, .btn-icon { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
     .btn-icon:hover, select.lang-select:hover { background: var(--border); }
+    .last-update { font-size: 0.75rem; color: var(--subtext); }
 
     .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
@@ -106,17 +107,19 @@
       <div>
         <h1 id="txtTitle">Índice de Viabilidade Econômica (IVFR)</h1>
         <p class="sub" id="txtSubtitle">Poder de compra real e velocidade de aquisição de bens por cidade.</p>
-        <div class="last-update" id="txtLastUpdate">Última sincronização: --</div>
       </div>
-      <div class="top-actions">
-        <button class="btn-icon" onclick="carregarDoGitHub(true)" title="Forçar Atualização">🔄 <span id="txtRefresh">Atualizar</span></button>
-        <button class="btn-icon" onclick="alternarTema()" id="btnTheme">🌓 Tema</button>
-        <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)">
-          <option value="pt">🇧🇷 Português</option>
-          <option value="en">🇺🇸 English</option>
-          <option value="es">🇪🇸 Español</option>
-        </select>
-        <button class="btn-icon" onclick="toggleSettings()">⚙️ <span id="txtBtnSettings">GitHub</span></button>
+      <div class="top-right-panel">
+        <div class="top-actions">
+          <button class="btn-icon has-tooltip" onclick="carregarDoGitHub(true)" data-tip="Forçar Atualização">🔄</button>
+          <button class="btn-icon has-tooltip" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
+          <select id="langSelector" class="lang-select has-tooltip" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language">
+            <option value="pt">🇧🇷</option>
+            <option value="en">🇺🇸</option>
+            <option value="es">🇪🇸</option>
+          </select>
+          <button class="btn-icon has-tooltip" onclick="toggleSettings()" data-tip="GitHub PAT">⚙️</button>
+        </div>
+        <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
       </div>
     </div>
 
@@ -180,9 +183,7 @@
       pt: {
         title: "Índice de Viabilidade Econômica (IVFR)",
         subtitle: "Poder de compra real e velocidade de aquisição de bens por cidade.",
-        lastSync: "Última sincronização: ",
-        btnRefresh: "Atualizar",
-        btnSettings: "GitHub",
+        lastSync: "Last Sync: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Salvar Token",
         lblFlag: "Bandeira",
@@ -228,9 +229,7 @@
       en: {
         title: "Economic Viability Index (IVFR)",
         subtitle: "Real purchasing power and asset acquisition speed by city.",
-        lastSync: "Last synced: ",
-        btnRefresh: "Refresh",
-        btnSettings: "GitHub",
+        lastSync: "Last Sync: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Save Token",
         lblFlag: "Flag",
@@ -276,9 +275,7 @@
       es: {
         title: "Índice de Viabilidad Económica (IVFR)",
         subtitle: "Poder adquisitivo real y velocidad de adquisición de bienes por ciudad.",
-        lastSync: "Última sincronización: ",
-        btnRefresh: "Actualizar",
-        btnSettings: "GitHub",
+        lastSync: "Last Sync: ",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Guardar Token",
         lblFlag: "Bandera",
@@ -349,10 +346,16 @@
       };
     }
 
+    function atualizarBotaoTema() {
+      const isLight = document.body.classList.contains("light-theme");
+      document.getElementById("btnTheme").innerText = isLight ? "🌙" : "☀️";
+    }
+
     function alternarTema() {
       document.body.classList.toggle("light-theme");
       const temaAtual = document.body.classList.contains("light-theme") ? "light" : "dark";
       localStorage.setItem("ivfr_theme", temaAtual);
+      atualizarBotaoTema();
     }
 
     if (localStorage.getItem("ivfr_theme") === "light") {
@@ -367,8 +370,6 @@
 
       document.getElementById("txtTitle").innerText = t.title;
       document.getElementById("txtSubtitle").innerText = t.subtitle;
-      document.getElementById("txtRefresh").innerText = t.btnRefresh;
-      document.getElementById("txtBtnSettings").innerText = t.btnSettings;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("txtBtnSaveToken").innerText = t.btnSaveToken;
       document.getElementById("lblFlag").innerText = t.lblFlag;
@@ -499,7 +500,7 @@
         let vB = b[colunaOrdenada];
 
         if (typeof vA === "string") {
-          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(a[colunaOrdenada]);
+          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(vA);
         }
         return ordemAscendente ? (vA - vB) : (vB - vA);
       });
@@ -525,6 +526,19 @@
       });
     }
 
+    function formatarDataHora(data) {
+      const m = data.getMonth() + 1;
+      const d = data.getDate();
+      const y = data.getFullYear();
+      let hours = data.getHours();
+      const minutes = String(data.getMinutes()).padStart(2, '0');
+      const ampm = hours >= 12 ? 'PM' : 'AM';
+      hours = hours % 12;
+      hours = hours ? hours : 12;
+      const strHours = String(hours).padStart(2, '0');
+      return `${m}/${d}/${y} ${strHours}:${minutes} ${ampm}`;
+    }
+
     async function carregarDoGitHub(forcar = false) {
       try {
         const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?nocache=${Date.now()}`);
@@ -533,10 +547,7 @@
         const jsonText = decodeURIComponent(escape(atob(data.content)));
         baseDados = JSON.parse(jsonText).map(normalizarItem);
         
-        const now = new Date();
-        const dataStr = now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-        document.getElementById("txtLastUpdate").innerText = i18n[idiomaAtual].lastSync + dataStr;
-        
+        document.getElementById("txtLastUpdate").innerText = i18n[idiomaAtual].lastSync + formatarDataHora(new Date());
         renderizarTabela();
       } catch (err) {
         console.warn("Aguardando carregamento de base do GitHub.");
@@ -686,6 +697,7 @@
 
     const tokenSalvo = localStorage.getItem("gh_pat");
     if (tokenSalvo) document.getElementById("ghToken").value = tokenSalvo;
+    atualizarBotaoTema();
     mudarIdioma(idiomaAtual);
     carregarDoGitHub();
   </script>
