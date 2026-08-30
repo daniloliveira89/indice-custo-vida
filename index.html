@@ -4,14 +4,27 @@
   <meta charset="UTF-8">
   <title>Índice de Viabilidade Econômica (IVFR)</title>
   <style>
-    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
-    .container { max-width: 1100px; margin: 0 auto; }
+    body { font-family: system-ui, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; }
+    .container { max-width: 1200px; margin: 0 auto; }
     h1 { font-size: 1.6rem; margin-bottom: 0.3rem; }
-    p.sub { color: #94a3b8; font-size: 0.9rem; margin-bottom: 1.5rem; }
+    p.sub { color: #94a3b8; font-size: 0.85rem; margin-bottom: 1.5rem; }
     
+    .card { background: #1e293b; padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #334155; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 0.8rem; }
+    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem; }
+    input { width: 100%; padding: 0.45rem; background: #334155; border: 1px solid #475569; color: #fff; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
+    
+    .token-box { display: flex; gap: 0.5rem; align-items: center; margin-bottom: 1rem; background: #0f172a; padding: 0.6rem; border-radius: 6px; border: 1px dashed #475569; }
+    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
+    button { background: #2563eb; color: #fff; border: none; padding: 0.55rem 1rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
+    button:hover { background: #1d4ed8; }
+    button.btn-sec { background: #059669; }
+    button.btn-sec:hover { background: #047857; }
+    button.btn-cancel { background: #991b1b; display: none; }
+
     table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; overflow: hidden; border: 1px solid #334155; }
-    th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
-    th { background: #020617; color: #94a3b8; user-select: none; }
+    th, td { padding: 0.75rem 0.9rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
+    th { background: #020617; color: #94a3b8; }
     
     .flag { font-size: 1.25rem; margin-right: 0.4rem; vertical-align: middle; }
     .score { font-size: 0.95rem; font-weight: bold; }
@@ -19,44 +32,54 @@
     .score-mid { color: #facc15; }
     .score-low { color: #f87171; }
     
-    /* Tooltips explicativos */
-    .has-tooltip { position: relative; cursor: help; border-bottom: 1px dotted #64748b; }
-    .has-tooltip:hover::after {
-      content: attr(data-tooltip);
-      position: absolute;
-      bottom: 125%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #020617;
-      color: #f8fafc;
-      padding: 0.4rem 0.6rem;
-      border-radius: 4px;
-      font-size: 0.75rem;
-      white-space: normal;
-      width: max-content;
-      max-width: 220px;
-      z-index: 10;
-      border: 1px solid #475569;
-      line-height: 1.2;
-      font-weight: normal;
-    }
+    .btn-action { background: #334155; color: #94a3b8; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-right: 0.2rem; }
+    .btn-action:hover { background: #475569; color: #fff; }
+    .btn-delete:hover { background: #ef4444; color: #fff; }
+
+    .status-msg { font-size: 0.85rem; color: #4ade80; display: none; }
   </style>
 </head>
 <body>
   <div class="container">
     <h1>Índice de Viabilidade Econômica (IVFR)</h1>
-    <p class="sub">Dados sincronizados automaticamente do repositório. Passe o mouse sobre os cabeçalhos com pontilhado para ver as definições.</p>
+    <p class="sub">Os dados são sincronizados e gravados permanentemente no seu GitHub.</p>
     
-    <table>
+    <div class="card">
+      <div class="token-box">
+        <label style="margin:0; white-space:nowrap;">GitHub Token (PAT):</label>
+        <input id="ghToken" type="password" placeholder="Cole aqui seu token github_pat_..." style="flex:1;">
+        <button class="btn-sec" onclick="salvarToken()">Conectar Token</button>
+      </div>
+
+      <input type="hidden" id="editIndex" value="-1">
+      <div class="grid">
+        <div><label>Bandeira (Emoji)</label><input id="bandeira" value="🌐" maxlength="4"></div>
+        <div><label>País / Região</label><input id="pais" value="Novo País"></div>
+        <div><label>Salário Líq.</label><input id="salario" type="number" value="3000"></div>
+        <div><label>Aluguel</label><input id="aluguel" type="number" value="1000"></div>
+        <div><label>Parcela Carro</label><input id="parcela" type="number" value="300"></div>
+        <div><label>Alimentação</label><input id="alimentacao" type="number" value="400"></div>
+        <div><label>Entrada Carro</label><input id="entrada" type="number" value="4000"></div>
+        <div><label>Eletrônico Ref.</label><input id="eletronico" type="number" value="1000"></div>
+      </div>
+      <div class="btn-group">
+        <button id="btnSubmit" onclick="salvarPais()">Salvar e Gravar no GitHub</button>
+        <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()">Cancelar</button>
+        <span id="statusMsg" class="status-msg">Gravando no GitHub...</span>
+      </div>
+    </div>
+
+    <table id="tabela">
       <thead>
         <tr>
           <th>País</th>
-          <th><span class="has-tooltip" data-tooltip="Salário médio líquido na moeda local após impostos.">Salário Líq.</span></th>
-          <th><span class="has-tooltip" data-tooltip="Custo mensal de subsistência: Aluguel 1Q fora do centro + Parcela Carro + Alimentação básica.">Custo Fixo</span></th>
-          <th><span class="has-tooltip" data-tooltip="Valor livre que sobra no mês (Salário Líquido - Custo Fixo).">Sobra Líquida</span></th>
-          <th><span class="has-tooltip" data-tooltip="Percentual retido como margem discricionária livre.">Margem Livre</span></th>
-          <th><span class="has-tooltip" data-tooltip="Meses de sobra líquida necessários para quitar a entrada do carro + 1 eletrônico.">Meses p/ Bens</span></th>
-          <th><span class="has-tooltip" data-tooltip="Fator de viabilidade de 0 a 100. Pondera margem livre e velocidade de compra de bens essenciais.">Fator IVFR</span></th>
+          <th>Salário Líq.</th>
+          <th>Custo Fixo</th>
+          <th>Sobra Líquida</th>
+          <th>Margem Livre</th>
+          <th>Meses p/ Bens</th>
+          <th>Fator IVFR (0-100)</th>
+          <th>Ações</th>
         </tr>
       </thead>
       <tbody id="tabelaCorpo"></tbody>
@@ -64,20 +87,18 @@
   </div>
 
   <script>
+    const USUARIO = "daniloliveira89";
+    const REPO = "indice-custo-vida";
+    const ARQUIVO = "dados.json";
+
+    let baseDados = [];
+    let fileSha = "";
+
     function calcularScore(item) {
       const custoFixo = item.aluguel + item.parcela + item.alimentacao;
       const sobra = item.salario - custoFixo;
       
-      if (sobra <= 0) {
-        return { 
-          custoFixo: custoFixo.toLocaleString(), 
-          sobra: sobra.toLocaleString(), 
-          margem: "0%", 
-          mesesBens: "Inviável", 
-          ivfr: 0, 
-          classe: "score-low" 
-        };
-      }
+      if (sobra <= 0) return { custoFixo: custoFixo.toLocaleString(), sobra: sobra.toLocaleString(), margem: "0%", mesesBens: "Inviável", ivfr: "0.0", classe: "score-low" };
 
       const margem = (sobra / item.salario);
       const custoBens = item.entrada + item.eletronico;
@@ -97,33 +118,153 @@
       };
     }
 
-    fetch('./paises.json')
-      .then(res => res.json())
-      .then(dados => {
-        const tbody = document.getElementById("tabelaCorpo");
-        tbody.innerHTML = "";
-        
-        dados.forEach(item => {
-          const res = calcularScore(item);
-          tbody.insertAdjacentHTML("beforeend", `
-            <tr>
-              <td><span class="flag">${item.bandeira || "🌐"}</span><strong>${item.pais}</strong></td>
-              <td>${item.salario.toLocaleString()}</td>
-              <td>${res.custoFixo}</td>
-              <td class="${res.classe}"><strong>${res.sobra}</strong></td>
-              <td>${res.margem}</td>
-              <td>${res.mesesBens}</td>
-              <td><span class="score ${res.classe}">${res.ivfr}</span> / 100</td>
-            </tr>
-          `);
-        });
-      })
-      .catch(err => {
-        document.getElementById("tabelaCorpo").innerHTML = `
-          <tr><td colspan="7" style="text-align:center; color:#f87171;">
-            Aguardando a primeira execução do coletor.py para gerar os dados.
-          </td></tr>`;
+    function renderizarTabela() {
+      const tbody = document.getElementById("tabelaCorpo");
+      tbody.innerHTML = "";
+
+      baseDados.forEach((item, index) => {
+        const res = calcularScore(item);
+        tbody.insertAdjacentHTML("beforeend", `
+          <tr>
+            <td><span class="flag">${item.bandeira || "🌐"}</span><strong>${item.pais}</strong></td>
+            <td>${item.salario.toLocaleString()}</td>
+            <td>${res.custoFixo}</td>
+            <td class="${res.classe}"><strong>${res.sobra}</strong></td>
+            <td>${res.margem}</td>
+            <td>${res.mesesBens}</td>
+            <td><span class="score ${res.classe}">${res.ivfr}</span> / 100</td>
+            <td>
+              <button class="btn-action" onclick="carregarParaEdicao(${index})">Editar</button>
+              <button class="btn-action btn-delete" onclick="removerPais(${index})">✕</button>
+            </td>
+          </tr>
+        `);
       });
+    }
+
+    async function carregarDoGitHub() {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?t=${Date.now()}`);
+        const data = await res.json();
+        fileSha = data.sha;
+        const jsonText = decodeURIComponent(escape(atob(data.content)));
+        baseDados = JSON.parse(jsonText);
+        renderizarTabela();
+      } catch (err) {
+        console.warn("Erro ao carregar do GitHub:", err);
+      }
+    }
+
+    async function gravarNoGitHub() {
+      const token = localStorage.getItem("gh_pat");
+      const msg = document.getElementById("statusMsg");
+      
+      if (!token) {
+        alert("Insira seu GitHub Token no topo da página para salvar as alterações permanentemente.");
+        return;
+      }
+
+      msg.style.display = "inline";
+      msg.style.color = "#facc15";
+      msg.innerText = "Commitando no GitHub...";
+
+      const conteudoBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(baseDados, null, 2))));
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}`, {
+          method: "PUT",
+          headers: {
+            "Authorization": `Bearer ${token}`,
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            message: "Atualização de dados via dashboard web",
+            content: conteudoBase64,
+            sha: fileSha
+          })
+        });
+
+        if (res.ok) {
+          const result = await res.json();
+          fileSha = result.content.sha;
+          msg.style.color = "#4ade80";
+          msg.innerText = "✔️ Gravado no GitHub!";
+        } else {
+          msg.style.color = "#f87171";
+          msg.innerText = "Erro ao salvar. Verifique permissões do Token.";
+        }
+      } catch (e) {
+        msg.style.color = "#f87171";
+        msg.innerText = "Erro de conexão com o GitHub.";
+      }
+
+      setTimeout(() => { msg.style.display = "none"; }, 4000);
+    }
+
+    function salvarPais() {
+      const index = parseInt(document.getElementById("editIndex").value);
+      const dados = {
+        bandeira: document.getElementById("bandeira").value || "🌐",
+        pais: document.getElementById("pais").value,
+        salario: parseFloat(document.getElementById("salario").value) || 0,
+        aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
+        parcela: parseFloat(document.getElementById("parcela").value) || 0,
+        alimentacao: parseFloat(document.getElementById("alimentacao").value) || 0,
+        entrada: parseFloat(document.getElementById("entrada").value) || 0,
+        eletronico: parseFloat(document.getElementById("eletronico").value) || 0
+      };
+
+      if (index >= 0) baseDados[index] = dados;
+      else baseDados.push(dados);
+
+      cancelarEdicao();
+      renderizarTabela();
+      gravarNoGitHub();
+    }
+
+    function removerPais(index) {
+      if (confirm(`Remover ${baseDados[index].pais}?`)) {
+        baseDados.splice(index, 1);
+        renderizarTabela();
+        gravarNoGitHub();
+      }
+    }
+
+    function carregarParaEdicao(index) {
+      const item = baseDados[index];
+      document.getElementById("editIndex").value = index;
+      document.getElementById("bandeira").value = item.bandeira || "🌐";
+      document.getElementById("pais").value = item.pais;
+      document.getElementById("salario").value = item.salario;
+      document.getElementById("aluguel").value = item.aluguel;
+      document.getElementById("parcela").value = item.parcela;
+      document.getElementById("alimentacao").value = item.alimentacao;
+      document.getElementById("entrada").value = item.entrada;
+      document.getElementById("eletronico").value = item.eletronico;
+
+      document.getElementById("btnSubmit").innerText = "Atualizar e Gravar";
+      document.getElementById("btnCancel").style.display = "inline-block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function cancelarEdicao() {
+      document.getElementById("editIndex").value = "-1";
+      document.getElementById("btnSubmit").innerText = "Salvar e Gravar no GitHub";
+      document.getElementById("btnCancel").style.display = "none";
+    }
+
+    function salvarToken() {
+      const t = document.getElementById("ghToken").value.trim();
+      if (t) {
+        localStorage.setItem("gh_pat", t);
+        alert("Token salvo! As alterações agora serão gravadas no repositório.");
+        carregarDoGitHub();
+      }
+    }
+
+    const tokenSalvo = localStorage.getItem("gh_pat");
+    if (tokenSalvo) document.getElementById("ghToken").value = tokenSalvo;
+    carregarDoGitHub();
   </script>
 </body>
 </html>
