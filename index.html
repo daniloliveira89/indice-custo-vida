@@ -112,7 +112,6 @@
       </div>
       <div class="top-right-panel">
         <div class="top-actions">
-          <button class="btn-icon" onclick="carregarDoGitHub(true)" data-tip="Forçar Atualização">🔄</button>
           <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
           <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language">
             <option value="pt">🇧🇷</option>
@@ -497,7 +496,7 @@
         let vB = b[colunaOrdenada];
 
         if (typeof vA === "string") {
-          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(vA);
+          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(a[colunaOrdenada]);
         }
         return ordemAscendente ? (vA - vB) : (vB - vA);
       });
@@ -536,7 +535,7 @@
       return `${m}/${d}/${y} ${strHours}:${minutes} ${ampm}`;
     }
 
-    async function carregarDoGitHub(forcar = false) {
+    async function carregarDoGitHub() {
       try {
         const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?nocache=${Date.now()}`);
         const data = await res.json();
