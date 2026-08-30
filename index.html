@@ -4,25 +4,57 @@
   <meta charset="UTF-8">
   <title>Índice de Viabilidade Econômica (IVFR)</title>
   <style>
-    body { font-family: system-ui, -apple-system, sans-serif; background: #0f172a; color: #f8fafc; padding: 2rem; margin: 0; }
-    .container { max-width: 1250px; margin: 0 auto; }
+    :root {
+      --bg: #0f172a;
+      --card-bg: #1e293b;
+      --text: #f8fafc;
+      --subtext: #94a3b8;
+      --border: #334155;
+      --input-bg: #334155;
+      --input-border: #475569;
+      --th-bg: #020617;
+      --th-hover: #0f172a;
+      --modal-bg: #020617;
+      --score-high: #4ade80;
+      --score-mid: #facc15;
+      --score-low: #f87171;
+    }
+
+    body.light-theme {
+      --bg: #f1f5f9;
+      --card-bg: #ffffff;
+      --text: #0f172a;
+      --subtext: #64748b;
+      --border: #cbd5e1;
+      --input-bg: #f8fafc;
+      --input-border: #cbd5e1;
+      --th-bg: #e2e8f0;
+      --th-hover: #cbd5e1;
+      --modal-bg: #ffffff;
+      --score-high: #16a34a;
+      --score-mid: #ca8a04;
+      --score-low: #dc2626;
+    }
+
+    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; margin: 0; transition: background 0.2s, color 0.2s; }
+    .container { max-width: 1350px; margin: 0 auto; }
     
     .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
     h1 { font-size: 1.6rem; margin: 0 0 0.3rem 0; }
-    p.sub { color: #94a3b8; font-size: 0.85rem; margin: 0; }
+    p.sub { color: var(--subtext); font-size: 0.85rem; margin: 0; }
+    .last-update { font-size: 0.75rem; color: var(--subtext); margin-top: 0.3rem; }
     
-    .top-actions { display: flex; gap: 0.5rem; align-items: center; }
-    select.lang-select { background: #1e293b; border: 1px solid #334155; color: #f8fafc; padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-    .btn-settings { background: #1e293b; border: 1px solid #334155; color: #94a3b8; padding: 0.4rem 0.7rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
-    .btn-settings:hover { color: #fff; background: #334155; }
+    .top-actions { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+    select.lang-select, .btn-icon { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.85rem; }
+    .btn-icon:hover, select.lang-select:hover { background: var(--border); }
 
-    .token-modal { display: none; background: #020617; border: 1px solid #334155; padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
+    .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
-    .card { background: #1e293b; padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid #334155; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(115px, 1fr)); gap: 0.8rem; }
-    label { display: block; font-size: 0.75rem; color: #94a3b8; margin-bottom: 0.2rem; }
-    input { width: 100%; padding: 0.45rem; background: #334155; border: 1px solid #475569; color: #fff; border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
+    .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
+    label { display: block; font-size: 0.75rem; color: var(--subtext); margin-bottom: 0.2rem; }
+    input { width: 100%; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
     
     .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
     button.btn-main { background: #2563eb; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
@@ -31,41 +63,40 @@
     button.btn-sec:hover { background: #047857; }
     button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; display: none; }
 
-    table { width: 100%; border-collapse: collapse; background: #1e293b; border-radius: 8px; border: 1px solid #334155; }
-    th, td { padding: 0.75rem 0.8rem; text-align: left; border-bottom: 1px solid #334155; font-size: 0.85rem; }
-    th { background: #020617; color: #94a3b8; user-select: none; cursor: pointer; }
-    th:hover { color: #f8fafc; background: #0f172a; }
+    table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); }
+    th, td { padding: 0.75rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
+    th { background: var(--th-bg); color: var(--subtext); user-select: none; cursor: pointer; }
+    th:hover { color: var(--text); background: var(--th-hover); }
     th.no-sort { cursor: default; }
-    th.no-sort:hover { background: #020617; color: #94a3b8; }
+    th.no-sort:hover { background: var(--th-bg); color: var(--subtext); }
     
     .flag { font-size: 1.2rem; margin-right: 0.35rem; vertical-align: middle; }
     .score { font-size: 0.95rem; font-weight: bold; }
-    .score-high { color: #4ade80; } /* Verde >= 5.0 */
-    .score-mid { color: #facc15; }  /* Amarelo 2.0 - 4.9 */
-    .score-low { color: #f87171; }  /* Vermelho < 2.0 */
+    .score-high { color: var(--score-high); }
+    .score-mid { color: var(--score-mid); }
+    .score-low { color: var(--score-low); }
     
-    .btn-action { background: #334155; color: #94a3b8; border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-right: 0.2rem; }
-    .btn-action:hover { background: #475569; color: #fff; }
+    .btn-action { background: var(--input-bg); color: var(--subtext); border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-right: 0.2rem; }
+    .btn-action:hover { background: var(--border); color: var(--text); }
     .btn-delete:hover { background: #ef4444; color: #fff; }
 
-    .status-msg { font-size: 0.85rem; color: #4ade80; display: none; }
+    .status-msg { font-size: 0.85rem; color: var(--score-high); display: none; }
 
-    /* Tooltip flutuante global */
-    .has-tooltip { border-bottom: 1px dotted #64748b; cursor: help; display: inline-block; }
+    .has-tooltip { border-bottom: 1px dotted var(--subtext); cursor: help; display: inline-block; }
     #globalTooltip {
       position: fixed;
       display: none;
-      background: #020617;
-      color: #f8fafc;
+      background: var(--modal-bg);
+      color: var(--text);
       padding: 0.5rem 0.75rem;
       border-radius: 6px;
       font-size: 0.75rem;
-      border: 1px solid #475569;
+      border: 1px solid var(--border);
       line-height: 1.35;
       z-index: 999999;
       max-width: 270px;
       pointer-events: none;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.7);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
     }
   </style>
 </head>
@@ -75,19 +106,22 @@
       <div>
         <h1 id="txtTitle">Índice de Viabilidade Econômica (IVFR)</h1>
         <p class="sub" id="txtSubtitle">Poder de compra real e velocidade de aquisição de bens por cidade.</p>
+        <div class="last-update" id="txtLastUpdate">Última sincronização: --</div>
       </div>
       <div class="top-actions">
+        <button class="btn-icon" onclick="carregarDoGitHub(true)" title="Forçar Atualização">🔄 <span id="txtRefresh">Atualizar</span></button>
+        <button class="btn-icon" onclick="alternarTema()" id="btnTheme">🌓 Tema</button>
         <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)">
           <option value="pt">🇧🇷 Português</option>
           <option value="en">🇺🇸 English</option>
           <option value="es">🇪🇸 Español</option>
         </select>
-        <button class="btn-settings" onclick="toggleSettings()">⚙️ <span id="txtBtnSettings">GitHub</span></button>
+        <button class="btn-icon" onclick="toggleSettings()">⚙️ <span id="txtBtnSettings">GitHub</span></button>
       </div>
     </div>
 
     <div id="tokenModal" class="token-modal">
-      <label id="txtTokenLabel" style="font-size:0.8rem; color:#cbd5e1;">GitHub Personal Access Token (PAT):</label>
+      <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext);">GitHub Personal Access Token (PAT):</label>
       <div class="token-row">
         <input id="ghToken" type="password" placeholder="github_pat_..." style="flex:1;">
         <button class="btn-sec" onclick="salvarToken()" id="txtBtnSaveToken">Salvar Token</button>
@@ -101,10 +135,13 @@
         <div><label id="lblCity">Cidade</label><input id="cidade" value="Nova Cidade"></div>
         <div style="max-width:65px"><label id="lblCurrency">Moeda</label><input id="moeda" value="$" maxlength="5"></div>
         <div><label id="lblSalary">Salário Líq.</label><input id="salario" type="number" value="3000"></div>
-        <div><label id="lblRent">Aluguel (1Q)</label><input id="aluguel" type="number" value="1000"></div>
-        <div><label id="lblFood">Alimentação</label><input id="alimentacao" type="number" value="400"></div>
-        <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parcela Carro</span></label><input id="parcela" type="number" value="300"></div>
-        <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone Atual</span></label><input id="iphone" type="number" value="1000"></div>
+        <div><label id="lblRent">Aluguel</label><input id="aluguel" type="number" value="1000"></div>
+        <div><label id="lblFood">Comida</label><input id="alimentacao" type="number" value="400"></div>
+        <div><label id="lblInternet">Internet</label><input id="internet" type="number" value="50"></div>
+        <div><label id="lblGym">Academia</label><input id="academia" type="number" value="40"></div>
+        <div><label id="lblExtras">Extras/Lazer</label><input id="extras" type="number" value="200"></div>
+        <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parc. Carro</span></label><input id="parcela" type="number" value="300"></div>
+        <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone</span></label><input id="iphone" type="number" value="1000"></div>
         <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro</span></label><input id="entrada" type="number" value="4000"></div>
       </div>
       <div class="btn-group">
@@ -119,7 +156,7 @@
         <tr>
           <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
           <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
-          <th onclick="ordenarColuna('custoFixo')"><span class="has-tooltip" id="thFixed" data-tip="">Custo Fixo</span> <span id="sort_custoFixo">↕</span></th>
+          <th onclick="ordenarColuna('custoFixo')"><span class="has-tooltip" id="thFixed" data-tip="">Custo Fixo Total</span> <span id="sort_custoFixo">↕</span></th>
           <th onclick="ordenarColuna('sobra')"><span id="thSurplus">Sobra Líquida</span> <span id="sort_sobra">↕</span></th>
           <th onclick="ordenarColuna('margem')"><span id="thMargin">Margem Livre</span> <span id="sort_margem">↕</span></th>
           <th onclick="ordenarColuna('mesesIphone')"><span class="has-tooltip" id="thMonthsIphone" data-tip="">Meses p/ iPhone</span> <span id="sort_mesesIphone">↕</span></th>
@@ -143,6 +180,8 @@
       pt: {
         title: "Índice de Viabilidade Econômica (IVFR)",
         subtitle: "Poder de compra real e velocidade de aquisição de bens por cidade.",
+        lastSync: "Última sincronização: ",
+        btnRefresh: "Atualizar",
         btnSettings: "GitHub",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Salvar Token",
@@ -150,42 +189,47 @@
         lblCity: "Cidade",
         lblCurrency: "Moeda",
         lblSalary: "Salário Líq.",
-        lblRent: "Aluguel (1Q)",
-        lblFood: "Alimentação",
-        lblCarInstallment: "Parcela Carro",
-        lblCarInstallmentTooltip: "Parcela média mensal do financiamento de um carro popular (ex: VW Golf / Toyota Corolla).",
-        lblIphone: "iPhone Atual",
-        lblIphoneTooltip: "Preço à vista do modelo base do iPhone de última geração na moeda local.",
+        lblRent: "Aluguel",
+        lblFood: "Comida",
+        lblInternet: "Internet",
+        lblGym: "Academia",
+        lblExtras: "Extras/Lazer",
+        lblCarInstallment: "Parc. Carro",
+        lblCarInstallmentTooltip: "Parcela média mensal do financiamento de um carro popular.",
+        lblIphone: "iPhone",
+        lblIphoneTooltip: "Preço à vista do modelo base do iPhone mais atual na moeda local.",
         lblCarDown: "Entrada Carro",
-        lblCarDownTooltip: "Entrada média de 20% do valor de um carro padrão popular novo/seminovo.",
+        lblCarDownTooltip: "Entrada média de 20% do valor de um carro popular padrão.",
         btnSubmitAdd: "Salvar",
         btnSubmitUpdate: "Atualizar",
-        btnSubmitTooltip: "Grava e comita as alterações diretamente no arquivo dados.json do seu repositório GitHub.",
+        btnSubmitTooltip: "Grava as alterações diretamente no arquivo dados.json do repositório.",
         btnCancel: "Cancelar",
         thCity: "Cidade",
         thSalary: "Salário Líq.",
-        thFixed: "Custo Fixo",
-        thFixedTooltip: "Aluguel fora do centro + Alimentação mensal + Parcela do carro.",
+        thFixed: "Custo Fixo Total",
+        thFixedTooltip: "Aluguel + Alimentação + Internet + Academia + Extras/Lazer + Parcela do Carro.",
         thSurplus: "Sobra Líquida",
         thMargin: "Margem Livre",
         thMonthsIphone: "Meses p/ iPhone",
         thMonthsIphoneTooltip: "Meses de sobra líquida necessários para comprar o iPhone à vista.",
         thMonthsCar: "Meses Entrada Carro",
-        thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro padrão.",
+        thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro.",
         thIvfr: "Fator IVFR (0-100)",
-        thIvfrTooltip: "Índice que pondera a margem livre retida e a velocidade para comprar o iPhone e pagar a entrada do carro. Pontuações >= 5.0 ficam em verde.",
+        thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Notas >= 5.0 ficam verdes.",
         thActions: "Ações",
         btnEdit: "Editar",
         btnDelete: "✕",
         msgInfeasible: "Inviável",
         msgSaving: "Gravando no GitHub...",
-        msgSaved: "✔️ Gravado no GitHub!",
+        msgSaved: "✔️ Gravado com sucesso!",
         msgError: "Erro ao gravar. Verifique o token.",
         confirmDelete: "Deseja remover "
       },
       en: {
         title: "Economic Viability Index (IVFR)",
         subtitle: "Real purchasing power and asset acquisition speed by city.",
+        lastSync: "Last synced: ",
+        btnRefresh: "Refresh",
         btnSettings: "GitHub",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Save Token",
@@ -193,42 +237,47 @@
         lblCity: "City",
         lblCurrency: "Currency",
         lblSalary: "Net Salary",
-        lblRent: "Rent (1 Bed)",
+        lblRent: "Rent",
         lblFood: "Groceries",
+        lblInternet: "Internet",
+        lblGym: "Gym",
+        lblExtras: "Extras/Fun",
         lblCarInstallment: "Car Installment",
-        lblCarInstallmentTooltip: "Average monthly car financing installment (e.g. VW Golf / Toyota Corolla).",
-        lblIphone: "Current iPhone",
-        lblIphoneTooltip: "Retail price of the latest base iPhone model in local currency.",
+        lblCarInstallmentTooltip: "Average monthly car financing installment.",
+        lblIphone: "iPhone",
+        lblIphoneTooltip: "Retail price of latest base iPhone in local currency.",
         lblCarDown: "Car Down Payment",
         lblCarDownTooltip: "Average 20% down payment for a standard car.",
         btnSubmitAdd: "Save",
         btnSubmitUpdate: "Update",
-        btnSubmitTooltip: "Saves and commits changes directly to the dados.json file in your GitHub repository.",
+        btnSubmitTooltip: "Commits changes directly to the dados.json file in your GitHub repo.",
         btnCancel: "Cancel",
         thCity: "City",
         thSalary: "Net Salary",
-        thFixed: "Fixed Costs",
-        thFixedTooltip: "Rent + Groceries + Car Installment.",
+        thFixed: "Total Fixed Costs",
+        thFixedTooltip: "Rent + Groceries + Internet + Gym + Extras + Car Installment.",
         thSurplus: "Net Surplus",
         thMargin: "Free Margin",
         thMonthsIphone: "Months to iPhone",
-        thMonthsIphoneTooltip: "Months of net surplus required to buy the latest iPhone upfront.",
+        thMonthsIphoneTooltip: "Months of net surplus required to buy the iPhone upfront.",
         thMonthsCar: "Months to Car Down",
         thMonthsCarTooltip: "Months of net surplus required to save the 20% car down payment.",
         thIvfr: "IVFR Factor (0-100)",
-        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed of both iPhone and car down payment. Scores 5.0+ are green.",
+        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Scores >= 5.0 are green.",
         thActions: "Actions",
         btnEdit: "Edit",
         btnDelete: "✕",
         msgInfeasible: "Infeasible",
         msgSaving: "Committing to GitHub...",
         msgSaved: "✔️ Saved to GitHub!",
-        msgError: "Error saving. Check token permissions.",
+        msgError: "Error saving. Check token.",
         confirmDelete: "Delete "
       },
       es: {
         title: "Índice de Viabilidad Económica (IVFR)",
         subtitle: "Poder adquisitivo real y velocidad de adquisición de bienes por ciudad.",
+        lastSync: "Última sincronización: ",
+        btnRefresh: "Actualizar",
         btnSettings: "GitHub",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         btnSaveToken: "Guardar Token",
@@ -236,36 +285,39 @@
         lblCity: "Ciudad",
         lblCurrency: "Moneda",
         lblSalary: "Salario Neto",
-        lblRent: "Alquiler (1D)",
-        lblFood: "Alimentación",
+        lblRent: "Alquiler",
+        lblFood: "Comida",
+        lblInternet: "Internet",
+        lblGym: "Gimnasio",
+        lblExtras: "Extras/Ocio",
         lblCarInstallment: "Cuota Coche",
-        lblCarInstallmentTooltip: "Cuota mensual promedio de financiación de coche estándar (ej: VW Golf / Toyota Corolla).",
-        lblIphone: "iPhone Actual",
-        lblIphoneTooltip: "Precio al contado del último modelo base de iPhone en moneda local.",
+        lblCarInstallmentTooltip: "Cuota mensual promedio de financiación de coche estándar.",
+        lblIphone: "iPhone",
+        lblIphoneTooltip: "Precio al contado del último iPhone en moneda local.",
         lblCarDown: "Entrada Coche",
         lblCarDownTooltip: "Entrada del 20% para la compra de un coche estándar.",
         btnSubmitAdd: "Guardar",
         btnSubmitUpdate: "Actualizar",
-        btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de tu repositorio GitHub.",
+        btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de GitHub.",
         btnCancel: "Cancelar",
         thCity: "Ciudad",
         thSalary: "Salario Neto",
-        thFixed: "Coste Fijo",
-        thFixedTooltip: "Alquiler + Alimentación + Cuota del Coche.",
+        thFixed: "Coste Fijo Total",
+        thFixedTooltip: "Alquiler + Alimentación + Internet + Gimnasio + Extras + Cuota Coche.",
         thSurplus: "Sobrante Neto",
         thMargin: "Margen Libre",
         thMonthsIphone: "Meses para iPhone",
-        thMonthsIphoneTooltip: "Meses de ahorro neto necesarios para comprar el último iPhone al contado.",
+        thMonthsIphoneTooltip: "Meses de ahorro neto necesarios para adquirir el iPhone al contado.",
         thMonthsCar: "Meses Entrada Coche",
-        thMonthsCarTooltip: "Meses de ahorro neto necesarios para pagar la entrada del 20% del coche.",
+        thMonthsCarTooltip: "Meses de ahorro neto necesarios para la entrada del 20% del coche.",
         thIvfr: "Factor IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad para el iPhone y la entrada del coche. Puntuaciones 5.0+ se destacan en verde.",
+        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Notas >= 5.0 se destacan en verde.",
         thActions: "Acciones",
         btnEdit: "Editar",
         btnDelete: "✕",
         msgInfeasible: "Inviable",
         msgSaving: "Guardando en GitHub...",
-        msgSaved: "✔️ ¡Guardado en GitHub!",
+        msgSaved: "✔️ ¡Guardado con éxito!",
         msgError: "Error al guardar. Revise el token.",
         confirmDelete: "¿Eliminar "
       }
@@ -289,9 +341,22 @@
         ...item,
         cidade: cidadeNome,
         moeda: moeda,
+        internet: item.internet || 0,
+        academia: item.academia || 0,
+        extras: item.extras || 0,
         iphone: item.iphone || item.eletronico || 1000,
         entrada: item.entrada || 4000
       };
+    }
+
+    function alternarTema() {
+      document.body.classList.toggle("light-theme");
+      const temaAtual = document.body.classList.contains("light-theme") ? "light" : "dark";
+      localStorage.setItem("ivfr_theme", temaAtual);
+    }
+
+    if (localStorage.getItem("ivfr_theme") === "light") {
+      document.body.classList.add("light-theme");
     }
 
     function mudarIdioma(lang) {
@@ -302,6 +367,7 @@
 
       document.getElementById("txtTitle").innerText = t.title;
       document.getElementById("txtSubtitle").innerText = t.subtitle;
+      document.getElementById("txtRefresh").innerText = t.btnRefresh;
       document.getElementById("txtBtnSettings").innerText = t.btnSettings;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("txtBtnSaveToken").innerText = t.btnSaveToken;
@@ -311,6 +377,9 @@
       document.getElementById("lblSalary").innerText = t.lblSalary;
       document.getElementById("lblRent").innerText = t.lblRent;
       document.getElementById("lblFood").innerText = t.lblFood;
+      document.getElementById("lblInternet").innerText = t.lblInternet;
+      document.getElementById("lblGym").innerText = t.lblGym;
+      document.getElementById("lblExtras").innerText = t.lblExtras;
       
       document.getElementById("lblCarInstallment").innerText = t.lblCarInstallment;
       document.getElementById("lblCarInstallment").setAttribute("data-tip", t.lblCarInstallmentTooltip);
@@ -347,7 +416,7 @@
     }
 
     function calcularValoresCompletos(item) {
-      const custoFixo = (item.aluguel || 0) + (item.alimentacao || 0) + (item.parcela || 0);
+      const custoFixo = (item.aluguel || 0) + (item.alimentacao || 0) + (item.internet || 0) + (item.academia || 0) + (item.extras || 0) + (item.parcela || 0);
       const sobra = (item.salario || 0) - custoFixo;
       const t = i18n[idiomaAtual];
 
@@ -416,7 +485,7 @@
         const el = document.getElementById("sort_" + col);
         if (el) {
           el.innerText = (colunaOrdenada === col) ? (ordemAscendente ? "▲" : "▼") : "↕";
-          el.style.color = (colunaOrdenada === col) ? "#4ade80" : "#64748b";
+          el.style.color = (colunaOrdenada === col) ? "var(--score-high)" : "var(--subtext)";
         }
       });
 
@@ -456,13 +525,18 @@
       });
     }
 
-    async function carregarDoGitHub() {
+    async function carregarDoGitHub(forcar = false) {
       try {
-        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?t=${Date.now()}`);
+        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?nocache=${Date.now()}`);
         const data = await res.json();
         fileSha = data.sha;
         const jsonText = decodeURIComponent(escape(atob(data.content)));
         baseDados = JSON.parse(jsonText).map(normalizarItem);
+        
+        const now = new Date();
+        const dataStr = now.toLocaleDateString() + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+        document.getElementById("txtLastUpdate").innerText = i18n[idiomaAtual].lastSync + dataStr;
+        
         renderizarTabela();
       } catch (err) {
         console.warn("Aguardando carregamento de base do GitHub.");
@@ -480,7 +554,7 @@
       }
 
       msg.style.display = "inline";
-      msg.style.color = "#facc15";
+      msg.style.color = "var(--score-mid)";
       msg.innerText = t.msgSaving;
 
       const conteudoBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(baseDados, null, 2))));
@@ -502,14 +576,15 @@
         if (res.ok) {
           const result = await res.json();
           fileSha = result.content.sha;
-          msg.style.color = "#4ade80";
+          msg.style.color = "var(--score-high)";
           msg.innerText = t.msgSaved;
+          carregarDoGitHub();
         } else {
-          msg.style.color = "#f87171";
+          msg.style.color = "var(--score-low)";
           msg.innerText = t.msgError;
         }
       } catch (e) {
-        msg.style.color = "#f87171";
+        msg.style.color = "var(--score-low)";
         msg.innerText = t.msgError;
       }
 
@@ -525,6 +600,9 @@
         salario: parseFloat(document.getElementById("salario").value) || 0,
         aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
         alimentacao: parseFloat(document.getElementById("alimentacao").value) || 0,
+        internet: parseFloat(document.getElementById("internet").value) || 0,
+        academia: parseFloat(document.getElementById("academia").value) || 0,
+        extras: parseFloat(document.getElementById("extras").value) || 0,
         parcela: parseFloat(document.getElementById("parcela").value) || 0,
         iphone: parseFloat(document.getElementById("iphone").value) || 0,
         entrada: parseFloat(document.getElementById("entrada").value) || 0
@@ -557,6 +635,9 @@
       document.getElementById("salario").value = item.salario;
       document.getElementById("aluguel").value = item.aluguel;
       document.getElementById("alimentacao").value = item.alimentacao;
+      document.getElementById("internet").value = item.internet || 0;
+      document.getElementById("academia").value = item.academia || 0;
+      document.getElementById("extras").value = item.extras || 0;
       document.getElementById("parcela").value = item.parcela;
       document.getElementById("iphone").value = item.iphone;
       document.getElementById("entrada").value = item.entrada;
