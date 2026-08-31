@@ -1276,7 +1276,8 @@
     "extras": 430,
     "parcela": 0,
     "iphone": 829,
-    "entrada": 4000
+    "entrada": 4000,
+    "paisNome": "United States"
   },
   {
     "bandeira": "🇮🇷",
@@ -1645,5 +1646,20 @@
     "entrada": 5000,
     "paisNome": "Venezuela",
     "salarioBase": 150
+  },
+  {
+    "bandeira": "🇺🇸",
+    "cidade": "teste",
+    "moeda": "$",
+    "salario": 3000,
+    "salarioBase": 3000,
+    "aluguel": 1440,
+    "alimentacao": 350,
+    "internet": 100,
+    "academia": 65,
+    "extras": 430,
+    "parcela": 0,
+    "iphone": 829,
+    "entrada": 4000
   }
 ]
