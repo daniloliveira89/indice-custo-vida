@@ -60,7 +60,8 @@
     "extras": 100,
     "parcela": 450,
     "iphone": 829,
-    "entrada": 4000
+    "entrada": 4000,
+    "paisNome": "United States"
   },
   {
     "bandeira": "🇦🇪",
@@ -1585,8 +1586,9 @@
   {
     "bandeira": "🇧🇷",
     "cidade": "Indaiatuba",
-    "moeda": "$",
-    "salario": 550,
+    "moeda": "R$",
+    "salario": 570,
+    "salarioBase": 570,
     "aluguel": 245,
     "alimentacao": 140,
     "internet": 14,
@@ -1594,9 +1596,7 @@
     "extras": 55,
     "parcela": 368,
     "iphone": 1576,
-    "entrada": 4641,
-    "paisNome": "Brazil",
-    "salarioBase": 550
+    "entrada": 4641
   },
   {
     "bandeira": "🇵🇪",
