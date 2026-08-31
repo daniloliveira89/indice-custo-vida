@@ -61,9 +61,20 @@
     .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.2rem; }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
+    /* Estilos do Filtro Customizado de Países (Multi-select) */
     .table-toolbar { display: flex; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
     .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
-    .filter-select { padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; }
+    .multi-select-container { position: relative; display: inline-block; }
+    .multi-select-btn { padding: 0.55rem 0.8rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-width: 220px; font-size: 0.85rem; user-select: none; }
+    .multi-select-btn:hover { border-color: var(--subtext); }
+    .multi-select-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; max-height: 350px; overflow-y: auto; z-index: 50; min-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+    .multi-select-menu.open { display: block; }
+    .multi-select-actions { display: flex; justify-content: space-between; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--card-bg); z-index: 2; }
+    .multi-select-actions button { background: none; border: none; color: var(--score-high); cursor: pointer; font-size: 0.75rem; padding: 0; font-weight: bold; }
+    .multi-select-actions button:hover { text-decoration: underline; }
+    .multi-select-option { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.8rem; cursor: pointer; font-size: 0.85rem; color: var(--text); user-select: none; }
+    .multi-select-option:hover { background: var(--th-hover); }
+    .multi-select-option input { width: auto; margin: 0; cursor: pointer; accent-color: var(--score-high); }
 
     .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
@@ -121,7 +132,6 @@
           </select>
           <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
           
-          <!-- Seletor de Idioma -->
           <div class="lang-dropdown" id="langDropdown">
             <button type="button" class="btn-icon lang-current" id="langCurrentBtn" onclick="toggleLangMenu()" data-tip="Idioma / Language">
               <img id="langCurrentFlag" class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="pt">
@@ -159,9 +169,22 @@
 
     <div class="table-toolbar">
       <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="🔍 Buscar cidade ou país...">
-      <select id="countryFilter" class="filter-select" onchange="renderizarTabela()">
-        <option value="">Todos os Países</option>
-      </select>
+      
+      <!-- Multi-Select Customizado de Países -->
+      <div class="multi-select-container" id="countryFilterContainer">
+        <div class="multi-select-btn" onclick="toggleCountryFilter()">
+          <span id="countryFilterLabel">Todos os Países</span>
+          <span style="font-size: 0.7rem; color: var(--subtext);">▼</span>
+        </div>
+        <div class="multi-select-menu" id="countryFilterMenu">
+          <div class="multi-select-actions">
+            <button type="button" onclick="selectAllCountries(true)" id="btnSelectAll">Todos</button>
+            <button type="button" onclick="selectAllCountries(false)" id="btnSelectNone">Nenhum</button>
+          </div>
+          <div id="countryFilterList"></div>
+        </div>
+      </div>
+
       <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()" style="margin-left: auto;">➕ Adicionar</button>
     </div>
     
@@ -237,7 +260,6 @@
     const REPO = "indice-custo-vida";
     const ARQUIVO = "dados.json";
 
-    // --- DICIONÁRIO DE MOEDAS E CÂMBIO ---
     const currencyMap = {
       "Qatar": "QAR", "Spain": "EUR", "United States": "USD", "United Arab Emirates": "AED",
       "Taiwan": "TWD", "Oman": "OMR", "Armenia": "AMD", "Japan": "JPY", "Singapore": "SGD",
@@ -290,6 +312,7 @@
 
     let currentDisplayMode = localStorage.getItem('ivfr_display') || 'USD';
     document.getElementById('displayMode').value = currentDisplayMode;
+    let selectedCountries = new Set(); 
 
     function mudarModoExibicao(modo) {
       currentDisplayMode = modo;
@@ -303,7 +326,6 @@
       const locCurr = currencyMap[paisNome] || "USD";
       return { rate: userExchangeRates[locCurr] || 1, symbol: currencySymbols[locCurr] || locCurr + " " };
     }
-    // ------------------------------------------
 
     const i18n = {
       pt: {
@@ -317,6 +339,9 @@
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar cidade ou país...",
         filterAll: "Todos os Países",
+        filterSelected: "selecionados",
+        selectAll: "Todos",
+        selectNone: "Nenhum",
         btnAddCity: "➕ Adicionar",
         lblFlag: "Bandeira",
         lblCity: "Cidade",
@@ -371,6 +396,9 @@
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Search city or country...",
         filterAll: "All Countries",
+        filterSelected: "selected",
+        selectAll: "All",
+        selectNone: "None",
         btnAddCity: "➕ Add City",
         lblFlag: "Flag",
         lblCity: "City",
@@ -425,6 +453,9 @@
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar ciudad o país...",
         filterAll: "Todos los Países",
+        filterSelected: "seleccionados",
+        selectAll: "Todos",
+        selectNone: "Ninguno",
         btnAddCity: "➕ Añadir",
         lblFlag: "Bandera",
         lblCity: "Ciudad",
@@ -551,11 +582,21 @@
       document.getElementById("langMenu").classList.toggle("open");
     }
 
+    function toggleCountryFilter() {
+      document.getElementById("countryFilterMenu").classList.toggle("open");
+    }
+
     document.addEventListener("click", (e) => {
-      const dropdown = document.getElementById("langDropdown");
-      const menu = document.getElementById("langMenu");
-      if (dropdown && !dropdown.contains(e.target)) {
-        menu.classList.remove("open");
+      const langDropdown = document.getElementById("langDropdown");
+      const langMenu = document.getElementById("langMenu");
+      if (langDropdown && !langDropdown.contains(e.target)) {
+        langMenu.classList.remove("open");
+      }
+
+      const filterContainer = document.getElementById("countryFilterContainer");
+      const filterMenu = document.getElementById("countryFilterMenu");
+      if (filterContainer && !filterContainer.contains(e.target)) {
+        filterMenu.classList.remove("open");
       }
     });
 
@@ -578,6 +619,9 @@
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
       document.getElementById("btnToggleForm").innerText = t.btnAddCity;
+      
+      document.getElementById("btnSelectAll").innerText = t.selectAll;
+      document.getElementById("btnSelectNone").innerText = t.selectNone;
       
       document.getElementById("lblFlag").innerText = t.lblFlag;
       document.getElementById("lblCity").innerText = t.lblCity;
@@ -625,6 +669,7 @@
       document.getElementById("thActions").innerText = t.thActions;
 
       popularFiltroPaises();
+      updateCountryFilterLabel();
       renderizarTabela();
     }
 
@@ -665,30 +710,71 @@
       
       renderizarTabela();
       
-      // Força a recarga para testar o novo Token (se foi alterado)
       if (tokenInput !== oldToken) {
         carregarDoGitHub();
       }
     }
 
     function popularFiltroPaises() {
-      const select = document.getElementById("countryFilter");
-      const valorAtual = select.value;
-      
-      select.innerHTML = `<option value="">${i18n[idiomaAtual].filterAll}</option>`;
+      const list = document.getElementById("countryFilterList");
+      list.innerHTML = "";
       
       const paisesNormalizados = baseDados.map(normalizarItem);
       const nomes = [...new Set(paisesNormalizados.map(i => i.paisNome))].filter(Boolean).sort();
       
+      const hasSelection = selectedCountries.size > 0;
+
       nomes.forEach(nome => {
         const item = paisesNormalizados.find(i => i.paisNome === nome);
-        const opt = document.createElement("option");
-        opt.value = nome;
-        opt.textContent = `${item.bandeira} ${nome}`;
-        select.appendChild(opt);
+        const isChecked = !hasSelection || selectedCountries.has(nome) ? "checked" : "";
+        
+        list.insertAdjacentHTML('beforeend', `
+          <label class="multi-select-option">
+            <input type="checkbox" value="${nome}" onchange="updateCountryFilter()" ${isChecked}>
+            ${renderizarBandeira(item.bandeira)} <span>${nome}</span>
+          </label>
+        `);
       });
+    }
+
+    function selectAllCountries(selectAll) {
+      const checkboxes = document.querySelectorAll('#countryFilterList input[type="checkbox"]');
+      checkboxes.forEach(cb => cb.checked = selectAll);
+      updateCountryFilter();
+    }
+
+    function updateCountryFilter() {
+      const checkboxes = document.querySelectorAll('#countryFilterList input[type="checkbox"]');
+      selectedCountries.clear();
+      let allChecked = true;
+      let noneChecked = true;
       
-      select.value = valorAtual;
+      checkboxes.forEach(cb => {
+        if (cb.checked) {
+          selectedCountries.add(cb.value);
+          noneChecked = false;
+        } else {
+          allChecked = false;
+        }
+      });
+
+      if (allChecked || noneChecked) {
+        selectedCountries.clear(); 
+      }
+
+      updateCountryFilterLabel();
+      renderizarTabela();
+    }
+
+    function updateCountryFilterLabel() {
+      const label = document.getElementById("countryFilterLabel");
+      const t = i18n[idiomaAtual];
+      
+      if (selectedCountries.size === 0) {
+        label.innerText = t.filterAll;
+      } else {
+        label.innerText = `${selectedCountries.size} ${t.filterSelected}`;
+      }
     }
 
     function abrirFormulario() {
@@ -713,7 +799,6 @@
       const sobra = (item.salario || 0) - custoFixo;
       const t = i18n[idiomaAtual];
 
-      // Aplica a conversão cambial exclusivamente na apresentação dos valores
       const conv = getConversionInfo(item.paisNome, currentDisplayMode);
       const r = conv.rate;
       const sym = conv.symbol;
@@ -777,7 +862,6 @@
       tbody.innerHTML = "";
       const t = i18n[idiomaAtual];
       const termoBusca = document.getElementById("searchInput").value.toLowerCase();
-      const filterVal = document.getElementById("countryFilter").value;
 
       ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "ivfr"].forEach(col => {
         const el = document.getElementById("sort_" + col);
@@ -793,7 +877,7 @@
           originalIndex
         }))
         .filter(item => {
-          if (filterVal && item.paisNome !== filterVal) return false;
+          if (selectedCountries.size > 0 && !selectedCountries.has(item.paisNome)) return false;
           const searchString = `${item.paisNome} ${item.cidade}`.toLowerCase();
           return searchString.includes(termoBusca);
         });
