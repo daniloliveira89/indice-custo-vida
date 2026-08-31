@@ -1267,7 +1267,8 @@
     "bandeira": "🇺🇸",
     "cidade": "Washington, D.C.",
     "moeda": "$",
-    "salario": 3200,
+    "salario": 3000,
+    "salarioBase": 3000,
     "aluguel": 1440,
     "alimentacao": 350,
     "internet": 100,
@@ -1275,9 +1276,7 @@
     "extras": 430,
     "parcela": 0,
     "iphone": 829,
-    "entrada": 4000,
-    "paisNome": "United States",
-    "salarioBase": 3200
+    "entrada": 4000
   },
   {
     "bandeira": "🇮🇷",
@@ -1596,7 +1595,8 @@
     "extras": 55,
     "parcela": 368,
     "iphone": 1576,
-    "entrada": 4641
+    "entrada": 4641,
+    "paisNome": "Brazil"
   },
   {
     "bandeira": "🇵🇪",
