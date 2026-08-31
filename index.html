@@ -58,11 +58,12 @@
     .lang-option .flag-icon { width: 1.3rem; height: auto; border-radius: 2px; }
     .last-update { font-size: 0.75rem; color: var(--subtext); }
 
-    .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
+    .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.2rem; }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
-    .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+    .table-toolbar { display: flex; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
     .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
+    .filter-select { padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; }
 
     .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
@@ -113,20 +114,14 @@
       </div>
       <div class="top-right-panel">
         <div class="top-actions">
-          <!-- Novos seletores de Moeda e Câmbio -->
           <select id="displayMode" class="lang-select" onchange="mudarModoExibicao(this.value)" data-tip="Conversão de Moeda">
             <option value="USD">USD ($)</option>
             <option value="EUR">EUR (€)</option>
-            <option value="ORIGINAL">Moeda Local</option>
+            <option value="ORIGINAL" id="optOriginalCurrency">Moeda Local</option>
           </select>
-          <button class="btn-icon" onclick="toggleRates()" data-tip="Ajustar Taxas de Câmbio">💱</button>
-
           <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
-          <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language" style="display:none;">
-            <option value="pt">🇧🇷</option>
-            <option value="en">🇺🇸</option>
-            <option value="es">🇪🇸</option>
-          </select>
+          
+          <!-- Seletor de Idioma -->
           <div class="lang-dropdown" id="langDropdown">
             <button type="button" class="btn-icon lang-current" id="langCurrentBtn" onclick="toggleLangMenu()" data-tip="Idioma / Language">
               <img id="langCurrentFlag" class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="pt">
@@ -137,31 +132,37 @@
               <div class="lang-option" onclick="mudarIdioma('es')"><img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="es"> <span>Español</span></div>
             </div>
           </div>
-          <button class="btn-icon" onclick="toggleSettings()" data-tip="GitHub PAT">⚙️</button>
+          
+          <button class="btn-icon" onclick="toggleSettings()" data-tip="Configurações">⚙️</button>
         </div>
         <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
       </div>
     </div>
 
-    <!-- Modal Taxas de Câmbio -->
-    <div id="ratesModal" class="token-modal" style="max-height: 400px; overflow-y: auto;">
-      <label style="font-size:0.8rem; color:var(--subtext);">Taxas de Câmbio (Base: 1 USD)</label>
-      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
-      <button class="btn-sec" onclick="salvarRates()" style="margin-top: 1rem; width: 100%;">Salvar Câmbio</button>
-    </div>
-
-    <div id="tokenModal" class="token-modal">
+    <!-- Modal Unificado de Configurações -->
+    <div id="tokenModal" class="token-modal" style="max-height: 80vh; overflow-y: auto;">
+      <h3 id="txtSettingsTitle" style="margin-top:0; margin-bottom:1rem; color:var(--text); font-size:1.1rem;">Configurações</h3>
+      
       <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext);">GitHub Personal Access Token (PAT):</label>
       <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="font-size:0.75rem; margin-left:0.5rem;">github.com/settings/personal-access-tokens</a>
-      <div class="token-row">
+      <div class="token-row" style="margin-bottom: 1.5rem;">
         <input id="ghToken" type="password" placeholder="github_pat_..." style="flex:1;">
-        <button class="btn-sec" onclick="salvarToken()" id="txtBtnSaveToken">Salvar Token</button>
       </div>
+
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+      
+      <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext);">Taxas de Câmbio (Base: 1 USD)</label>
+      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
+
+      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 1.5rem; width: 100%;">Salvar Configurações</button>
     </div>
 
     <div class="table-toolbar">
       <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="🔍 Buscar cidade ou país...">
-      <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()">➕ Adicionar</button>
+      <select id="countryFilter" class="filter-select" onchange="renderizarTabela()">
+        <option value="">Todos os Países</option>
+      </select>
+      <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()" style="margin-left: auto;">➕ Adicionar</button>
     </div>
     
     <div class="card" id="formCard">
@@ -236,7 +237,7 @@
     const REPO = "indice-custo-vida";
     const ARQUIVO = "dados.json";
 
-    // --- NOVA LÓGICA DE MOEDAS E CÂMBIO ---
+    // --- DICIONÁRIO DE MOEDAS E CÂMBIO ---
     const currencyMap = {
       "Qatar": "QAR", "Spain": "EUR", "United States": "USD", "United Arab Emirates": "AED",
       "Taiwan": "TWD", "Oman": "OMR", "Armenia": "AMD", "Japan": "JPY", "Singapore": "SGD",
@@ -296,36 +297,6 @@
       renderizarTabela();
     }
 
-    function toggleRates() {
-      const modal = document.getElementById("ratesModal");
-      if (modal.style.display === "block") {
-        modal.style.display = "none";
-      } else {
-        modal.style.display = "block";
-        const grid = document.getElementById("ratesGrid");
-        grid.innerHTML = "";
-        Object.keys(userExchangeRates).sort().forEach(moeda => {
-          if (moeda === 'USD') return;
-          grid.innerHTML += `
-            <div style="display:flex; flex-direction:column; gap:0.2rem;">
-              <label style="font-size:0.7rem;">${moeda}</label>
-              <input type="number" step="0.0001" id="rate_${moeda}" value="${userExchangeRates[moeda]}" style="padding:0.25rem;">
-            </div>`;
-        });
-      }
-    }
-
-    function salvarRates() {
-      Object.keys(userExchangeRates).forEach(moeda => {
-        if (moeda === 'USD') return;
-        const input = document.getElementById(`rate_${moeda}`);
-        if (input) userExchangeRates[moeda] = parseFloat(input.value) || userExchangeRates[moeda];
-      });
-      localStorage.setItem("ivfr_rates", JSON.stringify(userExchangeRates));
-      document.getElementById("ratesModal").style.display = "none";
-      renderizarTabela();
-    }
-
     function getConversionInfo(paisNome, modo) {
       if (modo === 'USD') return { rate: 1, symbol: "$" };
       if (modo === 'EUR') return { rate: userExchangeRates['EUR'] || 0.92, symbol: "€" };
@@ -339,9 +310,13 @@
         title: "Índice de Viabilidade Econômica (IVFR)",
         subtitle: "Poder de compra real e velocidade de aquisição de bens por cidade.",
         lastSync: "Última Sincronização: ",
+        optOriginalCurrency: "Moeda Local",
+        txtSettingsTitle: "Configurações",
+        txtRatesLabel: "Taxas de Câmbio (Base: 1 USD)",
+        btnSaveConfig: "Salvar Configurações",
         tokenLabel: "GitHub Personal Access Token (PAT):",
-        btnSaveToken: "Salvar Token",
         searchPlaceholder: "🔍 Buscar cidade ou país...",
+        filterAll: "Todos os Países",
         btnAddCity: "➕ Adicionar",
         lblFlag: "Bandeira",
         lblCity: "Cidade",
@@ -389,9 +364,13 @@
         title: "Economic Viability Index (IVFR)",
         subtitle: "Real purchasing power and asset acquisition speed by city.",
         lastSync: "Last Sync: ",
+        optOriginalCurrency: "Local Currency",
+        txtSettingsTitle: "Settings",
+        txtRatesLabel: "Exchange Rates (Base: 1 USD)",
+        btnSaveConfig: "Save Settings",
         tokenLabel: "GitHub Personal Access Token (PAT):",
-        btnSaveToken: "Save Token",
         searchPlaceholder: "🔍 Search city or country...",
+        filterAll: "All Countries",
         btnAddCity: "➕ Add City",
         lblFlag: "Flag",
         lblCity: "City",
@@ -439,9 +418,13 @@
         title: "Índice de Viabilidad Económica (IVFR)",
         subtitle: "Poder adquisitivo real y velocidad de adquisición de bienes por ciudad.",
         lastSync: "Última Sinc.: ",
+        optOriginalCurrency: "Moneda Local",
+        txtSettingsTitle: "Configuraciones",
+        txtRatesLabel: "Tasas de Cambio (Base: 1 USD)",
+        btnSaveConfig: "Guardar Configuraciones",
         tokenLabel: "GitHub Personal Access Token (PAT):",
-        btnSaveToken: "Guardar Token",
         searchPlaceholder: "🔍 Buscar ciudad o país...",
+        filterAll: "Todos los Países",
         btnAddCity: "➕ Añadir",
         lblFlag: "Bandera",
         lblCity: "Ciudad",
@@ -581,15 +564,18 @@
     function mudarIdioma(lang) {
       idiomaAtual = lang;
       localStorage.setItem("ivfr_lang", lang);
-      document.getElementById("langSelector").value = lang;
       document.getElementById("langCurrentFlag").src = langFlagUrls[lang];
       document.getElementById("langMenu").classList.remove("open");
       const t = i18n[lang];
 
+      document.getElementById("optOriginalCurrency").innerText = t.optOriginalCurrency;
+      document.getElementById("txtSettingsTitle").innerText = t.txtSettingsTitle;
+      document.getElementById("txtRatesLabel").innerText = t.txtRatesLabel;
+      document.getElementById("txtBtnSaveConfig").innerText = t.btnSaveConfig;
+
       document.getElementById("txtTitle").innerText = t.title;
       document.getElementById("txtSubtitle").innerText = t.subtitle;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
-      document.getElementById("txtBtnSaveToken").innerText = t.btnSaveToken;
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
       document.getElementById("btnToggleForm").innerText = t.btnAddCity;
       
@@ -638,12 +624,71 @@
       document.getElementById("thIvfr").setAttribute("data-tip", t.thIvfrTooltip);
       document.getElementById("thActions").innerText = t.thActions;
 
+      popularFiltroPaises();
       renderizarTabela();
     }
 
     function toggleSettings() {
       const modal = document.getElementById("tokenModal");
-      modal.style.display = modal.style.display === "block" ? "none" : "block";
+      if (modal.style.display === "block") {
+        modal.style.display = "none";
+      } else {
+        modal.style.display = "block";
+        const grid = document.getElementById("ratesGrid");
+        grid.innerHTML = "";
+        Object.keys(userExchangeRates).sort().forEach(moeda => {
+          if (moeda === 'USD') return;
+          grid.innerHTML += `
+            <div style="display:flex; flex-direction:column; gap:0.2rem;">
+              <label style="font-size:0.7rem;">${moeda}</label>
+              <input type="number" step="0.0001" id="rate_${moeda}" value="${userExchangeRates[moeda]}" style="padding:0.25rem;">
+            </div>`;
+        });
+      }
+    }
+
+    function salvarConfiguracoes() {
+      const tokenInput = document.getElementById("ghToken").value.trim();
+      const oldToken = localStorage.getItem("gh_pat");
+      
+      if (tokenInput) localStorage.setItem("gh_pat", tokenInput);
+      else localStorage.removeItem("gh_pat");
+
+      Object.keys(userExchangeRates).forEach(moeda => {
+        if (moeda === 'USD') return;
+        const input = document.getElementById(`rate_${moeda}`);
+        if (input) userExchangeRates[moeda] = parseFloat(input.value) || userExchangeRates[moeda];
+      });
+      
+      localStorage.setItem("ivfr_rates", JSON.stringify(userExchangeRates));
+      document.getElementById("tokenModal").style.display = "none";
+      
+      renderizarTabela();
+      
+      // Força a recarga para testar o novo Token (se foi alterado)
+      if (tokenInput !== oldToken) {
+        carregarDoGitHub();
+      }
+    }
+
+    function popularFiltroPaises() {
+      const select = document.getElementById("countryFilter");
+      const valorAtual = select.value;
+      
+      select.innerHTML = `<option value="">${i18n[idiomaAtual].filterAll}</option>`;
+      
+      const paisesNormalizados = baseDados.map(normalizarItem);
+      const nomes = [...new Set(paisesNormalizados.map(i => i.paisNome))].filter(Boolean).sort();
+      
+      nomes.forEach(nome => {
+        const item = paisesNormalizados.find(i => i.paisNome === nome);
+        const opt = document.createElement("option");
+        opt.value = nome;
+        opt.textContent = `${item.bandeira} ${nome}`;
+        select.appendChild(opt);
+      });
+      
+      select.value = valorAtual;
     }
 
     function abrirFormulario() {
@@ -732,6 +777,7 @@
       tbody.innerHTML = "";
       const t = i18n[idiomaAtual];
       const termoBusca = document.getElementById("searchInput").value.toLowerCase();
+      const filterVal = document.getElementById("countryFilter").value;
 
       ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "ivfr"].forEach(col => {
         const el = document.getElementById("sort_" + col);
@@ -747,6 +793,7 @@
           originalIndex
         }))
         .filter(item => {
+          if (filterVal && item.paisNome !== filterVal) return false;
           const searchString = `${item.paisNome} ${item.cidade}`.toLowerCase();
           return searchString.includes(termoBusca);
         });
@@ -795,16 +842,37 @@
       return `${m}/${d}/${y} ${strHours}:${minutes} ${ampm}`;
     }
 
+    async function buscarUltimaAtualizacao(headers) {
+      try {
+        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/commits?path=${ARQUIVO}&page=1&per_page=1`, { headers });
+        if (res.ok) {
+          const commits = await res.json();
+          if (commits.length > 0) {
+            const date = new Date(commits[0].commit.committer.date);
+            document.getElementById("txtLastUpdate").innerText = i18n[idiomaAtual].lastSync + formatarDataHora(date);
+          }
+        }
+      } catch(e) {
+        console.warn("Falha ao buscar data do commit.");
+      }
+    }
+
     async function carregarDoGitHub() {
       try {
-        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?nocache=${Date.now()}`);
+        const token = localStorage.getItem("gh_pat");
+        const headers = {};
+        if (token) headers["Authorization"] = `Bearer ${token}`;
+
+        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?nocache=${Date.now()}`, { headers });
         const data = await res.json();
         fileSha = data.sha;
         const jsonText = decodeURIComponent(escape(atob(data.content)));
         baseDados = JSON.parse(jsonText).map(normalizarItem);
         
-        document.getElementById("txtLastUpdate").innerText = i18n[idiomaAtual].lastSync + formatarDataHora(new Date());
+        popularFiltroPaises();
         renderizarTabela();
+        buscarUltimaAtualizacao(headers);
+        
       } catch (err) {
         console.warn("Aguardando carregamento de base do GitHub.");
       }
@@ -880,6 +948,7 @@
       else baseDados.push(dados);
 
       fecharFormulario();
+      popularFiltroPaises();
       renderizarTabela();
       gravarNoGitHub();
     }
@@ -888,6 +957,7 @@
       const t = i18n[idiomaAtual];
       if (confirm(`${t.confirmDelete}${baseDados[index].cidade}?`)) {
         baseDados.splice(index, 1);
+        popularFiltroPaises();
         renderizarTabela();
         gravarNoGitHub();
       }
@@ -932,15 +1002,6 @@
 
     function cancelarEdicao() {
       fecharFormulario();
-    }
-
-    function salvarToken() {
-      const t = document.getElementById("ghToken").value.trim();
-      if (t) {
-        localStorage.setItem("gh_pat", t);
-        document.getElementById("tokenModal").style.display = "none";
-        carregarDoGitHub();
-      }
     }
 
     const tipBox = document.getElementById("globalTooltip");
