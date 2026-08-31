@@ -59,8 +59,7 @@
     .last-update { font-size: 0.75rem; color: var(--subtext); }
 
     .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.2rem; }
-    .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-
+    
     /* Estilos do Filtro Customizado de Países (Multi-select) */
     .table-toolbar { display: flex; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
     .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
@@ -102,12 +101,12 @@
     .score-mid { color: var(--score-mid); }
     .score-low { color: var(--score-low); }
     
-    .btn-action { background: var(--input-bg); color: var(--subtext); border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; margin-right: 0.2rem; }
+    .btn-action { background: var(--input-bg); color: var(--subtext); border: none; padding: 0.45rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
     .btn-action:hover { background: var(--border); color: var(--text); }
+    td .btn-action { padding: 0.25rem 0.5rem; margin-right: 0.2rem; }
     .btn-delete:hover { background: #ef4444; color: #fff; }
 
     .status-msg { font-size: 0.85rem; color: var(--score-high); display: none; }
-
     .has-tooltip { border-bottom: 1px dotted var(--subtext); display: inline-block; cursor: pointer; }
     label .has-tooltip { cursor: default; }
     
@@ -153,39 +152,46 @@
     <div id="tokenModal" class="token-modal" style="max-height: 80vh; overflow-y: auto;">
       <h3 id="txtSettingsTitle" style="margin-top:0; margin-bottom:1rem; color:var(--text); font-size:1.1rem;">Configurações</h3>
       
-      <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext);">GitHub Personal Access Token (PAT):</label>
-      <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="font-size:0.75rem; margin-left:0.5rem;">github.com/settings/personal-access-tokens</a>
-      <div class="token-row" style="margin-bottom: 1.5rem;">
-        <input id="ghToken" type="password" placeholder="github_pat_..." style="flex:1;">
+      <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+        
+        <!-- Config Token -->
+        <div style="flex: 2; min-width: 250px;">
+          <label id="txtTokenLabel" style="font-size:0.85rem; font-weight:bold; color:var(--text);">GitHub Personal Access Token (PAT):</label>
+          <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="font-size:0.75rem; margin-left:0.5rem; font-weight:normal;">Link</a>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+            <input id="ghToken" type="password" placeholder="github_pat_..." style="flex:1;">
+            <button class="btn-action" onclick="pasteToken()" title="Colar da área de transferência">📋</button>
+          </div>
+        </div>
+
+        <!-- Config Aumento Global -->
+        <div style="flex: 1; min-width: 200px;">
+          <label id="txtSalaryIncreaseLabel" style="font-size:0.85rem; font-weight:bold; color:var(--text);">Aumento Global (%)</label>
+          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
+            <select id="globalSalaryIncrease" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px;">
+              <option value="0">0% (Padrão)</option>
+              <option value="10">10%</option>
+              <option value="20">20%</option>
+              <option value="30">30%</option>
+              <option value="40">40%</option>
+              <option value="50">50%</option>
+              <option value="60">60%</option>
+              <option value="70">70%</option>
+              <option value="80">80%</option>
+              <option value="90">90%</option>
+              <option value="100">100%</option>
+            </select>
+            <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease">Aplicar</button>
+          </div>
+        </div>
       </div>
 
-      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1.5rem 0;">
       
-      <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext);">Taxas de Câmbio (Base: 1 USD)</label>
-      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
+      <label id="txtRatesLabel" style="font-size:0.85rem; font-weight:bold; color:var(--text);">Taxas de Câmbio (Base: 1 USD)</label>
+      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem; margin-bottom: 1.5rem;"></div>
 
-      <!-- INÍCIO: Seção de Aumento Global -->
-      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
-      <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext);">Aumento Global de Salários (%)</label>
-      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-        <select id="globalSalaryIncrease" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px;">
-          <option value="0">0% (Padrão)</option>
-          <option value="10">10%</option>
-          <option value="20">20%</option>
-          <option value="30">30%</option>
-          <option value="40">40%</option>
-          <option value="50">50%</option>
-          <option value="60">60%</option>
-          <option value="70">70%</option>
-          <option value="80">80%</option>
-          <option value="90">90%</option>
-          <option value="100">100%</option>
-        </select>
-        <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease">Aplicar a Todos</button>
-      </div>
-      <!-- FIM: Seção de Aumento Global -->
-
-      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 0.5rem; width: 100%;">Salvar Configurações</button>
+      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="width: 100%;">Salvar Configurações</button>
     </div>
 
     <div class="table-toolbar">
@@ -356,8 +362,8 @@
         optOriginalCurrency: "Moeda Local",
         txtSettingsTitle: "Configurações",
         txtRatesLabel: "Taxas de Câmbio (Base: 1 USD)",
-        txtSalaryIncreaseLabel: "Aumento Global de Salários (%)",
-        btnApplyIncrease: "Aplicar a Todos",
+        txtSalaryIncreaseLabel: "Aumento Global (%)",
+        btnApplyIncrease: "Aplicar",
         confirmIncrease: "Tem certeza que deseja aplicar ",
         btnSaveConfig: "Salvar Configurações",
         tokenLabel: "GitHub Personal Access Token (PAT):",
@@ -416,8 +422,8 @@
         optOriginalCurrency: "Local Currency",
         txtSettingsTitle: "Settings",
         txtRatesLabel: "Exchange Rates (Base: 1 USD)",
-        txtSalaryIncreaseLabel: "Global Salary Increase (%)",
-        btnApplyIncrease: "Apply to All",
+        txtSalaryIncreaseLabel: "Global Increase (%)",
+        btnApplyIncrease: "Apply",
         confirmIncrease: "Are you sure you want to apply ",
         btnSaveConfig: "Save Settings",
         tokenLabel: "GitHub Personal Access Token (PAT):",
@@ -476,8 +482,8 @@
         optOriginalCurrency: "Moneda Local",
         txtSettingsTitle: "Configuraciones",
         txtRatesLabel: "Tasas de Cambio (Base: 1 USD)",
-        txtSalaryIncreaseLabel: "Aumento Global de Salarios (%)",
-        btnApplyIncrease: "Aplicar a Todos",
+        txtSalaryIncreaseLabel: "Aumento Global (%)",
+        btnApplyIncrease: "Aplicar",
         confirmIncrease: "¿Estás seguro de que quieres aplicar ",
         btnSaveConfig: "Guardar Configuraciones",
         tokenLabel: "GitHub Personal Access Token (PAT):",
@@ -537,6 +543,15 @@
     let colunaOrdenada = "ivfr";
     let ordemAscendente = false;
 
+    async function pasteToken() {
+      try {
+        const text = await navigator.clipboard.readText();
+        document.getElementById("ghToken").value = text;
+      } catch (err) {
+        alert("Erro ao colar da área de transferência. Conceda permissão ou use Ctrl+V.");
+      }
+    }
+
     function getRegionCodeFromFlag(flag) {
       if (!flag || flag === "🌐") return "";
       try {
@@ -579,7 +594,6 @@
       let paisNome = getCountryFromFlag(bandeira, idiomaAtual);
       
       let sal = item.salario || 0;
-      // Recupera a base invisível. Se não houver, adota o próprio salário lido como a nova base.
       let salBase = item.salarioBase || sal; 
 
       return {
