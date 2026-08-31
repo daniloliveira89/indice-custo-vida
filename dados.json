@@ -48,7 +48,7 @@
     "bandeira": "🇺🇸",
     "cidade": "Newport Beach",
     "moeda": "$",
-    "salario": 3500,
+    "salario": 3000,
     "aluguel": 1500,
     "alimentacao": 450,
     "internet": 65,
@@ -56,8 +56,7 @@
     "extras": 450,
     "parcela": 650,
     "iphone": 829,
-    "entrada": 7500,
-    "paisNome": "United States"
+    "entrada": 7500
   },
   {
     "bandeira": "🇦🇪",
