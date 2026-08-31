@@ -52,16 +52,15 @@
     "cidade": "Newport Beach",
     "moeda": "$",
     "salario": 3000,
+    "salarioBase": 3000,
     "aluguel": 1500,
     "alimentacao": 450,
     "internet": 65,
     "academia": 75,
-    "extras": 450,
-    "parcela": 650,
+    "extras": 100,
+    "parcela": 450,
     "iphone": 829,
-    "entrada": 7500,
-    "paisNome": "United States",
-    "salarioBase": 3000
+    "entrada": 4000
   },
   {
     "bandeira": "🇦🇪",
