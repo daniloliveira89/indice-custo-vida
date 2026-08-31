@@ -61,11 +61,9 @@
     .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1rem; border-radius: 8px; margin-bottom: 1.2rem; }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
-    /* Barra de ferramentas (Busca e Botão Add) */
     .table-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
     .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
 
-    /* Formulário inicia oculto (display: none) */
     .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
     .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
     label { display: block; font-size: 0.75rem; color: var(--subtext); margin-bottom: 0.2rem; }
@@ -102,19 +100,7 @@
     label .has-tooltip { cursor: default; }
     
     #globalTooltip {
-      position: fixed;
-      display: none;
-      background: var(--modal-bg);
-      color: var(--text);
-      padding: 0.5rem 0.75rem;
-      border-radius: 6px;
-      font-size: 0.75rem;
-      border: 1px solid var(--border);
-      line-height: 1.35;
-      z-index: 999999;
-      max-width: 270px;
-      pointer-events: none;
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+      position: fixed; display: none; background: var(--modal-bg); color: var(--text); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.75rem; border: 1px solid var(--border); line-height: 1.35; z-index: 999999; max-width: 270px; pointer-events: none; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
     }
   </style>
 </head>
@@ -127,6 +113,14 @@
       </div>
       <div class="top-right-panel">
         <div class="top-actions">
+          <!-- Novos seletores de Moeda e Câmbio -->
+          <select id="displayMode" class="lang-select" onchange="mudarModoExibicao(this.value)" data-tip="Conversão de Moeda">
+            <option value="USD">USD ($)</option>
+            <option value="EUR">EUR (€)</option>
+            <option value="ORIGINAL">Moeda Local</option>
+          </select>
+          <button class="btn-icon" onclick="toggleRates()" data-tip="Ajustar Taxas de Câmbio">💱</button>
+
           <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
           <select id="langSelector" class="lang-select" onchange="mudarIdioma(this.value)" data-tip="Idioma / Language" style="display:none;">
             <option value="pt">🇧🇷</option>
@@ -147,6 +141,13 @@
         </div>
         <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
       </div>
+    </div>
+
+    <!-- Modal Taxas de Câmbio -->
+    <div id="ratesModal" class="token-modal" style="max-height: 400px; overflow-y: auto;">
+      <label style="font-size:0.8rem; color:var(--subtext);">Taxas de Câmbio (Base: 1 USD)</label>
+      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
+      <button class="btn-sec" onclick="salvarRates()" style="margin-top: 1rem; width: 100%;">Salvar Câmbio</button>
     </div>
 
     <div id="tokenModal" class="token-modal">
@@ -192,15 +193,15 @@
             <option value="د.إ">د.إ — Dirham</option>
           </select>
         </div>
-        <div><label id="lblSalary">Salário Líq.</label><input id="salario" type="number" value="3000"></div>
-        <div><label id="lblRent">Aluguel</label><input id="aluguel" type="number" value="1000"></div>
-        <div><label id="lblFood">Comida</label><input id="alimentacao" type="number" value="400"></div>
-        <div><label id="lblInternet">Internet</label><input id="internet" type="number" value="50"></div>
-        <div><label id="lblGym">Academia</label><input id="academia" type="number" value="40"></div>
-        <div><label id="lblExtras">Extras/Lazer</label><input id="extras" type="number" value="200"></div>
-        <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parc. Carro</span></label><input id="parcela" type="number" value="300"></div>
-        <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone</span></label><input id="iphone" type="number" value="1000"></div>
-        <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro</span></label><input id="entrada" type="number" value="4000"></div>
+        <div><label id="lblSalary">Salário Líq. (USD)</label><input id="salario" type="number" value="3000"></div>
+        <div><label id="lblRent">Aluguel (USD)</label><input id="aluguel" type="number" value="1000"></div>
+        <div><label id="lblFood">Comida (USD)</label><input id="alimentacao" type="number" value="400"></div>
+        <div><label id="lblInternet">Internet (USD)</label><input id="internet" type="number" value="50"></div>
+        <div><label id="lblGym">Academia (USD)</label><input id="academia" type="number" value="40"></div>
+        <div><label id="lblExtras">Extras/Lazer (USD)</label><input id="extras" type="number" value="200"></div>
+        <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parc. Carro (USD)</span></label><input id="parcela" type="number" value="300"></div>
+        <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone (USD)</span></label><input id="iphone" type="number" value="1000"></div>
+        <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro (USD)</span></label><input id="entrada" type="number" value="4000"></div>
       </div>
       <div class="btn-group">
         <button id="btnSubmit" class="btn-main" onclick="salvarPais()" data-tip="">Salvar</button>
@@ -212,7 +213,6 @@
     <table id="tabela">
       <thead>
         <tr>
-          <!-- Nova Coluna de País -->
           <th onclick="ordenarColuna('paisNome')"><span id="thCountry">País</span> <span id="sort_paisNome">↕</span></th>
           <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
           <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
@@ -236,6 +236,104 @@
     const REPO = "indice-custo-vida";
     const ARQUIVO = "dados.json";
 
+    // --- NOVA LÓGICA DE MOEDAS E CÂMBIO ---
+    const currencyMap = {
+      "Qatar": "QAR", "Spain": "EUR", "United States": "USD", "United Arab Emirates": "AED",
+      "Taiwan": "TWD", "Oman": "OMR", "Armenia": "AMD", "Japan": "JPY", "Singapore": "SGD",
+      "Thailand": "THB", "Bahrain": "BHD", "Slovenia": "EUR", "Saudi Arabia": "SAR", "Estonia": "EUR",
+      "Switzerland": "CHF", "South Korea": "KRW", "Chile": "CLP", "Croatia": "EUR", "Netherlands": "EUR",
+      "Denmark": "DKK", "Finland": "EUR", "Sweden": "SEK", "Czechia": "CZK", "Austria": "EUR",
+      "Poland": "PLN", "Portugal": "EUR", "Uzbekistan": "UZS", "Slovakia": "EUR", "Azerbaijan": "AZN",
+      "Israel": "ILS", "Cuba": "CUP", "Norway": "NOK", "Cyprus": "EUR", "Kuwait": "KWD", "Romania": "RON",
+      "Lithuania": "EUR", "Hungary": "HUF", "Luxembourg": "EUR", "Canada": "CAD", "Montenegro": "EUR",
+      "Latvia": "EUR", "Nepal": "NPR", "Bulgaria": "BGN", "Georgia": "GEL", "Germany": "EUR", "Serbia": "RSD",
+      "Kosovo": "EUR", "Russia": "RUB", "Malta": "EUR", "Türkiye": "TRY", "Jordan": "JOD",
+      "North Macedonia": "MKD", "Moldova": "MDL", "Sri Lanka": "LKR", "Bosnia & Herzegovina": "BAM",
+      "Philippines": "PHP", "Pakistan": "PKR", "Vietnam": "VND", "Panama": "PAB", "India": "INR",
+      "Tunisia": "TND", "Albania": "ALL", "Indonesia": "IDR", "Iraq": "IQD", "Ireland": "EUR",
+      "Kazakhstan": "KZT", "Lebanon": "LBP", "Greece": "EUR", "Australia": "AUD", "Ukraine": "UAH",
+      "United Kingdom": "GBP", "Egypt": "EGP", "New Zealand": "NZD", "Morocco": "MAD", "Italy": "EUR",
+      "Mauritius": "MUR", "Belgium": "EUR", "Iran": "IRR", "Belarus": "BYN", "Algeria": "DZD",
+      "Malaysia": "MYR", "Uruguay": "UYU", "Costa Rica": "CRC", "Mexico": "MXN", "Dominican Republic": "DOP",
+      "France": "EUR", "Kenya": "KES", "Zimbabwe": "ZWG", "Ecuador": "USD", "China": "CNY",
+      "Colombia": "COP", "Puerto Rico": "USD", "Bolivia": "BOB", "Bangladesh": "BDT", "Argentina": "ARS",
+      "Nigeria": "NGN", "Brazil": "BRL", "Peru": "PEN", "South Africa": "ZAR", "Venezuela": "VES", "Brasil": "BRL"
+    };
+
+    const currencySymbols = {
+      "USD": "$", "EUR": "€", "QAR": "﷼", "AED": "د.إ", "TWD": "NT$", "OMR": "﷼", "AMD": "֏", "JPY": "¥",
+      "SGD": "S$", "THB": "฿", "BHD": ".د.ب", "SAR": "﷼", "CHF": "Fr", "KRW": "₩", "CLP": "$", "DKK": "kr",
+      "SEK": "kr", "CZK": "Kč", "PLN": "zł", "UZS": "so'm", "AZN": "₼", "ILS": "₪", "CUP": "₱", "NOK": "kr",
+      "KWD": "د.ك", "RON": "lei", "HUF": "Ft", "CAD": "$", "NPR": "रू", "BGN": "лв", "GEL": "₾", "RSD": "дин",
+      "RUB": "₽", "TRY": "₺", "JOD": "د.ا", "MKD": "ден", "MDL": "L", "LKR": "Rs", "BAM": "KM", "PHP": "₱",
+      "PKR": "Rs", "VND": "₫", "PAB": "B/.", "INR": "₹", "TND": "د.ت", "ALL": "L", "IDR": "Rp", "IQD": "ع.د",
+      "KZT": "₸", "LBP": "ل.ل", "AUD": "$", "UAH": "₴", "GBP": "£", "EGP": "£", "NZD": "$", "MAD": "د.م.",
+      "MUR": "Rs", "IRR": "﷼", "BYN": "Br", "DZD": "د.ج", "MYR": "RM", "UYU": "$", "CRC": "₡", "MXN": "$",
+      "DOP": "RD$", "KES": "KSh", "ZWG": "Z$", "CNY": "¥", "COP": "$", "BOB": "Bs.", "BDT": "৳", "ARS": "$",
+      "NGN": "₦", "BRL": "R$", "PEN": "S/.", "ZAR": "R", "VES": "Bs.S"
+    };
+
+    let userExchangeRates = JSON.parse(localStorage.getItem('ivfr_rates')) || {
+      "USD": 1.0, "EUR": 0.92, "QAR": 3.64, "AED": 3.67, "TWD": 31.5, "OMR": 0.38, "AMD": 395.0,
+      "JPY": 150.0, "SGD": 1.34, "THB": 36.0, "BHD": 0.38, "SAR": 3.75, "CHF": 0.88, "KRW": 1330.0,
+      "CLP": 950.0, "DKK": 6.85, "SEK": 10.4, "CZK": 23.3, "PLN": 3.95, "UZS": 12500.0, "AZN": 1.7,
+      "ILS": 3.6, "CUP": 24.0, "NOK": 10.5, "KWD": 0.31, "RON": 4.6, "HUF": 360.0, "CAD": 1.35,
+      "NPR": 133.0, "BGN": 1.8, "GEL": 2.65, "RSD": 108.0, "RUB": 90.0, "TRY": 31.0, "JOD": 0.71,
+      "MKD": 56.5, "MDL": 17.8, "LKR": 305.0, "BAM": 1.8, "PHP": 56.0, "PKR": 278.0, "VND": 24500.0,
+      "PAB": 1.0, "INR": 83.0, "TND": 3.1, "ALL": 95.0, "IDR": 15600.0, "IQD": 1310.0, "KZT": 450.0,
+      "LBP": 89500.0, "AUD": 1.5, "UAH": 38.0, "GBP": 0.79, "EGP": 31.0, "NZD": 1.6, "MAD": 10.0,
+      "MUR": 46.0, "IRR": 42000.0, "BYN": 3.2, "DZD": 134.0, "MYR": 4.7, "UYU": 39.0, "CRC": 515.0,
+      "MXN": 17.0, "DOP": 58.0, "KES": 145.0, "ZWG": 13.5, "CNY": 7.2, "COP": 3900.0, "BOB": 6.9,
+      "BDT": 110.0, "ARS": 850.0, "NGN": 1500.0, "BRL": 5.15, "PEN": 3.8, "ZAR": 19.0, "VES": 36.0
+    };
+
+    let currentDisplayMode = localStorage.getItem('ivfr_display') || 'USD';
+    document.getElementById('displayMode').value = currentDisplayMode;
+
+    function mudarModoExibicao(modo) {
+      currentDisplayMode = modo;
+      localStorage.setItem("ivfr_display", modo);
+      renderizarTabela();
+    }
+
+    function toggleRates() {
+      const modal = document.getElementById("ratesModal");
+      if (modal.style.display === "block") {
+        modal.style.display = "none";
+      } else {
+        modal.style.display = "block";
+        const grid = document.getElementById("ratesGrid");
+        grid.innerHTML = "";
+        Object.keys(userExchangeRates).sort().forEach(moeda => {
+          if (moeda === 'USD') return;
+          grid.innerHTML += `
+            <div style="display:flex; flex-direction:column; gap:0.2rem;">
+              <label style="font-size:0.7rem;">${moeda}</label>
+              <input type="number" step="0.0001" id="rate_${moeda}" value="${userExchangeRates[moeda]}" style="padding:0.25rem;">
+            </div>`;
+        });
+      }
+    }
+
+    function salvarRates() {
+      Object.keys(userExchangeRates).forEach(moeda => {
+        if (moeda === 'USD') return;
+        const input = document.getElementById(`rate_${moeda}`);
+        if (input) userExchangeRates[moeda] = parseFloat(input.value) || userExchangeRates[moeda];
+      });
+      localStorage.setItem("ivfr_rates", JSON.stringify(userExchangeRates));
+      document.getElementById("ratesModal").style.display = "none";
+      renderizarTabela();
+    }
+
+    function getConversionInfo(paisNome, modo) {
+      if (modo === 'USD') return { rate: 1, symbol: "$" };
+      if (modo === 'EUR') return { rate: userExchangeRates['EUR'] || 0.92, symbol: "€" };
+      const locCurr = currencyMap[paisNome] || "USD";
+      return { rate: userExchangeRates[locCurr] || 1, symbol: currencySymbols[locCurr] || locCurr + " " };
+    }
+    // ------------------------------------------
+
     const i18n = {
       pt: {
         title: "Índice de Viabilidade Econômica (IVFR)",
@@ -249,17 +347,17 @@
         lblCity: "Cidade",
         defaultCityName: "Nova Cidade",
         lblCurrency: "Moeda",
-        lblSalary: "Salário Líq.",
-        lblRent: "Aluguel",
-        lblFood: "Comida",
-        lblInternet: "Internet",
-        lblGym: "Academia",
-        lblExtras: "Extras/Lazer",
-        lblCarInstallment: "Parc. Carro",
+        lblSalary: "Salário Líq. (USD)",
+        lblRent: "Aluguel (USD)",
+        lblFood: "Comida (USD)",
+        lblInternet: "Internet (USD)",
+        lblGym: "Academia (USD)",
+        lblExtras: "Extras/Lazer (USD)",
+        lblCarInstallment: "Parc. Carro (USD)",
         lblCarInstallmentTooltip: "Parcela média mensal do financiamento de um carro popular.",
-        lblIphone: "iPhone",
+        lblIphone: "iPhone (USD)",
         lblIphoneTooltip: "Preço à vista do modelo base do iPhone mais atual na moeda local.",
-        lblCarDown: "Entrada Carro",
+        lblCarDown: "Entrada Carro (USD)",
         lblCarDownTooltip: "Entrada média de 20% do valor de um carro popular padrão.",
         btnSubmitAdd: "Salvar",
         btnSubmitUpdate: "Atualizar",
@@ -299,17 +397,17 @@
         lblCity: "City",
         defaultCityName: "New City",
         lblCurrency: "Currency",
-        lblSalary: "Net Salary",
-        lblRent: "Rent",
-        lblFood: "Groceries",
-        lblInternet: "Internet",
-        lblGym: "Gym",
-        lblExtras: "Extras/Fun",
-        lblCarInstallment: "Car Installment",
+        lblSalary: "Net Salary (USD)",
+        lblRent: "Rent (USD)",
+        lblFood: "Groceries (USD)",
+        lblInternet: "Internet (USD)",
+        lblGym: "Gym (USD)",
+        lblExtras: "Extras/Fun (USD)",
+        lblCarInstallment: "Car Installment (USD)",
         lblCarInstallmentTooltip: "Average monthly car financing installment.",
-        lblIphone: "iPhone",
+        lblIphone: "iPhone (USD)",
         lblIphoneTooltip: "Retail price of latest base iPhone in local currency.",
-        lblCarDown: "Car Down Payment",
+        lblCarDown: "Car Down Payment (USD)",
         lblCarDownTooltip: "Average 20% down payment for a standard car.",
         btnSubmitAdd: "Save",
         btnSubmitUpdate: "Update",
@@ -349,17 +447,17 @@
         lblCity: "Ciudad",
         defaultCityName: "Nueva Ciudad",
         lblCurrency: "Moneda",
-        lblSalary: "Salario Neto",
-        lblRent: "Alquiler",
-        lblFood: "Comida",
-        lblInternet: "Internet",
-        lblGym: "Gimnasio",
-        lblExtras: "Extras/Ocio",
-        lblCarInstallment: "Cuota Coche",
+        lblSalary: "Salario Neto (USD)",
+        lblRent: "Alquiler (USD)",
+        lblFood: "Comida (USD)",
+        lblInternet: "Internet (USD)",
+        lblGym: "Gimnasio (USD)",
+        lblExtras: "Extras/Ocio (USD)",
+        lblCarInstallment: "Cuota Coche (USD)",
         lblCarInstallmentTooltip: "Cuota mensual promedio de financiación de coche estándar.",
-        lblIphone: "iPhone",
+        lblIphone: "iPhone (USD)",
         lblIphoneTooltip: "Precio al contado del último iPhone en moneda local.",
-        lblCarDown: "Entrada Coche",
+        lblCarDown: "Entrada Coche (USD)",
         lblCarDownTooltip: "Entrada del 20% para la compra de un coche estándar.",
         btnSubmitAdd: "Guardar",
         btnSubmitUpdate: "Actualizar",
@@ -395,11 +493,6 @@
     let colunaOrdenada = "ivfr";
     let ordemAscendente = false;
 
-    // Extrai o código ISO de 2 letras (ex: "BR", "US") a partir do emoji da bandeira.
-    // Usado tanto para descobrir o nome do país quanto para montar a URL da imagem
-    // da bandeira (via flagcdn.com), já que o emoji de bandeira não renderiza
-    // corretamente em muitos navegadores/versões do Windows (falta a fonte de emoji
-    // de bandeiras, então ele cai no fallback mostrando só as letras "US", "BR" etc.)
     function getRegionCodeFromFlag(flag) {
       if (!flag || flag === "🌐") return "";
       try {
@@ -411,7 +504,6 @@
       return "";
     }
 
-    // Função "Mágica" que descobre o nome do país a partir do emoji da bandeira
     function getCountryFromFlag(flag, langCode) {
       const regionCode = getRegionCodeFromFlag(flag);
       if (!regionCode) return "";
@@ -421,16 +513,12 @@
       } catch(e) { return ""; }
     }
 
-    // Monta a URL da imagem da bandeira (flagcdn.com) a partir do emoji.
-    // Retorna null se não for possível identificar o país (ex: 🌐).
     function getFlagImageUrl(flag) {
       const regionCode = getRegionCodeFromFlag(flag);
       if (!regionCode) return null;
       return `https://flagcdn.com/w40/${regionCode.toLowerCase()}.png`;
     }
 
-    // Renderiza a bandeira como imagem (flagcdn.com) para funcionar em qualquer SO/navegador.
-    // Se não for possível identificar o país (ex: 🌐 ou valor customizado), usa o emoji original.
     function renderizarBandeira(bandeira) {
       const flag = bandeira || "🌐";
       const url = getFlagImageUrl(flag);
@@ -444,8 +532,6 @@
       let cidadeNome = item.cidade || item.pais || "Cidade";
       let bandeira = item.bandeira || "🌐";
       let moeda = item.moeda || "$";
-      
-      // Converte a bandeira para o nome do país no idioma atual
       let paisNome = getCountryFromFlag(bandeira, idiomaAtual);
 
       return {
@@ -528,8 +614,6 @@
       btnSubmit.innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
       btnSubmit.setAttribute("data-tip", t.btnSubmitTooltip);
 
-      // Se o formulário está aberto para adicionar uma cidade nova (não editando),
-      // atualiza o nome padrão do campo Cidade para o idioma selecionado.
       if (document.getElementById("editIndex").value === "-1") {
         const cidadeInput = document.getElementById("cidade");
         const nomesDefaultConhecidos = Object.values(i18n).map(d => d.defaultCityName);
@@ -569,7 +653,6 @@
       document.getElementById("btnSubmit").innerText = i18n[idiomaAtual].btnSubmitAdd;
       document.getElementById("cidade").value = i18n[idiomaAtual].defaultCityName;
 
-      // Remove opções de moeda "custom" criadas dinamicamente em edições anteriores
       const moedaSelect = document.getElementById("moeda");
       Array.from(moedaSelect.options).filter(o => o.dataset.custom).forEach(o => o.remove());
       moedaSelect.value = "$";
@@ -585,19 +668,25 @@
       const sobra = (item.salario || 0) - custoFixo;
       const t = i18n[idiomaAtual];
 
+      // Aplica a conversão cambial exclusivamente na apresentação dos valores
+      const conv = getConversionInfo(item.paisNome, currentDisplayMode);
+      const r = conv.rate;
+      const sym = conv.symbol;
+      
+      const salD = (item.salario || 0) * r;
+      const custoD = custoFixo * r;
+      const sobraD = sobra * r;
+
       if (sobra <= 0) {
         return {
           ...item,
-          custoFixo,
-          sobra,
-          margem: 0,
-          margemStr: "0.0%",
-          mesesIphone: 999,
-          mesesIphoneStr: t.msgInfeasible,
-          mesesCarro: 999,
-          mesesCarroStr: t.msgInfeasible,
-          ivfr: 0.0,
-          classe: "score-low"
+          custoFixo, sobra, margem: 0, margemStr: "0.0%",
+          mesesIphone: 999, mesesIphoneStr: t.msgInfeasible,
+          mesesCarro: 999, mesesCarroStr: t.msgInfeasible,
+          ivfr: 0.0, classe: "score-low",
+          salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
+          custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
+          sobraDisplay: sym + sobraD.toLocaleString(undefined, {maximumFractionDigits: 0})
         };
       }
 
@@ -618,16 +707,13 @@
 
       return {
         ...item,
-        custoFixo,
-        sobra,
-        margem,
-        margemStr: (margem * 100).toFixed(1) + "%",
-        mesesIphone,
-        mesesIphoneStr: mesesIphone.toFixed(1) + " m",
-        mesesCarro,
-        mesesCarroStr: mesesCarro.toFixed(1) + " m",
-        ivfr: parseFloat(ivfr.toFixed(1)),
-        classe
+        custoFixo, sobra, margem, margemStr: (margem * 100).toFixed(1) + "%",
+        mesesIphone, mesesIphoneStr: mesesIphone.toFixed(1) + " m",
+        mesesCarro, mesesCarroStr: mesesCarro.toFixed(1) + " m",
+        ivfr: parseFloat(ivfr.toFixed(1)), classe,
+        salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
+        custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
+        sobraDisplay: sym + sobraD.toLocaleString(undefined, {maximumFractionDigits: 0})
       };
     }
 
@@ -661,7 +747,6 @@
           originalIndex
         }))
         .filter(item => {
-          // Busca tanto no nome do País quanto na Cidade
           const searchString = `${item.paisNome} ${item.cidade}`.toLowerCase();
           return searchString.includes(termoBusca);
         });
@@ -677,14 +762,13 @@
       });
 
       dadosProcessados.forEach(item => {
-        const m = item.moeda ? item.moeda + " " : "";
         tbody.insertAdjacentHTML("beforeend", `
           <tr>
             <td>${renderizarBandeira(item.bandeira)} <strong>${item.paisNome}</strong></td>
             <td><strong>${item.cidade}</strong></td>
-            <td>${m}${item.salario.toLocaleString()}</td>
-            <td>${m}${item.custoFixo.toLocaleString(undefined, {maximumFractionDigits: 0})}</td>
-            <td class="${item.classe}"><strong>${m}${item.sobra.toLocaleString(undefined, {maximumFractionDigits: 0})}</strong></td>
+            <td>${item.salarioDisplay}</td>
+            <td>${item.custoFixoDisplay}</td>
+            <td class="${item.classe}"><strong>${item.sobraDisplay}</strong></td>
             <td>${item.margemStr}</td>
             <td>${item.mesesIphoneStr}</td>
             <td>${item.mesesCarroStr}</td>
@@ -809,9 +893,6 @@
       }
     }
 
-    // Garante que o <select> de moeda tenha uma opção para o valor informado,
-    // criando uma opção dinâmica caso o símbolo não esteja na lista pré-definida
-    // (evita perder um símbolo customizado ao editar uma cidade antiga).
     function setMoedaSelect(valor) {
       const select = document.getElementById("moeda");
       const existe = Array.from(select.options).some(opt => opt.value === valor);
