@@ -164,7 +164,28 @@
       <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext);">Taxas de Câmbio (Base: 1 USD)</label>
       <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
 
-      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 1.5rem; width: 100%;">Salvar Configurações</button>
+      <!-- INÍCIO: Seção de Aumento Global -->
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+      <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext);">Aumento Global de Salários (%)</label>
+      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
+        <select id="globalSalaryIncrease" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px;">
+          <option value="0">0% (Padrão)</option>
+          <option value="10">10%</option>
+          <option value="20">20%</option>
+          <option value="30">30%</option>
+          <option value="40">40%</option>
+          <option value="50">50%</option>
+          <option value="60">60%</option>
+          <option value="70">70%</option>
+          <option value="80">80%</option>
+          <option value="90">90%</option>
+          <option value="100">100%</option>
+        </select>
+        <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease">Aplicar a Todos</button>
+      </div>
+      <!-- FIM: Seção de Aumento Global -->
+
+      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 0.5rem; width: 100%;">Salvar Configurações</button>
     </div>
 
     <div class="table-toolbar">
@@ -335,6 +356,9 @@
         optOriginalCurrency: "Moeda Local",
         txtSettingsTitle: "Configurações",
         txtRatesLabel: "Taxas de Câmbio (Base: 1 USD)",
+        txtSalaryIncreaseLabel: "Aumento Global de Salários (%)",
+        btnApplyIncrease: "Aplicar a Todos",
+        confirmIncrease: "Tem certeza que deseja aplicar ",
         btnSaveConfig: "Salvar Configurações",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar cidade ou país...",
@@ -392,6 +416,9 @@
         optOriginalCurrency: "Local Currency",
         txtSettingsTitle: "Settings",
         txtRatesLabel: "Exchange Rates (Base: 1 USD)",
+        txtSalaryIncreaseLabel: "Global Salary Increase (%)",
+        btnApplyIncrease: "Apply to All",
+        confirmIncrease: "Are you sure you want to apply ",
         btnSaveConfig: "Save Settings",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Search city or country...",
@@ -449,6 +476,9 @@
         optOriginalCurrency: "Moneda Local",
         txtSettingsTitle: "Configuraciones",
         txtRatesLabel: "Tasas de Cambio (Base: 1 USD)",
+        txtSalaryIncreaseLabel: "Aumento Global de Salarios (%)",
+        btnApplyIncrease: "Aplicar a Todos",
+        confirmIncrease: "¿Estás seguro de que quieres aplicar ",
         btnSaveConfig: "Guardar Configuraciones",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar ciudad o país...",
@@ -547,6 +577,10 @@
       let bandeira = item.bandeira || "🌐";
       let moeda = item.moeda || "$";
       let paisNome = getCountryFromFlag(bandeira, idiomaAtual);
+      
+      let sal = item.salario || 0;
+      // Recupera a base invisível. Se não houver, adota o próprio salário lido como a nova base.
+      let salBase = item.salarioBase || sal; 
 
       return {
         ...item,
@@ -554,6 +588,8 @@
         paisNome,
         cidade: cidadeNome,
         moeda: moeda,
+        salario: sal,
+        salarioBase: salBase,
         internet: item.internet || 0,
         academia: item.academia || 0,
         extras: item.extras || 0,
@@ -612,8 +648,13 @@
       document.getElementById("optOriginalCurrency").innerText = t.optOriginalCurrency;
       document.getElementById("txtSettingsTitle").innerText = t.txtSettingsTitle;
       document.getElementById("txtRatesLabel").innerText = t.txtRatesLabel;
+      
+      document.getElementById("txtSalaryIncreaseLabel").innerText = t.txtSalaryIncreaseLabel;
+      document.getElementById("btnApplyIncrease").innerText = t.btnApplyIncrease;
+      const selInc = document.getElementById("globalSalaryIncrease");
+      selInc.options[0].text = lang === 'en' ? "0% (Default)" : (lang === 'es' ? "0% (Por defecto)" : "0% (Padrão)");
+      
       document.getElementById("txtBtnSaveConfig").innerText = t.btnSaveConfig;
-
       document.getElementById("txtTitle").innerText = t.title;
       document.getElementById("txtSubtitle").innerText = t.subtitle;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
@@ -1013,11 +1054,14 @@
 
     function salvarPais() {
       const index = parseInt(document.getElementById("editIndex").value);
+      const inputSalario = parseFloat(document.getElementById("salario").value) || 0;
+      
       const dados = {
         bandeira: document.getElementById("bandeira").value || "🌐",
         cidade: document.getElementById("cidade").value,
         moeda: document.getElementById("moeda").value || "$",
-        salario: parseFloat(document.getElementById("salario").value) || 0,
+        salario: inputSalario,
+        salarioBase: inputSalario, // Atualiza a base para o valor recém-inserido manualmente
         aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
         alimentacao: parseFloat(document.getElementById("alimentacao").value) || 0,
         internet: parseFloat(document.getElementById("internet").value) || 0,
@@ -1044,6 +1088,34 @@
         popularFiltroPaises();
         renderizarTabela();
         gravarNoGitHub();
+      }
+    }
+
+    function aplicarAumentoGlobal() {
+      const select = document.getElementById("globalSalaryIncrease");
+      const percentual = parseInt(select.value);
+      const t = i18n[idiomaAtual];
+
+      const confirmMsg = t.confirmIncrease ? `${t.confirmIncrease} ${percentual}%?` : `Aplicar ${percentual}%?`;
+
+      if (confirm(confirmMsg)) {
+        const fator = 1 + (percentual / 100);
+
+        // Atualiza a visualização a partir do salário original (base)
+        baseDados = baseDados.map(item => {
+          const base = item.salarioBase || item.salario;
+          return {
+            ...item,
+            salarioBase: base, // Mantém o valor original intacto
+            salario: Math.round(base * fator) // Aplica a % sempre em cima do original
+          };
+        });
+
+        popularFiltroPaises();
+        renderizarTabela();
+        gravarNoGitHub();
+
+        document.getElementById("tokenModal").style.display = "none";
       }
     }
 
