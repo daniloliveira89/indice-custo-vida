@@ -65,7 +65,7 @@
     .table-toolbar { display: flex; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
     .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
     .multi-select-container { position: relative; display: inline-block; }
-    .multi-select-btn { padding: 0.55rem 0.8rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-width: 220px; font-size: 0.85rem; user-select: none; }
+    .multi-select-btn { padding: 0.55rem 0.8rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-width: 260px; font-size: 0.85rem; user-select: none; }
     .multi-select-btn:hover { border-color: var(--subtext); }
     .multi-select-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; max-height: 350px; overflow-y: auto; z-index: 50; min-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
     .multi-select-menu.open { display: block; }
@@ -155,33 +155,30 @@
     <div id="tokenModal" class="token-modal" style="max-height: 80vh; overflow-y: auto;">
       <h3 id="txtSettingsTitle" style="margin-top:0; margin-bottom:1rem; color:var(--text); font-size:1.1rem;">Configurações</h3>
       
-      <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext);">GitHub Personal Access Token (PAT):</label>
+      <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">GitHub Personal Access Token (PAT):</label>
       <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="font-size:0.75rem; margin-left:0.5rem;">github.com/settings/personal-access-tokens</a>
-      <div class="token-row" style="margin-bottom: 1.5rem;">
+      <div class="token-row" style="margin-bottom: 1rem;">
         <input id="ghToken" type="password" placeholder="github_pat_..." style="flex:1;">
       </div>
 
-      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
-      
-      <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext);">Taxas de Câmbio (Base: 1 USD)</label>
-      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
-
-      <!-- INÍCIO: Seção de Aumento Global -->
-      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
-      <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext);">Aumento Global de Salários (%)</label>
+      <!-- INÍCIO: Seção de Aumento Global (mesma linha/área do PAT) -->
+      <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">Aumento Global de Salários (%)</label>
       <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
         <input type="number" id="globalSalaryIncrease" step="0.1" value="0" placeholder="Ex: 15 ou -10" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box;">
         <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease">Aplicar a Todos</button>
       </div>
       <!-- FIM: Seção de Aumento Global -->
 
-      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 0.5rem; width: 100%;">Salvar Configurações</button>
+      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
+      
+      <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">Taxas de Câmbio (Base: 1 USD)</label>
+      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
+
+      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 1.5rem; width: 100%;">Salvar Configurações</button>
     </div>
 
     <div class="table-toolbar">
-      <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="🔍 Buscar cidade ou país...">
-      
-      <!-- Multi-Select Customizado de Países -->
+      <!-- Multi-Select Customizado de Países (com busca embutida) -->
       <div class="multi-select-container" id="countryFilterContainer">
         <div class="multi-select-btn" onclick="toggleCountryFilter()">
           <span id="countryFilterLabel">Todos os Países</span>
@@ -189,7 +186,7 @@
         </div>
         <div class="multi-select-menu" id="countryFilterMenu">
           <div class="multi-select-search">
-            <input type="text" id="countrySearchInput" oninput="filtrarOpcoesPaises()" onclick="event.stopPropagation()" placeholder="🔍 Buscar país/cidade...">
+            <input type="text" id="searchInput" class="search-input" oninput="onBuscaChange()" onclick="event.stopPropagation()" placeholder="🔍 Buscar cidade ou país...">
           </div>
           <div class="multi-select-actions">
             <button type="button" onclick="selectAllCountries(true)" id="btnSelectAll">Todos</button>
@@ -240,6 +237,7 @@
         <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parc. Carro (USD)</span></label><input id="parcela" type="number" value="300"></div>
         <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone (USD)</span></label><input id="iphone" type="number" value="1000"></div>
         <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro (USD)</span></label><input id="entrada" type="number" value="4000"></div>
+        <div><label><span class="has-tooltip" id="lblHouseDown" data-tip="">Entrada Casa (USD)</span></label><input id="entradaCasa" type="number" value="50000"></div>
       </div>
       <div class="btn-group">
         <button id="btnSubmit" class="btn-main" onclick="salvarPais()" data-tip="">Salvar</button>
@@ -259,6 +257,7 @@
           <th onclick="ordenarColuna('margem')"><span id="thMargin">Margem Livre</span> <span id="sort_margem">↕</span></th>
           <th onclick="ordenarColuna('mesesIphone')"><span class="has-tooltip" id="thMonthsIphone" data-tip="">Meses p/ iPhone</span> <span id="sort_mesesIphone">↕</span></th>
           <th onclick="ordenarColuna('mesesCarro')"><span class="has-tooltip" id="thMonthsCar" data-tip="">Meses Entrada Carro</span> <span id="sort_mesesCarro">↕</span></th>
+          <th onclick="ordenarColuna('mesesCasa')"><span class="has-tooltip" id="thMonthsHouse" data-tip="">Meses Entrada Casa</span> <span id="sort_mesesCasa">↕</span></th>
           <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr" data-tip="">Fator IVFR (0-100)</span> <span id="sort_ivfr">↕</span></th>
           <th class="no-sort" id="thActions">Ações</th>
         </tr>
@@ -355,7 +354,6 @@
         btnSaveConfig: "Salvar Configurações",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar cidade ou país...",
-        countrySearchPlaceholder: "🔍 Buscar país/cidade...",
         filterAll: "Todos os Países",
         filterSelected: "selecionados",
         selectAll: "Todos",
@@ -377,6 +375,8 @@
         lblIphoneTooltip: "Preço à vista do modelo base do iPhone mais atual na moeda local.",
         lblCarDown: "Entrada Carro (USD)",
         lblCarDownTooltip: "Entrada média de 20% do valor de um carro popular padrão.",
+        lblHouseDown: "Entrada Casa (USD)",
+        lblHouseDownTooltip: "Entrada média de 20% do valor de uma casa/apartamento padrão.",
         btnSubmitAdd: "Salvar",
         btnSubmitUpdate: "Atualizar",
         btnSubmitTooltip: "Grava as alterações diretamente no arquivo dados.json do repositório.",
@@ -392,6 +392,8 @@
         thMonthsIphoneTooltip: "Meses de sobra líquida necessários para comprar o iPhone à vista.",
         thMonthsCar: "Meses Entrada Carro",
         thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro.",
+        thMonthsHouse: "Meses Entrada Casa",
+        thMonthsHouseTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% de uma casa/apartamento.",
         thIvfr: "Fator IVFR (0-100)",
         thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Cor definida pela Margem Livre: >= 33,3% verde, entre 20% e 33,3% amarelo, abaixo de 20% vermelho.",
         thActions: "Ações",
@@ -416,7 +418,6 @@
         btnSaveConfig: "Save Settings",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Search city or country...",
-        countrySearchPlaceholder: "🔍 Search country/city...",
         filterAll: "All Countries",
         filterSelected: "selected",
         selectAll: "All",
@@ -438,6 +439,8 @@
         lblIphoneTooltip: "Retail price of latest base iPhone in local currency.",
         lblCarDown: "Car Down Payment (USD)",
         lblCarDownTooltip: "Average 20% down payment for a standard car.",
+        lblHouseDown: "House Down Payment (USD)",
+        lblHouseDownTooltip: "Average 20% down payment for a standard house/apartment.",
         btnSubmitAdd: "Save",
         btnSubmitUpdate: "Update",
         btnSubmitTooltip: "Commits changes directly to the dados.json file in your GitHub repo.",
@@ -453,6 +456,8 @@
         thMonthsIphoneTooltip: "Months of net surplus required to buy the iPhone upfront.",
         thMonthsCar: "Months to Car Down",
         thMonthsCarTooltip: "Months of net surplus required to save the 20% car down payment.",
+        thMonthsHouse: "Months to House Down",
+        thMonthsHouseTooltip: "Months of net surplus required to save the 20% house/apartment down payment.",
         thIvfr: "IVFR Factor (0-100)",
         thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Color set by Free Margin: >= 33.3% green, 20%-33.3% yellow, below 20% red.",
         thActions: "Actions",
@@ -477,7 +482,6 @@
         btnSaveConfig: "Guardar Configuraciones",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar ciudad o país...",
-        countrySearchPlaceholder: "🔍 Buscar país/ciudad...",
         filterAll: "Todos los Países",
         filterSelected: "seleccionados",
         selectAll: "Todos",
@@ -499,6 +503,8 @@
         lblIphoneTooltip: "Precio al contado del último iPhone en moneda local.",
         lblCarDown: "Entrada Coche (USD)",
         lblCarDownTooltip: "Entrada del 20% para la compra de un coche estándar.",
+        lblHouseDown: "Entrada Casa (USD)",
+        lblHouseDownTooltip: "Entrada media del 20% para la compra de una casa/apartamento estándar.",
         btnSubmitAdd: "Guardar",
         btnSubmitUpdate: "Actualizar",
         btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de GitHub.",
@@ -514,6 +520,8 @@
         thMonthsIphoneTooltip: "Meses de ahorro neto necesarios para adquirir el iPhone al contado.",
         thMonthsCar: "Meses Entrada Coche",
         thMonthsCarTooltip: "Meses de ahorro neto necesarios para la entrada del 20% del coche.",
+        thMonthsHouse: "Meses Entrada Casa",
+        thMonthsHouseTooltip: "Meses de ahorro neto necesarios para la entrada del 20% de una casa/apartamento.",
         thIvfr: "Factor IVFR (0-100)",
         thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Color según el Margen Libre: >= 33,3% verde, entre 20% y 33,3% amarillo, por debajo de 20% rojo.",
         thActions: "Acciones",
@@ -591,7 +599,8 @@
         academia: item.academia || 0,
         extras: item.extras || 0,
         iphone: item.iphone || item.eletronico || 1000,
-        entrada: item.entrada || 4000
+        entrada: item.entrada || 4000,
+        entradaCasa: item.entradaCasa || item.casa || 50000
       };
     }
 
@@ -654,7 +663,6 @@
       document.getElementById("txtSubtitle").innerText = t.subtitle;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
-      document.getElementById("countrySearchInput").placeholder = t.countrySearchPlaceholder;
       document.getElementById("btnToggleForm").innerText = t.btnAddCity;
       
       document.getElementById("btnSelectAll").innerText = t.selectAll;
@@ -676,6 +684,8 @@
       document.getElementById("lblIphone").setAttribute("data-tip", t.lblIphoneTooltip);
       document.getElementById("lblCarDown").innerText = t.lblCarDown;
       document.getElementById("lblCarDown").setAttribute("data-tip", t.lblCarDownTooltip);
+      document.getElementById("lblHouseDown").innerText = t.lblHouseDown;
+      document.getElementById("lblHouseDown").setAttribute("data-tip", t.lblHouseDownTooltip);
 
       const btnSubmit = document.getElementById("btnSubmit");
       btnSubmit.innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
@@ -701,6 +711,8 @@
       document.getElementById("thMonthsIphone").setAttribute("data-tip", t.thMonthsIphoneTooltip);
       document.getElementById("thMonthsCar").innerText = t.thMonthsCar;
       document.getElementById("thMonthsCar").setAttribute("data-tip", t.thMonthsCarTooltip);
+      document.getElementById("thMonthsHouse").innerText = t.thMonthsHouse;
+      document.getElementById("thMonthsHouse").setAttribute("data-tip", t.thMonthsHouseTooltip);
       document.getElementById("thIvfr").innerText = t.thIvfr;
       document.getElementById("thIvfr").setAttribute("data-tip", t.thIvfrTooltip);
       document.getElementById("thActions").innerText = t.thActions;
@@ -775,8 +787,13 @@
       });
     }
 
+    function onBuscaChange() {
+      renderizarTabela();
+      filtrarOpcoesPaises();
+    }
+
     function filtrarOpcoesPaises() {
-      const termo = document.getElementById("countrySearchInput").value.toLowerCase();
+      const termo = document.getElementById("searchInput").value.toLowerCase();
       document.querySelectorAll('#countryFilterList .multi-select-option').forEach(opt => {
         const texto = opt.innerText.toLowerCase();
         opt.style.display = texto.includes(termo) ? "flex" : "none";
@@ -859,6 +876,7 @@
           custoFixo, sobra, margem: 0, margemStr: "0.0%",
           mesesIphone: 999, mesesIphoneStr: t.msgInfeasible,
           mesesCarro: 999, mesesCarroStr: t.msgInfeasible,
+          mesesCasa: 999, mesesCasaStr: t.msgInfeasible,
           ivfr: 0.0, classe: "score-low",
           salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
           custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
@@ -869,9 +887,11 @@
       const margem = sobra / item.salario;
       const precoIphone = item.iphone || 1000;
       const precoEntrada = item.entrada || 4000;
+      const precoEntradaCasa = item.entradaCasa || 50000;
       
       const mesesIphone = precoIphone / sobra;
       const mesesCarro = precoEntrada / sobra;
+      const mesesCasa = precoEntradaCasa / sobra;
       const tempoTotalBens = (precoIphone + precoEntrada) / sobra;
       
       const penalidadeTempo = 1 / (1 + Math.log(1 + tempoTotalBens));
@@ -889,6 +909,7 @@
         custoFixo, sobra, margem, margemStr: (margem * 100).toFixed(1) + "%",
         mesesIphone, mesesIphoneStr: mesesIphone.toFixed(1) + " m",
         mesesCarro, mesesCarroStr: mesesCarro.toFixed(1) + " m",
+        mesesCasa, mesesCasaStr: mesesCasa.toFixed(1) + " m",
         ivfr: parseFloat(ivfr.toFixed(1)), classe,
         salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
         custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
@@ -912,7 +933,7 @@
       const t = i18n[idiomaAtual];
       const termoBusca = document.getElementById("searchInput").value.toLowerCase();
 
-      ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "ivfr"].forEach(col => {
+      ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "mesesCasa", "ivfr"].forEach(col => {
         const el = document.getElementById("sort_" + col);
         if (el) {
           el.innerText = (colunaOrdenada === col) ? (ordemAscendente ? "▲" : "▼") : "↕";
@@ -952,6 +973,7 @@
             <td>${item.margemStr}</td>
             <td>${item.mesesIphoneStr}</td>
             <td>${item.mesesCarroStr}</td>
+            <td>${item.mesesCasaStr}</td>
             <td><span class="score ${item.classe}">${item.ivfr.toFixed(1)}</span> / 100</td>
             <td>
               <button class="btn-action" onclick="carregarParaEdicao(${item.originalIndex})" data-tip="${t.tipEdit}">✎</button>
@@ -1084,7 +1106,8 @@
         extras: parseFloat(document.getElementById("extras").value) || 0,
         parcela: parseFloat(document.getElementById("parcela").value) || 0,
         iphone: parseFloat(document.getElementById("iphone").value) || 0,
-        entrada: parseFloat(document.getElementById("entrada").value) || 0
+        entrada: parseFloat(document.getElementById("entrada").value) || 0,
+        entradaCasa: parseFloat(document.getElementById("entradaCasa").value) || 0
       };
 
       if (index >= 0) baseDados[index] = dados;
@@ -1166,6 +1189,7 @@
       document.getElementById("parcela").value = item.parcela;
       document.getElementById("iphone").value = item.iphone;
       document.getElementById("entrada").value = item.entrada;
+      document.getElementById("entradaCasa").value = item.entradaCasa;
 
       document.getElementById("btnSubmit").innerText = t.btnSubmitUpdate;
       window.scrollTo({ top: 0, behavior: 'smooth' });
