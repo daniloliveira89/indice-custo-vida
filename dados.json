@@ -3,7 +3,7 @@
     "bandeira": "🇶🇦",
     "cidade": "Doha",
     "moeda": "$",
-    "salario": 1600,
+    "salario": 4102,
     "aluguel": 1076,
     "alimentacao": 430,
     "internet": 46,
@@ -12,30 +12,27 @@
     "parcela": 434,
     "iphone": 829,
     "entrada": 5484,
-    "paisNome": "Qatar",
-    "salarioBase": 2000
+    "paisNome": "Qatar"
   },
   {
-    "bandeira": "🇪🇸",
-    "cidade": "Murcia",
-    "moeda": "$",
-    "salario": 1200,
-    "aluguel": 600,
-    "alimentacao": 250,
-    "internet": 30,
-    "academia": 20,
-    "extras": 65,
-    "parcela": 460,
-    "iphone": 1092,
-    "entrada": 5800,
-    "paisNome": "Spain",
-    "salarioBase": 1500
-  },
+  "bandeira": "🇪🇸",
+  "cidade": "Murcia",
+  "moeda": "$",
+  "salario": 1550,
+  "aluguel": 600,
+  "alimentacao": 250,
+  "internet": 30,
+  "academia": 20,
+  "extras": 65,
+  "parcela": 460,
+  "iphone": 1092,
+  "entrada": 5800
+},
   {
     "bandeira": "🇺🇸",
     "cidade": "Des Moines",
     "moeda": "$",
-    "salario": 2400,
+    "salario": 4100,
     "aluguel": 800,
     "alimentacao": 350,
     "internet": 50,
@@ -43,31 +40,27 @@
     "extras": 150,
     "parcela": 520,
     "iphone": 829,
-    "entrada": 6000,
-    "paisNome": "United States",
-    "salarioBase": 3000
+    "entrada": 6000
   },
   {
     "bandeira": "🇺🇸",
     "cidade": "Newport Beach",
     "moeda": "$",
-    "salario": 2400,
-    "salarioBase": 3000,
+    "salario": 6800,
     "aluguel": 1500,
     "alimentacao": 450,
     "internet": 65,
     "academia": 75,
-    "extras": 100,
-    "parcela": 450,
+    "extras": 450,
+    "parcela": 650,
     "iphone": 829,
-    "entrada": 4000,
-    "paisNome": "United States"
+    "entrada": 7500
   },
   {
     "bandeira": "🇦🇪",
     "cidade": "Abu Dhabi",
     "moeda": "$",
-    "salario": 1440,
+    "salario": 3077,
     "aluguel": 1112,
     "alimentacao": 345,
     "internet": 54,
@@ -76,14 +69,13 @@
     "parcela": 707,
     "iphone": 925,
     "entrada": 8928,
-    "paisNome": "United Arab Emirates",
-    "salarioBase": 1800
+    "paisNome": "United Arab Emirates"
   },
   {
     "bandeira": "🇹🇼",
     "cidade": "Taipei",
     "moeda": "$",
-    "salario": 960,
+    "salario": 1745,
     "aluguel": 331,
     "alimentacao": 240,
     "internet": 18,
@@ -92,14 +84,13 @@
     "parcela": 535,
     "iphone": 924,
     "entrada": 6749,
-    "paisNome": "Taiwan",
-    "salarioBase": 1200
+    "paisNome": "Taiwan"
   },
   {
     "bandeira": "🇴🇲",
     "cidade": "Muscat",
     "moeda": "$",
-    "salario": 960,
+    "salario": 2472,
     "aluguel": 382,
     "alimentacao": 300,
     "internet": 33,
@@ -108,14 +99,13 @@
     "parcela": 404,
     "iphone": 829,
     "entrada": 5097,
-    "paisNome": "Oman",
-    "salarioBase": 1200
+    "paisNome": "Oman"
   },
   {
     "bandeira": "🇦🇲",
     "cidade": "Yerevan",
     "moeda": "$",
-    "salario": 440,
+    "salario": 743,
     "aluguel": 461,
     "alimentacao": 160,
     "internet": 8,
@@ -124,14 +114,13 @@
     "parcela": 554,
     "iphone": 829,
     "entrada": 7000,
-    "paisNome": "Armenia",
-    "salarioBase": 550
+    "paisNome": "Armenia"
   },
   {
     "bandeira": "🇯🇵",
     "cidade": "Tokyo",
     "moeda": "$",
-    "salario": 1280,
+    "salario": 1887,
     "aluguel": 382,
     "alimentacao": 250,
     "internet": 24,
@@ -140,14 +129,13 @@
     "parcela": 339,
     "iphone": 792,
     "entrada": 4277,
-    "paisNome": "Japan",
-    "salarioBase": 1600
+    "paisNome": "Japan"
   },
   {
     "bandeira": "🇸🇬",
     "cidade": "Singapore",
     "moeda": "$",
-    "salario": 2240,
+    "salario": 4309,
     "aluguel": 2043,
     "alimentacao": 445,
     "internet": 13,
@@ -156,14 +144,13 @@
     "parcela": 2483,
     "iphone": 1005,
     "entrada": 31348,
-    "paisNome": "Singapore",
-    "salarioBase": 2800
+    "paisNome": "Singapore"
   },
   {
     "bandeira": "🇹🇭",
     "cidade": "Bangkok",
     "moeda": "$",
-    "salario": 360,
+    "salario": 608,
     "aluguel": 296,
     "alimentacao": 160,
     "internet": 30,
@@ -172,14 +159,13 @@
     "parcela": 556,
     "iphone": 883,
     "entrada": 7015,
-    "paisNome": "Thailand",
-    "salarioBase": 450
+    "paisNome": "Thailand"
   },
   {
     "bandeira": "🇧🇭",
     "cidade": "Manama",
     "moeda": "$",
-    "salario": 1120,
+    "salario": 2231,
     "aluguel": 624,
     "alimentacao": 280,
     "internet": 26,
@@ -188,14 +174,13 @@
     "parcela": 588,
     "iphone": 829,
     "entrada": 7419,
-    "paisNome": "Bahrain",
-    "salarioBase": 1400
+    "paisNome": "Bahrain"
   },
   {
     "bandeira": "🇸🇮",
     "cidade": "Ljubljana",
     "moeda": "$",
-    "salario": 1120,
+    "salario": 1767,
     "aluguel": 655,
     "alimentacao": 270,
     "internet": 16,
@@ -204,14 +189,13 @@
     "parcela": 476,
     "iphone": 829,
     "entrada": 6016,
-    "paisNome": "Slovenia",
-    "salarioBase": 1400
+    "paisNome": "Slovenia"
   },
   {
     "bandeira": "🇸🇦",
     "cidade": "Riyadh",
     "moeda": "$",
-    "salario": 1200,
+    "salario": 1966,
     "aluguel": 434,
     "alimentacao": 255,
     "internet": 32,
@@ -220,14 +204,13 @@
     "parcela": 908,
     "iphone": 829,
     "entrada": 11459,
-    "paisNome": "Saudi Arabia",
-    "salarioBase": 1500
+    "paisNome": "Saudi Arabia"
   },
   {
     "bandeira": "🇪🇪",
     "cidade": "Tallinn",
     "moeda": "$",
-    "salario": 1120,
+    "salario": 1871,
     "aluguel": 489,
     "alimentacao": 250,
     "internet": 20,
@@ -236,14 +219,13 @@
     "parcela": 456,
     "iphone": 829,
     "entrada": 5752,
-    "paisNome": "Estonia",
-    "salarioBase": 1400
+    "paisNome": "Estonia"
   },
   {
     "bandeira": "🇨🇭",
     "cidade": "Bern",
     "moeda": "$",
-    "salario": 3840,
+    "salario": 7558,
     "aluguel": 1660,
     "alimentacao": 450,
     "internet": 40,
@@ -252,14 +234,13 @@
     "parcela": 694,
     "iphone": 978,
     "entrada": 8756,
-    "paisNome": "Switzerland",
-    "salarioBase": 4800
+    "paisNome": "Switzerland"
   },
   {
     "bandeira": "🇰🇷",
     "cidade": "Seoul",
     "moeda": "$",
-    "salario": 1440,
+    "salario": 2105,
     "aluguel": 375,
     "alimentacao": 270,
     "internet": 35,
@@ -268,14 +249,13 @@
     "parcela": 406,
     "iphone": 874,
     "entrada": 5132,
-    "paisNome": "South Korea",
-    "salarioBase": 1800
+    "paisNome": "South Korea"
   },
   {
     "bandeira": "🇨🇱",
     "cidade": "Santiago",
     "moeda": "$",
-    "salario": 440,
+    "salario": 719,
     "aluguel": 361,
     "alimentacao": 190,
     "internet": 13,
@@ -284,14 +264,13 @@
     "parcela": 310,
     "iphone": 829,
     "entrada": 3910,
-    "paisNome": "Chile",
-    "salarioBase": 550
+    "paisNome": "Chile"
   },
   {
     "bandeira": "🇭🇷",
     "cidade": "Zagreb",
     "moeda": "$",
-    "salario": 960,
+    "salario": 1661,
     "aluguel": 570,
     "alimentacao": 240,
     "internet": 40,
@@ -300,14 +279,13 @@
     "parcela": 428,
     "iphone": 829,
     "entrada": 5404,
-    "paisNome": "Croatia",
-    "salarioBase": 1200
+    "paisNome": "Croatia"
   },
   {
     "bandeira": "🇳🇱",
     "cidade": "Amsterdam",
     "moeda": "$",
-    "salario": 2080,
+    "salario": 3873,
     "aluguel": 1323,
     "alimentacao": 410,
     "internet": 24,
@@ -316,14 +294,13 @@
     "parcela": 674,
     "iphone": 1103,
     "entrada": 8511,
-    "paisNome": "Netherlands",
-    "salarioBase": 2600
+    "paisNome": "Netherlands"
   },
   {
     "bandeira": "🇩🇰",
     "cidade": "Copenhagen",
     "moeda": "$",
-    "salario": 2560,
+    "salario": 4244,
     "aluguel": 910,
     "alimentacao": 440,
     "internet": 18,
@@ -332,14 +309,13 @@
     "parcela": 817,
     "iphone": 1144,
     "entrada": 10312,
-    "paisNome": "Denmark",
-    "salarioBase": 3200
+    "paisNome": "Denmark"
   },
   {
     "bandeira": "🇫🇮",
     "cidade": "Helsinki",
     "moeda": "$",
-    "salario": 1920,
+    "salario": 3043,
     "aluguel": 724,
     "alimentacao": 345,
     "internet": 30,
@@ -348,14 +324,13 @@
     "parcela": 596,
     "iphone": 1137,
     "entrada": 7525,
-    "paisNome": "Finland",
-    "salarioBase": 2400
+    "paisNome": "Finland"
   },
   {
     "bandeira": "🇸🇪",
     "cidade": "Stockholm",
     "moeda": "$",
-    "salario": 2000,
+    "salario": 3268,
     "aluguel": 734,
     "alimentacao": 360,
     "internet": 28,
@@ -364,14 +339,13 @@
     "parcela": 550,
     "iphone": 1127,
     "entrada": 6942,
-    "paisNome": "Sweden",
-    "salarioBase": 2500
+    "paisNome": "Sweden"
   },
   {
     "bandeira": "🇨🇿",
     "cidade": "Prague",
     "moeda": "$",
-    "salario": 1040,
+    "salario": 1783,
     "aluguel": 697,
     "alimentacao": 270,
     "internet": 28,
@@ -380,14 +354,13 @@
     "parcela": 512,
     "iphone": 1082,
     "entrada": 6460,
-    "paisNome": "Czechia",
-    "salarioBase": 1300
+    "paisNome": "Czechia"
   },
   {
     "bandeira": "🇦🇹",
     "cidade": "Vienna",
     "moeda": "$",
-    "salario": 1840,
+    "salario": 3062,
     "aluguel": 831,
     "alimentacao": 345,
     "internet": 17,
@@ -396,14 +369,13 @@
     "parcela": 483,
     "iphone": 1080,
     "entrada": 6095,
-    "paisNome": "Austria",
-    "salarioBase": 2300
+    "paisNome": "Austria"
   },
   {
     "bandeira": "🇵🇱",
     "cidade": "Warsaw",
     "moeda": "$",
-    "salario": 960,
+    "salario": 1678,
     "aluguel": 618,
     "alimentacao": 250,
     "internet": 40,
@@ -412,14 +384,13 @@
     "parcela": 515,
     "iphone": 1051,
     "entrada": 6502,
-    "paisNome": "Poland",
-    "salarioBase": 1200
+    "paisNome": "Poland"
   },
   {
     "bandeira": "🇵🇹",
     "cidade": "Lisbon",
     "moeda": "$",
-    "salario": 800,
+    "salario": 1336,
     "aluguel": 838,
     "alimentacao": 320,
     "internet": 21,
@@ -428,14 +399,13 @@
     "parcela": 547,
     "iphone": 1126,
     "entrada": 6912,
-    "paisNome": "Portugal",
-    "salarioBase": 1000
+    "paisNome": "Portugal"
   },
   {
     "bandeira": "🇺🇿",
     "cidade": "Tashkent",
     "moeda": "$",
-    "salario": 280,
+    "salario": 509,
     "aluguel": 298,
     "alimentacao": 140,
     "internet": 4,
@@ -444,14 +414,13 @@
     "parcela": 278,
     "iphone": 829,
     "entrada": 3508,
-    "paisNome": "Uzbekistan",
-    "salarioBase": 350
+    "paisNome": "Uzbekistan"
   },
   {
     "bandeira": "🇸🇰",
     "cidade": "Bratislava",
     "moeda": "$",
-    "salario": 880,
+    "salario": 1343,
     "aluguel": 567,
     "alimentacao": 220,
     "internet": 27,
@@ -460,14 +429,13 @@
     "parcela": 424,
     "iphone": 829,
     "entrada": 5358,
-    "paisNome": "Slovakia",
-    "salarioBase": 1100
+    "paisNome": "Slovakia"
   },
   {
     "bandeira": "🇦🇿",
     "cidade": "Baku",
     "moeda": "$",
-    "salario": 304,
+    "salario": 450,
     "aluguel": 276,
     "alimentacao": 140,
     "internet": 25,
@@ -476,14 +444,13 @@
     "parcela": 326,
     "iphone": 829,
     "entrada": 4118,
-    "paisNome": "Azerbaijan",
-    "salarioBase": 380
+    "paisNome": "Azerbaijan"
   },
   {
     "bandeira": "🇮🇱",
     "cidade": "Jerusalem",
     "moeda": "$",
-    "salario": 1920,
+    "salario": 3691,
     "aluguel": 1226,
     "alimentacao": 395,
     "internet": 20,
@@ -492,14 +459,13 @@
     "parcela": 957,
     "iphone": 829,
     "entrada": 12084,
-    "paisNome": "Israel",
-    "salarioBase": 2400
+    "paisNome": "Israel"
   },
   {
     "bandeira": "🇨🇺",
     "cidade": "Havana",
     "moeda": "$",
-    "salario": 28,
+    "salario": 35,
     "aluguel": 507,
     "alimentacao": 105,
     "internet": 35,
@@ -508,14 +474,13 @@
     "parcela": 1109,
     "iphone": 829,
     "entrada": 14000,
-    "paisNome": "Cuba",
-    "salarioBase": 35
+    "paisNome": "Cuba"
   },
   {
     "bandeira": "🇳🇴",
     "cidade": "Oslo",
     "moeda": "$",
-    "salario": 2560,
+    "salario": 4096,
     "aluguel": 1087,
     "alimentacao": 430,
     "internet": 38,
@@ -524,14 +489,13 @@
     "parcela": 758,
     "iphone": 1247,
     "entrada": 9571,
-    "paisNome": "Norway",
-    "salarioBase": 3200
+    "paisNome": "Norway"
   },
   {
     "bandeira": "🇨🇾",
     "cidade": "Nicosia",
     "moeda": "$",
-    "salario": 1120,
+    "salario": 1888,
     "aluguel": 834,
     "alimentacao": 250,
     "internet": 21,
@@ -540,14 +504,13 @@
     "parcela": 536,
     "iphone": 829,
     "entrada": 6764,
-    "paisNome": "Cyprus",
-    "salarioBase": 1400
+    "paisNome": "Cyprus"
   },
   {
     "bandeira": "🇰🇼",
     "cidade": "Kuwait City",
     "moeda": "$",
-    "salario": 1440,
+    "salario": 2959,
     "aluguel": 644,
     "alimentacao": 335,
     "internet": 20,
@@ -556,14 +519,13 @@
     "parcela": 0,
     "iphone": 829,
     "entrada": 4000,
-    "paisNome": "Kuwait",
-    "salarioBase": 1800
+    "paisNome": "Kuwait"
   },
   {
     "bandeira": "🇷🇴",
     "cidade": "Bucharest",
     "moeda": "$",
-    "salario": 680,
+    "salario": 1053,
     "aluguel": 376,
     "alimentacao": 200,
     "internet": 8,
@@ -572,14 +534,13 @@
     "parcela": 464,
     "iphone": 829,
     "entrada": 5863,
-    "paisNome": "Romania",
-    "salarioBase": 850
+    "paisNome": "Romania"
   },
   {
     "bandeira": "🇱🇹",
     "cidade": "Vilnius",
     "moeda": "$",
-    "salario": 960,
+    "salario": 1599,
     "aluguel": 453,
     "alimentacao": 210,
     "internet": 15,
@@ -588,14 +549,13 @@
     "parcela": 444,
     "iphone": 829,
     "entrada": 5611,
-    "paisNome": "Lithuania",
-    "salarioBase": 1200
+    "paisNome": "Lithuania"
   },
   {
     "bandeira": "🇭🇺",
     "cidade": "Budapest",
     "moeda": "$",
-    "salario": 800,
+    "salario": 1431,
     "aluguel": 492,
     "alimentacao": 220,
     "internet": 29,
@@ -604,14 +564,13 @@
     "parcela": 485,
     "iphone": 1250,
     "entrada": 6126,
-    "paisNome": "Hungary",
-    "salarioBase": 1000
+    "paisNome": "Hungary"
   },
   {
     "bandeira": "🇱🇺",
     "cidade": "Luxembourg",
     "moeda": "$",
-    "salario": 2800,
+    "salario": 5614,
     "aluguel": 1797,
     "alimentacao": 450,
     "internet": 30,
@@ -620,14 +579,13 @@
     "parcela": 501,
     "iphone": 1065,
     "entrada": 6322,
-    "paisNome": "Luxembourg",
-    "salarioBase": 3500
+    "paisNome": "Luxembourg"
   },
   {
     "bandeira": "🇨🇦",
     "cidade": "Ottawa",
     "moeda": "$",
-    "salario": 2360,
+    "salario": 2960,
     "aluguel": 1141,
     "alimentacao": 335,
     "internet": 43,
@@ -636,14 +594,13 @@
     "parcela": 445,
     "iphone": 801,
     "entrada": 5614,
-    "paisNome": "Canada",
-    "salarioBase": 2950
+    "paisNome": "Canada"
   },
   {
     "bandeira": "🇪🇸",
     "cidade": "Madrid",
     "moeda": "$",
-    "salario": 1280,
+    "salario": 2054,
     "aluguel": 825,
     "alimentacao": 265,
     "internet": 20,
@@ -652,14 +609,13 @@
     "parcela": 574,
     "iphone": 1092,
     "entrada": 7247,
-    "paisNome": "Spain",
-    "salarioBase": 1600
+    "paisNome": "Spain"
   },
   {
     "bandeira": "🇲🇪",
     "cidade": "Podgorica",
     "moeda": "$",
-    "salario": 600,
+    "salario": 1052,
     "aluguel": 493,
     "alimentacao": 180,
     "internet": 17,
@@ -668,14 +624,13 @@
     "parcela": 497,
     "iphone": 829,
     "entrada": 6270,
-    "paisNome": "Montenegro",
-    "salarioBase": 750
+    "paisNome": "Montenegro"
   },
   {
     "bandeira": "🇱🇻",
     "cidade": "Riga",
     "moeda": "$",
-    "salario": 840,
+    "salario": 1328,
     "aluguel": 318,
     "alimentacao": 220,
     "internet": 20,
@@ -684,14 +639,13 @@
     "parcela": 444,
     "iphone": 829,
     "entrada": 5611,
-    "paisNome": "Latvia",
-    "salarioBase": 1050
+    "paisNome": "Latvia"
   },
   {
     "bandeira": "🇳🇵",
     "cidade": "Kathmandu",
     "moeda": "$",
-    "salario": 144,
+    "salario": 208,
     "aluguel": 63,
     "alimentacao": 80,
     "internet": 4,
@@ -700,14 +654,13 @@
     "parcela": 471,
     "iphone": 829,
     "entrada": 5952,
-    "paisNome": "Nepal",
-    "salarioBase": 180
+    "paisNome": "Nepal"
   },
   {
     "bandeira": "🇧🇬",
     "cidade": "Sofia",
     "moeda": "$",
-    "salario": 680,
+    "salario": 1138,
     "aluguel": 376,
     "alimentacao": 190,
     "internet": 30,
@@ -716,14 +669,13 @@
     "parcela": 489,
     "iphone": 829,
     "entrada": 6178,
-    "paisNome": "Bulgaria",
-    "salarioBase": 850
+    "paisNome": "Bulgaria"
   },
   {
     "bandeira": "🇬🇪",
     "cidade": "Tbilisi",
     "moeda": "$",
-    "salario": 360,
+    "salario": 546,
     "aluguel": 352,
     "alimentacao": 145,
     "internet": 20,
@@ -732,14 +684,13 @@
     "parcela": 329,
     "iphone": 829,
     "entrada": 4159,
-    "paisNome": "Georgia",
-    "salarioBase": 450
+    "paisNome": "Georgia"
   },
   {
     "bandeira": "🇩🇪",
     "cidade": "Berlin",
     "moeda": "$",
-    "salario": 2000,
+    "salario": 3441,
     "aluguel": 724,
     "alimentacao": 375,
     "internet": 20,
@@ -748,14 +699,13 @@
     "parcela": 536,
     "iphone": 1080,
     "entrada": 6763,
-    "paisNome": "Germany",
-    "salarioBase": 2500
+    "paisNome": "Germany"
   },
   {
     "bandeira": "🇷🇸",
     "cidade": "Belgrade",
     "moeda": "$",
-    "salario": 600,
+    "salario": 974,
     "aluguel": 376,
     "alimentacao": 170,
     "internet": 22,
@@ -764,14 +714,13 @@
     "parcela": 497,
     "iphone": 829,
     "entrada": 6270,
-    "paisNome": "Serbia",
-    "salarioBase": 750
+    "paisNome": "Serbia"
   },
   {
     "bandeira": "🇽🇰",
     "cidade": "Pristina",
     "moeda": "$",
-    "salario": 360,
+    "salario": 616,
     "aluguel": 260,
     "alimentacao": 120,
     "internet": 11,
@@ -780,14 +729,13 @@
     "parcela": 364,
     "iphone": 829,
     "entrada": 4602,
-    "paisNome": "Kosovo",
-    "salarioBase": 450
+    "paisNome": "Kosovo"
   },
   {
     "bandeira": "🇷🇺",
     "cidade": "Moscow",
     "moeda": "$",
-    "salario": 600,
+    "salario": 966,
     "aluguel": 421,
     "alimentacao": 150,
     "internet": 8,
@@ -796,14 +744,13 @@
     "parcela": 652,
     "iphone": 829,
     "entrada": 8231,
-    "paisNome": "Russia",
-    "salarioBase": 750
+    "paisNome": "Russia"
   },
   {
     "bandeira": "🇲🇹",
     "cidade": "Valletta",
     "moeda": "$",
-    "salario": 1080,
+    "salario": 1835,
     "aluguel": 995,
     "alimentacao": 245,
     "internet": 27,
@@ -812,14 +759,13 @@
     "parcela": 456,
     "iphone": 829,
     "entrada": 5752,
-    "paisNome": "Malta",
-    "salarioBase": 1350
+    "paisNome": "Malta"
   },
   {
     "bandeira": "🇹🇷",
     "cidade": "Ankara",
     "moeda": "$",
-    "salario": 480,
+    "salario": 1072,
     "aluguel": 424,
     "alimentacao": 185,
     "internet": 10,
@@ -828,14 +774,13 @@
     "parcela": 716,
     "iphone": 1649,
     "entrada": 9039,
-    "paisNome": "Türkiye",
-    "salarioBase": 600
+    "paisNome": "Türkiye"
   },
   {
     "bandeira": "🇯🇴",
     "cidade": "Amman",
     "moeda": "$",
-    "salario": 400,
+    "salario": 712,
     "aluguel": 199,
     "alimentacao": 155,
     "internet": 46,
@@ -844,14 +789,13 @@
     "parcela": 447,
     "iphone": 829,
     "entrada": 5642,
-    "paisNome": "Jordan",
-    "salarioBase": 500
+    "paisNome": "Jordan"
   },
   {
     "bandeira": "🇲🇰",
     "cidade": "Skopje",
     "moeda": "$",
-    "salario": 440,
+    "salario": 765,
     "aluguel": 245,
     "alimentacao": 130,
     "internet": 20,
@@ -860,14 +804,13 @@
     "parcela": 551,
     "iphone": 829,
     "entrada": 6959,
-    "paisNome": "North Macedonia",
-    "salarioBase": 550
+    "paisNome": "North Macedonia"
   },
   {
     "bandeira": "🇲🇩",
     "cidade": "Chișinău",
     "moeda": "$",
-    "salario": 440,
+    "salario": 767,
     "aluguel": 400,
     "alimentacao": 130,
     "internet": 9,
@@ -876,14 +819,13 @@
     "parcela": 485,
     "iphone": 829,
     "entrada": 6128,
-    "paisNome": "Moldova",
-    "salarioBase": 550
+    "paisNome": "Moldova"
   },
   {
     "bandeira": "🇱🇰",
     "cidade": "Colombo",
     "moeda": "$",
-    "salario": 144,
+    "salario": 220,
     "aluguel": 155,
     "alimentacao": 100,
     "internet": 20,
@@ -892,14 +834,13 @@
     "parcela": 476,
     "iphone": 829,
     "entrada": 6004,
-    "paisNome": "Sri Lanka",
-    "salarioBase": 180
+    "paisNome": "Sri Lanka"
   },
   {
     "bandeira": "🇧🇦",
     "cidade": "Sarajevo",
     "moeda": "$",
-    "salario": 520,
+    "salario": 845,
     "aluguel": 249,
     "alimentacao": 140,
     "internet": 18,
@@ -908,14 +849,13 @@
     "parcela": 500,
     "iphone": 829,
     "entrada": 6319,
-    "paisNome": "Bosnia & Herzegovina",
-    "salarioBase": 650
+    "paisNome": "Bosnia & Herzegovina"
   },
   {
     "bandeira": "🇵🇭",
     "cidade": "Manila",
     "moeda": "$",
-    "salario": 224,
+    "salario": 334,
     "aluguel": 189,
     "alimentacao": 130,
     "internet": 21,
@@ -924,14 +864,13 @@
     "parcela": 350,
     "iphone": 937,
     "entrada": 4424,
-    "paisNome": "Philippines",
-    "salarioBase": 280
+    "paisNome": "Philippines"
   },
   {
     "bandeira": "🇵🇰",
     "cidade": "Islamabad",
     "moeda": "$",
-    "salario": 120,
+    "salario": 184,
     "aluguel": 74,
     "alimentacao": 85,
     "internet": 5,
@@ -940,14 +879,13 @@
     "parcela": 285,
     "iphone": 829,
     "entrada": 3594,
-    "paisNome": "Pakistan",
-    "salarioBase": 150
+    "paisNome": "Pakistan"
   },
   {
     "bandeira": "🇻🇳",
     "cidade": "Hanoi",
     "moeda": "$",
-    "salario": 256,
+    "salario": 412,
     "aluguel": 261,
     "alimentacao": 110,
     "internet": 20,
@@ -956,14 +894,13 @@
     "parcela": 480,
     "iphone": 952,
     "entrada": 6063,
-    "paisNome": "Vietnam",
-    "salarioBase": 320
+    "paisNome": "Vietnam"
   },
   {
     "bandeira": "🇵🇦",
     "cidade": "Panama City",
     "moeda": "$",
-    "salario": 520,
+    "salario": 824,
     "aluguel": 723,
     "alimentacao": 165,
     "internet": 28,
@@ -972,14 +909,13 @@
     "parcela": 337,
     "iphone": 829,
     "entrada": 4252,
-    "paisNome": "Panama",
-    "salarioBase": 650
+    "paisNome": "Panama"
   },
   {
     "bandeira": "🇮🇳",
     "cidade": "New Delhi",
     "moeda": "$",
-    "salario": 240,
+    "salario": 431,
     "aluguel": 92,
     "alimentacao": 135,
     "internet": 4,
@@ -988,14 +924,13 @@
     "parcela": 200,
     "iphone": 857,
     "entrada": 2524,
-    "paisNome": "India",
-    "salarioBase": 300
+    "paisNome": "India"
   },
   {
     "bandeira": "🇹🇳",
     "cidade": "Tunis",
     "moeda": "$",
-    "salario": 200,
+    "salario": 338,
     "aluguel": 157,
     "alimentacao": 130,
     "internet": 25,
@@ -1004,14 +939,13 @@
     "parcela": 638,
     "iphone": 829,
     "entrada": 8060,
-    "paisNome": "Tunisia",
-    "salarioBase": 250
+    "paisNome": "Tunisia"
   },
   {
     "bandeira": "🇦🇱",
     "cidade": "Tirana",
     "moeda": "$",
-    "salario": 440,
+    "salario": 753,
     "aluguel": 372,
     "alimentacao": 150,
     "internet": 19,
@@ -1020,14 +954,13 @@
     "parcela": 547,
     "iphone": 829,
     "entrada": 6902,
-    "paisNome": "Albania",
-    "salarioBase": 550
+    "paisNome": "Albania"
   },
   {
     "bandeira": "🇮🇩",
     "cidade": "Jakarta",
     "moeda": "$",
-    "salario": 176,
+    "salario": 263,
     "aluguel": 171,
     "alimentacao": 125,
     "internet": 4,
@@ -1036,14 +969,13 @@
     "parcela": 356,
     "iphone": 829,
     "entrada": 4496,
-    "paisNome": "Indonesia",
-    "salarioBase": 220
+    "paisNome": "Indonesia"
   },
   {
     "bandeira": "🇮🇶",
     "cidade": "Baghdad",
     "moeda": "$",
-    "salario": 360,
+    "salario": 575,
     "aluguel": 204,
     "alimentacao": 145,
     "internet": 16,
@@ -1052,14 +984,13 @@
     "parcela": 272,
     "iphone": 829,
     "entrada": 3434,
-    "paisNome": "Iraq",
-    "salarioBase": 450
+    "paisNome": "Iraq"
   },
   {
     "bandeira": "🇮🇪",
     "cidade": "Dublin",
     "moeda": "$",
-    "salario": 2080,
+    "salario": 3610,
     "aluguel": 1612,
     "alimentacao": 390,
     "internet": 23,
@@ -1068,14 +999,13 @@
     "parcela": 635,
     "iphone": 1114,
     "entrada": 8014,
-    "paisNome": "Ireland",
-    "salarioBase": 2600
+    "paisNome": "Ireland"
   },
   {
     "bandeira": "🇰🇿",
     "cidade": "Astana",
     "moeda": "$",
-    "salario": 384,
+    "salario": 629,
     "aluguel": 322,
     "alimentacao": 150,
     "internet": 10,
@@ -1084,14 +1014,13 @@
     "parcela": 356,
     "iphone": 829,
     "entrada": 4495,
-    "paisNome": "Kazakhstan",
-    "salarioBase": 480
+    "paisNome": "Kazakhstan"
   },
   {
     "bandeira": "🇱🇧",
     "cidade": "Beirut",
     "moeda": "$",
-    "salario": 280,
+    "salario": 591,
     "aluguel": 329,
     "alimentacao": 145,
     "internet": 20,
@@ -1100,14 +1029,13 @@
     "parcela": 0,
     "iphone": 829,
     "entrada": 4000,
-    "paisNome": "Lebanon",
-    "salarioBase": 350
+    "paisNome": "Lebanon"
   },
   {
     "bandeira": "🇬🇷",
     "cidade": "Athens",
     "moeda": "$",
-    "salario": 760,
+    "salario": 1182,
     "aluguel": 454,
     "alimentacao": 200,
     "internet": 25,
@@ -1116,14 +1044,13 @@
     "parcela": 455,
     "iphone": 829,
     "entrada": 5747,
-    "paisNome": "Greece",
-    "salarioBase": 950
+    "paisNome": "Greece"
   },
   {
     "bandeira": "🇦🇺",
     "cidade": "Canberra",
     "moeda": "$",
-    "salario": 2240,
+    "salario": 3941,
     "aluguel": 1222,
     "alimentacao": 415,
     "internet": 20,
@@ -1132,14 +1059,13 @@
     "parcela": 445,
     "iphone": 975,
     "entrada": 5613,
-    "paisNome": "Australia",
-    "salarioBase": 2800
+    "paisNome": "Australia"
   },
   {
     "bandeira": "🇺🇦",
     "cidade": "Kyiv",
     "moeda": "$",
-    "salario": 320,
+    "salario": 495,
     "aluguel": 250,
     "alimentacao": 160,
     "internet": 6,
@@ -1148,14 +1074,13 @@
     "parcela": 466,
     "iphone": 829,
     "entrada": 5878,
-    "paisNome": "Ukraine",
-    "salarioBase": 400
+    "paisNome": "Ukraine"
   },
   {
     "bandeira": "🇬🇧",
     "cidade": "London",
     "moeda": "$",
-    "salario": 2000,
+    "salario": 3282,
     "aluguel": 1102,
     "alimentacao": 365,
     "internet": 20,
@@ -1164,14 +1089,13 @@
     "parcela": 608,
     "iphone": 1064,
     "entrada": 7680,
-    "paisNome": "United Kingdom",
-    "salarioBase": 2500
+    "paisNome": "United Kingdom"
   },
   {
     "bandeira": "🇪🇬",
     "cidade": "Cairo",
     "moeda": "$",
-    "salario": 96,
+    "salario": 145,
     "aluguel": 88,
     "alimentacao": 130,
     "internet": 7,
@@ -1180,14 +1104,13 @@
     "parcela": 536,
     "iphone": 829,
     "entrada": 6771,
-    "paisNome": "Egypt",
-    "salarioBase": 120
+    "paisNome": "Egypt"
   },
   {
     "bandeira": "🇳🇿",
     "cidade": "Wellington",
     "moeda": "$",
-    "salario": 1920,
+    "salario": 2935,
     "aluguel": 971,
     "alimentacao": 335,
     "internet": 33,
@@ -1196,14 +1119,13 @@
     "parcela": 411,
     "iphone": 981,
     "entrada": 5191,
-    "paisNome": "New Zealand",
-    "salarioBase": 2400
+    "paisNome": "New Zealand"
   },
   {
     "bandeira": "🇲🇦",
     "cidade": "Rabat",
     "moeda": "$",
-    "salario": 280,
+    "salario": 482,
     "aluguel": 217,
     "alimentacao": 140,
     "internet": 11,
@@ -1212,14 +1134,13 @@
     "parcela": 564,
     "iphone": 829,
     "entrada": 7116,
-    "paisNome": "Morocco",
-    "salarioBase": 350
+    "paisNome": "Morocco"
   },
   {
     "bandeira": "🇮🇹",
     "cidade": "Rome",
     "moeda": "$",
-    "salario": 1200,
+    "salario": 1958,
     "aluguel": 656,
     "alimentacao": 350,
     "internet": 12,
@@ -1228,14 +1149,13 @@
     "parcela": 591,
     "iphone": 1114,
     "entrada": 7462,
-    "paisNome": "Italy",
-    "salarioBase": 1500
+    "paisNome": "Italy"
   },
   {
     "bandeira": "🇲🇺",
     "cidade": "Port Louis",
     "moeda": "$",
-    "salario": 440,
+    "salario": 752,
     "aluguel": 314,
     "alimentacao": 160,
     "internet": 14,
@@ -1244,14 +1164,13 @@
     "parcela": 487,
     "iphone": 829,
     "entrada": 6153,
-    "paisNome": "Mauritius",
-    "salarioBase": 550
+    "paisNome": "Mauritius"
   },
   {
     "bandeira": "🇧🇪",
     "cidade": "Brussels",
     "moeda": "$",
-    "salario": 1840,
+    "salario": 3037,
     "aluguel": 891,
     "alimentacao": 345,
     "internet": 24,
@@ -1260,15 +1179,13 @@
     "parcela": 577,
     "iphone": 1103,
     "entrada": 7286,
-    "paisNome": "Belgium",
-    "salarioBase": 2300
+    "paisNome": "Belgium"
   },
   {
     "bandeira": "🇺🇸",
     "cidade": "Washington, D.C.",
     "moeda": "$",
-    "salario": 2400,
-    "salarioBase": 3000,
+    "salario": 4323,
     "aluguel": 1440,
     "alimentacao": 350,
     "internet": 100,
@@ -1283,7 +1200,7 @@
     "bandeira": "🇮🇷",
     "cidade": "Tehran",
     "moeda": "$",
-    "salario": 144,
+    "salario": 249,
     "aluguel": 188,
     "alimentacao": 120,
     "internet": 2,
@@ -1292,14 +1209,13 @@
     "parcela": 950,
     "iphone": 829,
     "entrada": 12000,
-    "paisNome": "Iran",
-    "salarioBase": 180
+    "paisNome": "Iran"
   },
   {
     "bandeira": "🇧🇾",
     "cidade": "Minsk",
     "moeda": "$",
-    "salario": 440,
+    "salario": 772,
     "aluguel": 312,
     "alimentacao": 150,
     "internet": 9,
@@ -1308,14 +1224,13 @@
     "parcela": 346,
     "iphone": 829,
     "entrada": 4365,
-    "paisNome": "Belarus",
-    "salarioBase": 550
+    "paisNome": "Belarus"
   },
   {
     "bandeira": "🇩🇿",
     "cidade": "Algiers",
     "moeda": "$",
-    "salario": 176,
+    "salario": 306,
     "aluguel": 101,
     "alimentacao": 120,
     "internet": 10,
@@ -1324,14 +1239,13 @@
     "parcela": 498,
     "iphone": 829,
     "entrada": 6282,
-    "paisNome": "Algeria",
-    "salarioBase": 220
+    "paisNome": "Algeria"
   },
   {
     "bandeira": "🇲🇾",
     "cidade": "Kuala Lumpur",
     "moeda": "$",
-    "salario": 520,
+    "salario": 924,
     "aluguel": 275,
     "alimentacao": 170,
     "internet": 10,
@@ -1340,14 +1254,13 @@
     "parcela": 665,
     "iphone": 978,
     "entrada": 8391,
-    "paisNome": "Malaysia",
-    "salarioBase": 650
+    "paisNome": "Malaysia"
   },
   {
     "bandeira": "🇺🇾",
     "cidade": "Montevideo",
     "moeda": "$",
-    "salario": 600,
+    "salario": 1031,
     "aluguel": 496,
     "alimentacao": 225,
     "internet": 30,
@@ -1356,14 +1269,13 @@
     "parcela": 628,
     "iphone": 829,
     "entrada": 7930,
-    "paisNome": "Uruguay",
-    "salarioBase": 750
+    "paisNome": "Uruguay"
   },
   {
     "bandeira": "🇨🇷",
     "cidade": "San José",
     "moeda": "$",
-    "salario": 600,
+    "salario": 1048,
     "aluguel": 658,
     "alimentacao": 185,
     "internet": 30,
@@ -1372,14 +1284,13 @@
     "parcela": 537,
     "iphone": 829,
     "entrada": 6779,
-    "paisNome": "Costa Rica",
-    "salarioBase": 750
+    "paisNome": "Costa Rica"
   },
   {
     "bandeira": "🇲🇽",
     "cidade": "Mexico City",
     "moeda": "$",
-    "salario": 480,
+    "salario": 815,
     "aluguel": 502,
     "alimentacao": 165,
     "internet": 25,
@@ -1388,14 +1299,13 @@
     "parcela": 354,
     "iphone": 1142,
     "entrada": 4474,
-    "paisNome": "Mexico",
-    "salarioBase": 600
+    "paisNome": "Mexico"
   },
   {
     "bandeira": "🇩🇴",
     "cidade": "Santo Domingo",
     "moeda": "$",
-    "salario": 360,
+    "salario": 618,
     "aluguel": 346,
     "alimentacao": 150,
     "internet": 30,
@@ -1404,14 +1314,13 @@
     "parcela": 379,
     "iphone": 829,
     "entrada": 4781,
-    "paisNome": "Dominican Republic",
-    "salarioBase": 450
+    "paisNome": "Dominican Republic"
   },
   {
     "bandeira": "🇫🇷",
     "cidade": "Paris",
     "moeda": "$",
-    "salario": 1680,
+    "salario": 2842,
     "aluguel": 701,
     "alimentacao": 325,
     "internet": 22,
@@ -1420,14 +1329,13 @@
     "parcela": 563,
     "iphone": 1103,
     "entrada": 7109,
-    "paisNome": "France",
-    "salarioBase": 2100
+    "paisNome": "France"
   },
   {
     "bandeira": "🇰🇪",
     "cidade": "Nairobi",
     "moeda": "$",
-    "salario": 200,
+    "salario": 340,
     "aluguel": 150,
     "alimentacao": 125,
     "internet": 10,
@@ -1436,14 +1344,13 @@
     "parcela": 245,
     "iphone": 829,
     "entrada": 3088,
-    "paisNome": "Kenya",
-    "salarioBase": 250
+    "paisNome": "Kenya"
   },
   {
     "bandeira": "🇿🇼",
     "cidade": "Harare",
     "moeda": "$",
-    "salario": 176,
+    "salario": 342,
     "aluguel": 234,
     "alimentacao": 125,
     "internet": 19,
@@ -1452,14 +1359,13 @@
     "parcela": 396,
     "iphone": 829,
     "entrada": 5000,
-    "paisNome": "Zimbabwe",
-    "salarioBase": 220
+    "paisNome": "Zimbabwe"
   },
   {
     "bandeira": "🇪🇨",
     "cidade": "Quito",
     "moeda": "$",
-    "salario": 368,
+    "salario": 519,
     "aluguel": 260,
     "alimentacao": 120,
     "internet": 13,
@@ -1468,14 +1374,13 @@
     "parcela": 333,
     "iphone": 829,
     "entrada": 4198,
-    "paisNome": "Ecuador",
-    "salarioBase": 460
+    "paisNome": "Ecuador"
   },
   {
     "bandeira": "🇨🇳",
     "cidade": "Beijing",
     "moeda": "$",
-    "salario": 640,
+    "salario": 1070,
     "aluguel": 243,
     "alimentacao": 185,
     "internet": 9,
@@ -1484,14 +1389,13 @@
     "parcela": 305,
     "iphone": 884,
     "entrada": 3845,
-    "paisNome": "China",
-    "salarioBase": 800
+    "paisNome": "China"
   },
   {
     "bandeira": "🇨🇴",
     "cidade": "Bogotá",
     "moeda": "$",
-    "salario": 320,
+    "salario": 519,
     "aluguel": 363,
     "alimentacao": 140,
     "internet": 12,
@@ -1500,14 +1404,13 @@
     "parcela": 358,
     "iphone": 829,
     "entrada": 4524,
-    "paisNome": "Colombia",
-    "salarioBase": 400
+    "paisNome": "Colombia"
   },
   {
     "bandeira": "🇵🇷",
     "cidade": "San Juan",
     "moeda": "$",
-    "salario": 1440,
+    "salario": 2613,
     "aluguel": 669,
     "alimentacao": 310,
     "internet": 71,
@@ -1516,14 +1419,13 @@
     "parcela": 634,
     "iphone": 829,
     "entrada": 8000,
-    "paisNome": "Puerto Rico",
-    "salarioBase": 1800
+    "paisNome": "Puerto Rico"
   },
   {
     "bandeira": "🇧🇴",
     "cidade": "Sucre",
     "moeda": "$",
-    "salario": 280,
+    "salario": 452,
     "aluguel": 235,
     "alimentacao": 105,
     "internet": 26,
@@ -1532,14 +1434,13 @@
     "parcela": 332,
     "iphone": 829,
     "entrada": 4186,
-    "paisNome": "Bolivia",
-    "salarioBase": 350
+    "paisNome": "Bolivia"
   },
   {
     "bandeira": "🇧🇩",
     "cidade": "Dhaka",
     "moeda": "$",
-    "salario": 144,
+    "salario": 234,
     "aluguel": 48,
     "alimentacao": 90,
     "internet": 5,
@@ -1548,14 +1449,13 @@
     "parcela": 472,
     "iphone": 829,
     "entrada": 5958,
-    "paisNome": "Bangladesh",
-    "salarioBase": 180
+    "paisNome": "Bangladesh"
   },
   {
     "bandeira": "🇦🇷",
     "cidade": "Buenos Aires",
     "moeda": "$",
-    "salario": 360,
+    "salario": 720,
     "aluguel": 364,
     "alimentacao": 185,
     "internet": 17,
@@ -1564,14 +1464,13 @@
     "parcela": 436,
     "iphone": 829,
     "entrada": 5500,
-    "paisNome": "Argentina",
-    "salarioBase": 450
+    "paisNome": "Argentina"
   },
   {
     "bandeira": "🇳🇬",
     "cidade": "Abuja",
     "moeda": "$",
-    "salario": 72,
+    "salario": 114,
     "aluguel": 293,
     "alimentacao": 110,
     "internet": 19,
@@ -1580,15 +1479,13 @@
     "parcela": 175,
     "iphone": 829,
     "entrada": 2208,
-    "paisNome": "Nigeria",
-    "salarioBase": 90
+    "paisNome": "Nigeria"
   },
   {
     "bandeira": "🇧🇷",
     "cidade": "Indaiatuba",
-    "moeda": "R$",
-    "salario": 464,
-    "salarioBase": 580,
+    "moeda": "$",
+    "salario": 529,
     "aluguel": 245,
     "alimentacao": 140,
     "internet": 14,
@@ -1596,14 +1493,13 @@
     "extras": 55,
     "parcela": 368,
     "iphone": 1576,
-    "entrada": 4641,
-    "paisNome": "Brazil"
+    "entrada": 4641
   },
   {
     "bandeira": "🇵🇪",
     "cidade": "Lima",
     "moeda": "$",
-    "salario": 336,
+    "salario": 571,
     "aluguel": 245,
     "alimentacao": 130,
     "internet": 25,
@@ -1612,14 +1508,13 @@
     "parcela": 348,
     "iphone": 829,
     "entrada": 4398,
-    "paisNome": "Peru",
-    "salarioBase": 420
+    "paisNome": "Peru"
   },
   {
     "bandeira": "🇿🇦",
     "cidade": "Pretoria",
     "moeda": "$",
-    "salario": 760,
+    "salario": 1416,
     "aluguel": 418,
     "alimentacao": 215,
     "internet": 35,
@@ -1628,14 +1523,13 @@
     "parcela": 568,
     "iphone": 829,
     "entrada": 7177,
-    "paisNome": "South Africa",
-    "salarioBase": 950
+    "paisNome": "South Africa"
   },
   {
     "bandeira": "🇻🇪",
     "cidade": "Caracas",
     "moeda": "$",
-    "salario": 120,
+    "salario": 220,
     "aluguel": 184,
     "alimentacao": 120,
     "internet": 20,
@@ -1644,7 +1538,6 @@
     "parcela": 396,
     "iphone": 829,
     "entrada": 5000,
-    "paisNome": "Venezuela",
-    "salarioBase": 150
+    "paisNome": "Venezuela"
   }
 ]
