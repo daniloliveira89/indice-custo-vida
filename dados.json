@@ -23,7 +23,7 @@
     "bandeira": "🇪🇸",
     "cidade": "Murcia",
     "moeda": "$",
-    "salario": 1550,
+    "salario": 1325,
     "aluguel": 600,
     "alimentacao": 250,
     "internet": 30,
@@ -36,14 +36,14 @@
     "preco_casa": 72000,
     "entrada_casa_20pct": 14400,
     "months_to_house_down": 115.2,
-    "salarioBase": 1550,
+    "salarioBase": 1325,
     "entradaCasa": 14400
   },
   {
     "bandeira": "🇺🇸",
     "cidade": "Des Moines",
     "moeda": "$",
-    "salario": 4100,
+    "salario": 2563,
     "aluguel": 800,
     "alimentacao": 350,
     "internet": 50,
@@ -56,14 +56,14 @@
     "preco_casa": 120000,
     "entrada_casa_20pct": 24000,
     "months_to_house_down": 10.9,
-    "salarioBase": 4100,
+    "salarioBase": 2563,
     "entradaCasa": 24000
   },
   {
     "bandeira": "🇺🇸",
     "cidade": "Newport Beach",
     "moeda": "$",
-    "salario": 6800,
+    "salario": 2563,
     "aluguel": 1500,
     "alimentacao": 450,
     "internet": 65,
@@ -76,7 +76,7 @@
     "preco_casa": 600000,
     "entrada_casa_20pct": 120000,
     "months_to_house_down": 33.2,
-    "salarioBase": 6800,
+    "salarioBase": 2563,
     "entradaCasa": 120000
   },
   {
@@ -183,7 +183,7 @@
     "bandeira": "🇸🇬",
     "cidade": "Singapore",
     "moeda": "$",
-    "salario": 4309,
+    "salario": 1950,
     "aluguel": 2043,
     "alimentacao": 445,
     "internet": 13,
@@ -196,7 +196,7 @@
     "preco_casa": 720000,
     "entrada_casa_20pct": 144000,
     "months_to_house_down": "Infinity",
-    "salarioBase": 4309,
+    "salarioBase": 1950,
     "entradaCasa": 144000
   },
   {
@@ -303,7 +303,7 @@
     "bandeira": "🇨🇭",
     "cidade": "Bern",
     "moeda": "$",
-    "salario": 7558,
+    "salario": 4100,
     "aluguel": 1660,
     "alimentacao": 450,
     "internet": 40,
@@ -316,7 +316,7 @@
     "preco_casa": 540000,
     "entrada_casa_20pct": 108000,
     "months_to_house_down": 27.9,
-    "salarioBase": 7558,
+    "salarioBase": 4100,
     "entradaCasa": 108000
   },
   {
@@ -383,7 +383,7 @@
     "bandeira": "🇳🇱",
     "cidade": "Amsterdam",
     "moeda": "$",
-    "salario": 3873,
+    "salario": 2189,
     "aluguel": 1323,
     "alimentacao": 410,
     "internet": 24,
@@ -396,7 +396,7 @@
     "preco_casa": 360000,
     "entrada_casa_20pct": 72000,
     "months_to_house_down": 71.1,
-    "salarioBase": 3873,
+    "salarioBase": 2189,
     "entradaCasa": 72000
   },
   {
@@ -483,7 +483,7 @@
     "bandeira": "🇦🇹",
     "cidade": "Vienna",
     "moeda": "$",
-    "salario": 3062,
+    "salario": 1780,
     "aluguel": 831,
     "alimentacao": 345,
     "internet": 17,
@@ -496,14 +496,14 @@
     "preco_casa": 300000,
     "entrada_casa_20pct": 60000,
     "months_to_house_down": 57.9,
-    "salarioBase": 3062,
+    "salarioBase": 1780,
     "entradaCasa": 60000
   },
   {
     "bandeira": "🇵🇱",
     "cidade": "Warsaw",
     "moeda": "$",
-    "salario": 1678,
+    "salario": 1073,
     "aluguel": 618,
     "alimentacao": 250,
     "internet": 40,
@@ -516,7 +516,7 @@
     "preco_casa": 180000,
     "entrada_casa_20pct": 36000,
     "months_to_house_down": 800,
-    "salarioBase": 1678,
+    "salarioBase": 1073,
     "entradaCasa": 36000
   },
   {
@@ -783,7 +783,7 @@
     "bandeira": "🇨🇦",
     "cidade": "Ottawa",
     "moeda": "$",
-    "salario": 2960,
+    "salario": 2450,
     "aluguel": 1141,
     "alimentacao": 335,
     "internet": 43,
@@ -796,14 +796,14 @@
     "preco_casa": 300000,
     "entrada_casa_20pct": 60000,
     "months_to_house_down": 91.2,
-    "salarioBase": 2960,
+    "salarioBase": 2450,
     "entradaCasa": 60000
   },
   {
     "bandeira": "🇪🇸",
     "cidade": "Madrid",
     "moeda": "$",
-    "salario": 2054,
+    "salario": 1325,
     "aluguel": 825,
     "alimentacao": 265,
     "internet": 20,
@@ -816,7 +816,7 @@
     "preco_casa": 240000,
     "entrada_casa_20pct": 48000,
     "months_to_house_down": 406.8,
-    "salarioBase": 2054,
+    "salarioBase": 1325,
     "entradaCasa": 48000
   },
   {
@@ -923,7 +923,7 @@
     "bandeira": "🇩🇪",
     "cidade": "Berlin",
     "moeda": "$",
-    "salario": 3441,
+    "salario": 2050,
     "aluguel": 724,
     "alimentacao": 375,
     "internet": 20,
@@ -936,7 +936,7 @@
     "preco_casa": 360000,
     "entrada_casa_20pct": 72000,
     "months_to_house_down": 51.5,
-    "salarioBase": 3441,
+    "salarioBase": 2050,
     "entradaCasa": 72000
   },
   {
@@ -983,7 +983,7 @@
     "bandeira": "🇷🇺",
     "cidade": "Moscow",
     "moeda": "$",
-    "salario": 966,
+    "salario": 700,
     "aluguel": 421,
     "alimentacao": 150,
     "internet": 8,
@@ -996,7 +996,7 @@
     "preco_casa": 180000,
     "entrada_casa_20pct": 36000,
     "months_to_house_down": "Infinity",
-    "salarioBase": 966,
+    "salarioBase": 700,
     "entradaCasa": 36000
   },
   {
@@ -1223,7 +1223,7 @@
     "bandeira": "🇮🇳",
     "cidade": "New Delhi",
     "moeda": "$",
-    "salario": 431,
+    "salario": 234,
     "aluguel": 92,
     "alimentacao": 135,
     "internet": 4,
@@ -1236,7 +1236,7 @@
     "preco_casa": 60000,
     "entrada_casa_20pct": 12000,
     "months_to_house_down": "Infinity",
-    "salarioBase": 431,
+    "salarioBase": 234,
     "entradaCasa": 12000
   },
   {
@@ -1403,7 +1403,7 @@
     "bandeira": "🇦🇺",
     "cidade": "Canberra",
     "moeda": "$",
-    "salario": 3941,
+    "salario": 2750,
     "aluguel": 1222,
     "alimentacao": 415,
     "internet": 20,
@@ -1416,7 +1416,7 @@
     "preco_casa": 360000,
     "entrada_casa_20pct": 72000,
     "months_to_house_down": 51.8,
-    "salarioBase": 3941,
+    "salarioBase": 2750,
     "entradaCasa": 72000
   },
   {
@@ -1443,7 +1443,7 @@
     "bandeira": "🇬🇧",
     "cidade": "London",
     "moeda": "$",
-    "salario": 3282,
+    "salario": 2684,
     "aluguel": 1102,
     "alimentacao": 365,
     "internet": 20,
@@ -1456,7 +1456,7 @@
     "preco_casa": 360000,
     "entrada_casa_20pct": 72000,
     "months_to_house_down": 88.9,
-    "salarioBase": 3282,
+    "salarioBase": 2684,
     "entradaCasa": 72000
   },
   {
@@ -1483,7 +1483,7 @@
     "bandeira": "🇳🇿",
     "cidade": "Wellington",
     "moeda": "$",
-    "salario": 2935,
+    "salario": 2300,
     "aluguel": 971,
     "alimentacao": 335,
     "internet": 33,
@@ -1496,7 +1496,7 @@
     "preco_casa": 330000,
     "entrada_casa_20pct": 66000,
     "months_to_house_down": 77.5,
-    "salarioBase": 2935,
+    "salarioBase": 2300,
     "entradaCasa": 66000
   },
   {
@@ -1523,7 +1523,7 @@
     "bandeira": "🇮🇹",
     "cidade": "Rome",
     "moeda": "$",
-    "salario": 1958,
+    "salario": 1516,
     "aluguel": 656,
     "alimentacao": 350,
     "internet": 12,
@@ -1536,7 +1536,7 @@
     "preco_casa": 210000,
     "entrada_casa_20pct": 42000,
     "months_to_house_down": 428.6,
-    "salarioBase": 1958,
+    "salarioBase": 1516,
     "entradaCasa": 42000
   },
   {
@@ -1563,7 +1563,7 @@
     "bandeira": "🇧🇪",
     "cidade": "Brussels",
     "moeda": "$",
-    "salario": 3037,
+    "salario": 1950,
     "aluguel": 891,
     "alimentacao": 345,
     "internet": 24,
@@ -1576,14 +1576,14 @@
     "preco_casa": 220000,
     "entrada_casa_20pct": 44000,
     "months_to_house_down": 51.3,
-    "salarioBase": 3037,
+    "salarioBase": 1950,
     "entradaCasa": 44000
   },
   {
     "bandeira": "🇺🇸",
     "cidade": "Washington, D.C.",
     "moeda": "$",
-    "salario": 4323,
+    "salario": 2563,
     "aluguel": 1440,
     "alimentacao": 350,
     "internet": 100,
@@ -1596,7 +1596,7 @@
     "preco_casa": 360000,
     "entrada_casa_20pct": 72000,
     "months_to_house_down": 37.2,
-    "salarioBase": 4323,
+    "salarioBase": 2563,
     "entradaCasa": 72000
   },
   {
@@ -1723,7 +1723,7 @@
     "bandeira": "🇲🇽",
     "cidade": "Mexico City",
     "moeda": "$",
-    "salario": 815,
+    "salario": 481,
     "aluguel": 502,
     "alimentacao": 165,
     "internet": 25,
@@ -1736,7 +1736,7 @@
     "preco_casa": 110000,
     "entrada_casa_20pct": 22000,
     "months_to_house_down": "Infinity",
-    "salarioBase": 815,
+    "salarioBase": 481,
     "entradaCasa": 22000
   },
   {
@@ -1763,7 +1763,7 @@
     "bandeira": "🇫🇷",
     "cidade": "Paris",
     "moeda": "$",
-    "salario": 2842,
+    "salario": 1840,
     "aluguel": 701,
     "alimentacao": 325,
     "internet": 22,
@@ -1776,7 +1776,7 @@
     "preco_casa": 600000,
     "entrada_casa_20pct": 120000,
     "months_to_house_down": 132.2,
-    "salarioBase": 2842,
+    "salarioBase": 1840,
     "entradaCasa": 120000
   },
   {
@@ -1983,7 +1983,7 @@
     "bandeira": "🇧🇷",
     "cidade": "Indaiatuba",
     "moeda": "$",
-    "salario": 540,
+    "salario": 434,
     "aluguel": 245,
     "alimentacao": 140,
     "internet": 14,
@@ -1996,7 +1996,7 @@
     "preco_casa": 72000,
     "entrada_casa_20pct": 50000,
     "months_to_house_down": "Infinity",
-    "salarioBase": 540,
+    "salarioBase": 434,
     "entradaCasa": 50000
   },
   {
@@ -2023,7 +2023,7 @@
     "bandeira": "🇿🇦",
     "cidade": "Pretoria",
     "moeda": "$",
-    "salario": 1416,
+    "salario": 365,
     "aluguel": 418,
     "alimentacao": 215,
     "internet": 35,
@@ -2036,7 +2036,7 @@
     "preco_casa": 66000,
     "entrada_casa_20pct": 13200,
     "months_to_house_down": 2640,
-    "salarioBase": 1416,
+    "salarioBase": 365,
     "entradaCasa": 13200
   },
   {
