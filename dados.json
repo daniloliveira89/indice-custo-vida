@@ -63,7 +63,7 @@
     "bandeira": "🇺🇸",
     "cidade": "Newport Beach",
     "moeda": "$",
-    "salario": 2563,
+    "salario": 3200,
     "aluguel": 1500,
     "alimentacao": 450,
     "internet": 65,
@@ -71,12 +71,12 @@
     "extras": 450,
     "parcela": 650,
     "iphone": 829,
-    "entrada": 7500,
+    "entrada": 4500,
     "paisNome": "United States",
     "preco_casa": 600000,
     "entrada_casa_20pct": 120000,
     "months_to_house_down": 33.2,
-    "salarioBase": 2563,
+    "salarioBase": 3200,
     "entradaCasa": 120000
   },
   {
