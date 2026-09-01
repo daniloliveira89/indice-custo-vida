@@ -1994,10 +1994,10 @@
     "entrada": 4641,
     "paisNome": "Brazil",
     "preco_casa": 72000,
-    "entrada_casa_20pct": 14400,
+    "entrada_casa_20pct": 50000,
     "months_to_house_down": "Infinity",
     "salarioBase": 529,
-    "entradaCasa": 14400
+    "entradaCasa": 50000
   },
   {
     "bandeira": "🇵🇪",
