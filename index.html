@@ -62,15 +62,16 @@
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
 
     /* Estilos do Filtro Customizado de Países (Multi-select) */
-    .table-toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
-    .filter-group { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; flex: 1; }
-    .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; flex: 1; min-width: 200px; }
+    .table-toolbar { display: flex; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+    .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
     .multi-select-container { position: relative; display: inline-block; }
     .multi-select-btn { padding: 0.55rem 0.8rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-width: 220px; font-size: 0.85rem; user-select: none; }
     .multi-select-btn:hover { border-color: var(--subtext); }
     .multi-select-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; max-height: 350px; overflow-y: auto; z-index: 50; min-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
     .multi-select-menu.open { display: block; }
-    .multi-select-actions { display: flex; justify-content: space-between; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); position: sticky; top: 0; background: var(--card-bg); z-index: 2; }
+    .multi-select-search { padding: 0.6rem 0.8rem 0.3rem 0.8rem; position: sticky; top: 0; background: var(--card-bg); z-index: 3; }
+    .multi-select-search input { width: 100%; padding: 0.4rem 0.5rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.8rem; }
+    .multi-select-actions { display: flex; justify-content: space-between; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); position: sticky; top: 32px; background: var(--card-bg); z-index: 2; }
     .multi-select-actions button { background: none; border: none; color: var(--score-high); cursor: pointer; font-size: 0.75rem; padding: 0; font-weight: bold; }
     .multi-select-actions button:hover { text-decoration: underline; }
     .multi-select-option { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.8rem; cursor: pointer; font-size: 0.85rem; color: var(--text); user-select: none; }
@@ -146,10 +147,11 @@
           
           <button class="btn-icon" onclick="toggleSettings()" data-tip="Configurações">⚙️</button>
         </div>
-        <div class="last-update" id="txtLastUpdate">Última Sincronização: --</div>
+        <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
       </div>
     </div>
 
+    <!-- Modal Unificado de Configurações -->
     <div id="tokenModal" class="token-modal" style="max-height: 80vh; overflow-y: auto;">
       <h3 id="txtSettingsTitle" style="margin-top:0; margin-bottom:1rem; color:var(--text); font-size:1.1rem;">Configurações</h3>
       
@@ -164,35 +166,40 @@
       <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext);">Taxas de Câmbio (Base: 1 USD)</label>
       <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
 
+      <!-- INÍCIO: Seção de Aumento Global -->
       <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
       <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext);">Aumento Global de Salários (%)</label>
       <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-        <input type="number" id="globalSalaryIncrease" value="0" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px;" placeholder="Ex: 10, -5">
+        <input type="number" id="globalSalaryIncrease" step="0.1" value="0" placeholder="Ex: 15 ou -10" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box;">
         <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease">Aplicar a Todos</button>
       </div>
+      <!-- FIM: Seção de Aumento Global -->
+
       <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 0.5rem; width: 100%;">Salvar Configurações</button>
     </div>
 
     <div class="table-toolbar">
-      <div class="filter-group">
-        <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="🔍 Buscar cidade ou país...">
-        
-        <div class="multi-select-container" id="countryFilterContainer">
-          <div class="multi-select-btn" onclick="toggleCountryFilter()">
-            <span id="countryFilterLabel">Todos os Países</span>
-            <span style="font-size: 0.7rem; color: var(--subtext);">▼</span>
+      <input type="text" id="searchInput" class="search-input" oninput="renderizarTabela()" placeholder="🔍 Buscar cidade ou país...">
+      
+      <!-- Multi-Select Customizado de Países -->
+      <div class="multi-select-container" id="countryFilterContainer">
+        <div class="multi-select-btn" onclick="toggleCountryFilter()">
+          <span id="countryFilterLabel">Todos os Países</span>
+          <span style="font-size: 0.7rem; color: var(--subtext);">▼</span>
+        </div>
+        <div class="multi-select-menu" id="countryFilterMenu">
+          <div class="multi-select-search">
+            <input type="text" id="countrySearchInput" oninput="filtrarOpcoesPaises()" onclick="event.stopPropagation()" placeholder="🔍 Buscar país/cidade...">
           </div>
-          <div class="multi-select-menu" id="countryFilterMenu">
-            <div class="multi-select-actions">
-              <button type="button" onclick="selectAllCountries(true)" id="btnSelectAll">Todos</button>
-              <button type="button" onclick="selectAllCountries(false)" id="btnSelectNone">Nenhum</button>
-            </div>
-            <div id="countryFilterList"></div>
+          <div class="multi-select-actions">
+            <button type="button" onclick="selectAllCountries(true)" id="btnSelectAll">Todos</button>
+            <button type="button" onclick="selectAllCountries(false)" id="btnSelectNone">Nenhum</button>
           </div>
+          <div id="countryFilterList"></div>
         </div>
       </div>
 
-      <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()">➕ Adicionar</button>
+      <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()" style="margin-left: auto;">➕ Adicionar</button>
     </div>
     
     <div class="card" id="formCard">
@@ -320,7 +327,6 @@
     let currentDisplayMode = localStorage.getItem('ivfr_display') || 'USD';
     document.getElementById('displayMode').value = currentDisplayMode;
     let selectedCountries = new Set(); 
-    let lastSyncDateStr = "--";
 
     function mudarModoExibicao(modo) {
       currentDisplayMode = modo;
@@ -349,6 +355,7 @@
         btnSaveConfig: "Salvar Configurações",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar cidade ou país...",
+        countrySearchPlaceholder: "🔍 Buscar país/cidade...",
         filterAll: "Todos os Países",
         filterSelected: "selecionados",
         selectAll: "Todos",
@@ -386,7 +393,7 @@
         thMonthsCar: "Meses Entrada Carro",
         thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro.",
         thIvfr: "Fator IVFR (0-100)",
-        thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Notas >= 5.0 ficam verdes.",
+        thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Cor definida pela Margem Livre: >= 33,3% verde, entre 20% e 33,3% amarelo, abaixo de 20% vermelho.",
         thActions: "Ações",
         tipEdit: "Editar cidade",
         tipDelete: "Remover cidade",
@@ -409,6 +416,7 @@
         btnSaveConfig: "Save Settings",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Search city or country...",
+        countrySearchPlaceholder: "🔍 Search country/city...",
         filterAll: "All Countries",
         filterSelected: "selected",
         selectAll: "All",
@@ -446,7 +454,7 @@
         thMonthsCar: "Months to Car Down",
         thMonthsCarTooltip: "Months of net surplus required to save the 20% car down payment.",
         thIvfr: "IVFR Factor (0-100)",
-        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Scores >= 5.0 are green.",
+        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Color set by Free Margin: >= 33.3% green, 20%-33.3% yellow, below 20% red.",
         thActions: "Actions",
         tipEdit: "Edit city",
         tipDelete: "Delete city",
@@ -469,6 +477,7 @@
         btnSaveConfig: "Guardar Configuraciones",
         tokenLabel: "GitHub Personal Access Token (PAT):",
         searchPlaceholder: "🔍 Buscar ciudad o país...",
+        countrySearchPlaceholder: "🔍 Buscar país/ciudad...",
         filterAll: "Todos los Países",
         filterSelected: "seleccionados",
         selectAll: "Todos",
@@ -506,7 +515,7 @@
         thMonthsCar: "Meses Entrada Coche",
         thMonthsCarTooltip: "Meses de ahorro neto necesarios para la entrada del 20% del coche.",
         thIvfr: "Factor IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Notas >= 5.0 se destacan en verde.",
+        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Color según el Margen Libre: >= 33,3% verde, entre 20% y 33,3% amarillo, por debajo de 20% rojo.",
         thActions: "Acciones",
         tipEdit: "Editar ciudad",
         tipDelete: "Eliminar ciudad",
@@ -519,6 +528,7 @@
     };
 
     let idiomaAtual = localStorage.getItem("ivfr_lang") || "pt";
+    let ultimaDataSincronizacao = null;
     let baseDados = [];
     let fileSha = "";
     let colunaOrdenada = "ivfr";
@@ -644,6 +654,7 @@
       document.getElementById("txtSubtitle").innerText = t.subtitle;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
+      document.getElementById("countrySearchInput").placeholder = t.countrySearchPlaceholder;
       document.getElementById("btnToggleForm").innerText = t.btnAddCity;
       
       document.getElementById("btnSelectAll").innerText = t.selectAll;
@@ -694,11 +705,9 @@
       document.getElementById("thIvfr").setAttribute("data-tip", t.thIvfrTooltip);
       document.getElementById("thActions").innerText = t.thActions;
 
-      // Mantém a tradução correta com o valor guardado
-      document.getElementById("txtLastUpdate").innerText = t.lastSync + lastSyncDateStr;
-
       popularFiltroPaises();
       updateCountryFilterLabel();
+      atualizarTextoSincronizacao();
       renderizarTabela();
     }
 
@@ -763,6 +772,14 @@
             ${renderizarBandeira(item.bandeira)} <span>${nome}</span>
           </label>
         `);
+      });
+    }
+
+    function filtrarOpcoesPaises() {
+      const termo = document.getElementById("countrySearchInput").value.toLowerCase();
+      document.querySelectorAll('#countryFilterList .multi-select-option').forEach(opt => {
+        const texto = opt.innerText.toLowerCase();
+        opt.style.display = texto.includes(termo) ? "flex" : "none";
       });
     }
 
@@ -860,13 +877,12 @@
       const penalidadeTempo = 1 / (1 + Math.log(1 + tempoTotalBens));
       const ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
 
-      // Nova regra de cores pela margem livre
+      // Classificação de cor baseada na Margem Livre (Free Margin):
+      // >= 33,3% verde | entre 20% e 33,3% amarelo | abaixo de 20% vermelho
+      const margemPct = margem * 100;
       let classe = "score-low";
-      if (margem >= 0.333) {
-        classe = "score-high";
-      } else if (margem >= 0.20) {
-        classe = "score-mid";
-      }
+      if (margemPct >= 33.3) classe = "score-high";
+      else if (margemPct >= 20) classe = "score-mid";
 
       return {
         ...item,
@@ -959,15 +975,21 @@
       return `${m}/${d}/${y} ${strHours}:${minutes} ${ampm}`;
     }
 
+    function atualizarTextoSincronizacao() {
+      const el = document.getElementById("txtLastUpdate");
+      if (!el) return;
+      const t = i18n[idiomaAtual];
+      el.innerText = t.lastSync + (ultimaDataSincronizacao ? formatarDataHora(ultimaDataSincronizacao) : "--");
+    }
+
     async function buscarUltimaAtualizacao(headers) {
       try {
         const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/commits?path=${ARQUIVO}&page=1&per_page=1`, { headers });
         if (res.ok) {
           const commits = await res.json();
           if (commits.length > 0) {
-            const date = new Date(commits[0].commit.committer.date);
-            lastSyncDateStr = formatarDataHora(date);
-            document.getElementById("txtLastUpdate").innerText = i18n[idiomaAtual].lastSync + lastSyncDateStr;
+            ultimaDataSincronizacao = new Date(commits[0].commit.committer.date);
+            atualizarTextoSincronizacao();
           }
         }
       } catch(e) {
@@ -1086,11 +1108,9 @@
 
     function aplicarAumentoGlobal() {
       const input = document.getElementById("globalSalaryIncrease");
-      const percentual = parseFloat(input.value);
-      
-      if (isNaN(percentual)) return;
-      
+      const percentual = parseFloat(input.value.replace(",", ".")) || 0;
       const t = i18n[idiomaAtual];
+
       const confirmMsg = t.confirmIncrease ? `${t.confirmIncrease} ${percentual}%?` : `Aplicar ${percentual}%?`;
 
       if (confirm(confirmMsg)) {
