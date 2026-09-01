@@ -1,1234 +1,317 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
   <meta charset="UTF-8">
-  <title>Índice de Viabilidade Econômica (IVFR)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Global Cost of Living & Delivery Driver Savings</title>
   <style>
     :root {
       --bg: #0f172a;
       --card-bg: #1e293b;
       --text: #f8fafc;
-      --subtext: #94a3b8;
+      --text-muted: #94a3b8;
       --border: #334155;
-      --input-bg: #334155;
-      --input-border: #475569;
-      --th-bg: #020617;
-      --th-hover: #0f172a;
-      --modal-bg: #020617;
-      --score-high: #4ade80;
-      --score-mid: #facc15;
-      --score-low: #f87171;
+      --accent: #38bdf8;
     }
-
-    body.light-theme {
-      --bg: #f1f5f9;
-      --card-bg: #ffffff;
-      --text: #0f172a;
-      --subtext: #64748b;
-      --border: #cbd5e1;
-      --input-bg: #f8fafc;
-      --input-border: #cbd5e1;
-      --th-bg: #e2e8f0;
-      --th-hover: #cbd5e1;
-      --modal-bg: #ffffff;
-      --score-high: #16a34a;
-      --score-mid: #ca8a04;
-      --score-low: #dc2626;
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      margin: 0;
+      padding: 24px;
     }
-
-    body { font-family: system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; margin: 0; transition: background 0.2s, color 0.2s; }
-    .container { max-width: 1350px; margin: 0 auto; }
-    
-    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-    h1 { font-size: 1.6rem; margin: 0 0 0.3rem 0; }
-    p.sub { color: var(--subtext); font-size: 0.85rem; margin: 0; }
-    
-    .top-right-panel { display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; }
-    .top-actions { display: flex; gap: 0.4rem; align-items: center; }
-    select.lang-select, .btn-icon { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
-    .btn-icon:hover, select.lang-select:hover { background: var(--border); }
-
-    .lang-dropdown { position: relative; }
-    .lang-current { display: flex; align-items: center; padding: 0.35rem 0.5rem; }
-    .lang-current .flag-icon { width: 1.4rem; height: auto; display: block; border-radius: 2px; }
-    .lang-menu { display: none; position: absolute; top: calc(100% + 4px); right: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; z-index: 20; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
-    .lang-menu.open { display: block; }
-    .lang-option { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; cursor: pointer; font-size: 0.85rem; color: var(--text); white-space: nowrap; }
-    .lang-option:hover { background: var(--border); }
-    .lang-option .flag-icon { width: 1.3rem; height: auto; border-radius: 2px; }
-    .last-update { font-size: 0.75rem; color: var(--subtext); }
-
-    .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.2rem; }
-    .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-
-    /* Estilos do Filtro Customizado de Países (Multi-select) */
-    .table-toolbar { display: flex; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
-    .search-input { max-width: 300px; padding: 0.55rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; }
-    .multi-select-container { position: relative; display: inline-block; }
-    .multi-select-btn { padding: 0.55rem 0.8rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; min-width: 260px; font-size: 0.85rem; user-select: none; }
-    .multi-select-btn:hover { border-color: var(--subtext); }
-    .multi-select-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; max-height: 350px; overflow-y: auto; z-index: 50; min-width: 100%; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
-    .multi-select-menu.open { display: block; }
-    .multi-select-search { padding: 0.6rem 0.8rem 0.3rem 0.8rem; position: sticky; top: 0; background: var(--card-bg); z-index: 3; }
-    .multi-select-search input { width: 100%; padding: 0.4rem 0.5rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.8rem; }
-    .multi-select-actions { display: flex; justify-content: space-between; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); position: sticky; top: 32px; background: var(--card-bg); z-index: 2; }
-    .multi-select-actions button { background: none; border: none; color: var(--score-high); cursor: pointer; font-size: 0.75rem; padding: 0; font-weight: bold; }
-    .multi-select-actions button:hover { text-decoration: underline; }
-    .multi-select-option { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 0.8rem; cursor: pointer; font-size: 0.85rem; color: var(--text); user-select: none; }
-    .multi-select-option:hover { background: var(--th-hover); }
-    .multi-select-option input { width: auto; margin: 0; cursor: pointer; accent-color: var(--score-high); }
-
-    .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
-    label { display: block; font-size: 0.75rem; color: var(--subtext); margin-bottom: 0.2rem; }
-    input, .grid select { width: 100%; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
-    
-    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
-    button.btn-main { background: #2563eb; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-    button.btn-main:hover { background: #1d4ed8; }
-    button.btn-sec { background: #059669; color: #fff; border: none; padding: 0.45rem 0.8rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-    button.btn-sec:hover { background: #047857; }
-    button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
-
-    table { width: 100%; border-collapse: collapse; background: var(--card-bg); border-radius: 8px; border: 1px solid var(--border); }
-    th, td { padding: 0.75rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; }
-    th { background: var(--th-bg); color: var(--subtext); user-select: none; cursor: pointer; }
-    th:hover { color: var(--text); background: var(--th-hover); }
-    th.no-sort { cursor: default; }
-    th.no-sort:hover { background: var(--th-bg); color: var(--subtext); }
-    
-    .flag { font-size: 1.25rem; margin-right: 0.4rem; vertical-align: middle; }
-    img.flag { width: 1.4rem; height: auto; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); }
-    .score { font-size: 0.95rem; font-weight: bold; }
-    .score-high { color: var(--score-high); }
-    .score-mid { color: var(--score-mid); }
-    .score-low { color: var(--score-low); }
-    
-    .btn-action { background: var(--input-bg); color: var(--subtext); border: none; padding: 0.25rem 0.5rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; margin-right: 0.2rem; }
-    .btn-action:hover { background: var(--border); color: var(--text); }
-    .btn-delete:hover { background: #ef4444; color: #fff; }
-
-    .status-msg { font-size: 0.85rem; color: var(--score-high); display: none; }
-
-    .has-tooltip { border-bottom: 1px dotted var(--subtext); display: inline-block; cursor: pointer; }
-    label .has-tooltip { cursor: default; }
-    
-    #globalTooltip {
-      position: fixed; display: none; background: var(--modal-bg); color: var(--text); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.75rem; border: 1px solid var(--border); line-height: 1.35; z-index: 999999; max-width: 270px; pointer-events: none; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 1.5rem;
+    }
+    .lang-switcher select {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .table-container {
+      overflow-x: auto;
+      background: var(--card-bg);
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+    th, td {
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    th {
+      background: #182234;
+      color: var(--text-muted);
+      font-weight: 600;
+      position: sticky;
+      top: 0;
+    }
+    tr:hover {
+      background: rgba(255, 255, 255, 0.02);
+    }
+    .tooltip-header {
+      cursor: help;
+      text-decoration: underline dotted var(--accent);
+      color: var(--accent);
+    }
+    .infinity {
+      color: #ef4444;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div>
-        <h1 id="txtTitle">Índice de Viabilidade Econômica (IVFR)</h1>
-        <p class="sub" id="txtSubtitle">Poder de compra real e velocidade de aquisição de bens por cidade.</p>
-      </div>
-      <div class="top-right-panel">
-        <div class="top-actions">
-          <select id="displayMode" class="lang-select" onchange="mudarModoExibicao(this.value)" data-tip="Conversão de Moeda">
-            <option value="USD">USD ($)</option>
-            <option value="EUR">EUR (€)</option>
-            <option value="ORIGINAL" id="optOriginalCurrency">Moeda Local</option>
-          </select>
-          <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
-          
-          <div class="lang-dropdown" id="langDropdown">
-            <button type="button" class="btn-icon lang-current" id="langCurrentBtn" onclick="toggleLangMenu()" data-tip="Idioma / Language">
-              <img id="langCurrentFlag" class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="pt">
-            </button>
-            <div class="lang-menu" id="langMenu">
-              <div class="lang-option" onclick="mudarIdioma('pt')"><img class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="pt"> <span>Português</span></div>
-              <div class="lang-option" onclick="mudarIdioma('en')"><img class="flag-icon" src="https://flagcdn.com/w40/us.png" alt="en"> <span>English</span></div>
-              <div class="lang-option" onclick="mudarIdioma('es')"><img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="es"> <span>Español</span></div>
-            </div>
-          </div>
-          
-          <button class="btn-icon" onclick="toggleSettings()" data-tip="Configurações">⚙️</button>
-        </div>
-        <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
-      </div>
+
+  <div class="header-container">
+    <h1 id="page-title">Comparador de Poupança Global (Entregadores)</h1>
+    <div class="lang-switcher">
+      <label for="lang-select" id="lang-label" style="display:none;">Idioma</label>
+      <select id="lang-select" onchange="changeLanguage(this.value)">
+        <option value="pt" selected>Português (PT)</option>
+        <option value="en">English (EN)</option>
+        <option value="es">Español (ES)</option>
+      </select>
     </div>
+  </div>
 
-    <!-- Modal Unificado de Configurações -->
-    <div id="tokenModal" class="token-modal" style="max-height: 80vh; overflow-y: auto;">
-      <h3 id="txtSettingsTitle" style="margin-top:0; margin-bottom:1rem; color:var(--text); font-size:1.1rem;">Configurações</h3>
-      
-      <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">GitHub Personal Access Token (PAT):</label>
-      <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="font-size:0.75rem; margin-left:0.5rem;">github.com/settings/personal-access-tokens</a>
-      <div class="token-row" style="margin-bottom: 1rem;">
-        <input id="ghToken" type="password" placeholder="github_pat_..." style="flex:1;">
-      </div>
-
-      <!-- INÍCIO: Seção de Aumento Global (mesma linha/área do PAT) -->
-      <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">Aumento Global de Salários (%)</label>
-      <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem; margin-bottom: 1.5rem;">
-        <input type="number" id="globalSalaryIncrease" step="0.1" value="0" placeholder="Ex: 15 ou -10" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box;">
-        <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease">Aplicar a Todos</button>
-      </div>
-      <!-- FIM: Seção de Aumento Global -->
-
-      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
-      
-      <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">Taxas de Câmbio (Base: 1 USD)</label>
-      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
-
-      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 1.5rem; width: 100%;">Salvar Configurações</button>
-    </div>
-
-    <div class="table-toolbar">
-      <!-- Multi-Select Customizado de Países (com busca embutida) -->
-      <div class="multi-select-container" id="countryFilterContainer">
-        <div class="multi-select-btn" onclick="toggleCountryFilter()">
-          <span id="countryFilterLabel">Todos os Países</span>
-          <span style="font-size: 0.7rem; color: var(--subtext);">▼</span>
-        </div>
-        <div class="multi-select-menu" id="countryFilterMenu">
-          <div class="multi-select-search">
-            <input type="text" id="searchInput" class="search-input" oninput="onBuscaChange()" onclick="event.stopPropagation()" placeholder="🔍 Buscar cidade ou país...">
-          </div>
-          <div class="multi-select-actions">
-            <button type="button" onclick="selectAllCountries(true)" id="btnSelectAll">Todos</button>
-            <button type="button" onclick="selectAllCountries(false)" id="btnSelectNone">Nenhum</button>
-          </div>
-          <div id="countryFilterList"></div>
-        </div>
-      </div>
-
-      <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()" style="margin-left: auto;">➕ Adicionar</button>
-    </div>
-    
-    <div class="card" id="formCard">
-      <input type="hidden" id="editIndex" value="-1">
-      <div class="grid">
-        <div style="max-width:65px"><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
-        <div><label id="lblCity">Cidade</label><input id="cidade" value="Nova Cidade"></div>
-        <div style="max-width:90px"><label id="lblCurrency">Moeda</label>
-          <select id="moeda">
-            <option value="$">$ — Dólar</option>
-            <option value="R$">R$ — Real</option>
-            <option value="€">€ — Euro</option>
-            <option value="£">£ — Libra</option>
-            <option value="¥">¥ — Iene/Yuan</option>
-            <option value="₹">₹ — Rúpia</option>
-            <option value="₩">₩ — Won</option>
-            <option value="₽">₽ — Rublo</option>
-            <option value="₺">₺ — Lira Turca</option>
-            <option value="₪">₪ — Shekel</option>
-            <option value="₫">₫ — Dong</option>
-            <option value="฿">฿ — Baht</option>
-            <option value="₱">₱ — Peso</option>
-            <option value="₴">₴ — Hryvnia</option>
-            <option value="zł">zł — Zloty</option>
-            <option value="kr">kr — Coroa</option>
-            <option value="Fr">Fr — Franco Suíço</option>
-            <option value="R">R — Rand</option>
-            <option value="﷼">﷼ — Rial</option>
-            <option value="د.إ">د.إ — Dirham</option>
-          </select>
-        </div>
-        <div><label id="lblSalary">Salário Líq. (USD)</label><input id="salario" type="number" value="3000"></div>
-        <div><label id="lblRent">Aluguel (USD)</label><input id="aluguel" type="number" value="1000"></div>
-        <div><label id="lblFood">Comida (USD)</label><input id="alimentacao" type="number" value="400"></div>
-        <div><label id="lblInternet">Internet (USD)</label><input id="internet" type="number" value="50"></div>
-        <div><label id="lblGym">Academia (USD)</label><input id="academia" type="number" value="40"></div>
-        <div><label id="lblExtras">Extras/Lazer (USD)</label><input id="extras" type="number" value="200"></div>
-        <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parc. Carro (USD)</span></label><input id="parcela" type="number" value="300"></div>
-        <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone (USD)</span></label><input id="iphone" type="number" value="1000"></div>
-        <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro (USD)</span></label><input id="entrada" type="number" value="4000"></div>
-        <div><label><span class="has-tooltip" id="lblHouseDown" data-tip="">Entrada Casa (USD)</span></label><input id="entradaCasa" type="number" value="50000"></div>
-      </div>
-      <div class="btn-group">
-        <button id="btnSubmit" class="btn-main" onclick="salvarPais()" data-tip="">Salvar</button>
-        <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()">Cancelar</button>
-        <span id="statusMsg" class="status-msg">Gravando...</span>
-      </div>
-    </div>
-
-    <table id="tabela">
+  <div class="table-container">
+    <table>
       <thead>
         <tr>
-          <th onclick="ordenarColuna('paisNome')"><span id="thCountry">País</span> <span id="sort_paisNome">↕</span></th>
-          <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
-          <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
-          <th onclick="ordenarColuna('custoFixo')"><span class="has-tooltip" id="thFixed" data-tip="">Custo Fixo Total</span> <span id="sort_custoFixo">↕</span></th>
-          <th onclick="ordenarColuna('sobra')"><span id="thSurplus">Sobra Líquida</span> <span id="sort_sobra">↕</span></th>
-          <th onclick="ordenarColuna('margem')"><span id="thMargin">Margem Livre</span> <span id="sort_margem">↕</span></th>
-          <th onclick="ordenarColuna('mesesIphone')"><span class="has-tooltip" id="thMonthsIphone" data-tip="">Meses p/ iPhone</span> <span id="sort_mesesIphone">↕</span></th>
-          <th onclick="ordenarColuna('mesesCarro')"><span class="has-tooltip" id="thMonthsCar" data-tip="">Meses Entrada Carro</span> <span id="sort_mesesCarro">↕</span></th>
-          <th onclick="ordenarColuna('mesesCasa')"><span class="has-tooltip" id="thMonthsHouse" data-tip="">Meses Entrada Casa</span> <span id="sort_mesesCasa">↕</span></th>
-          <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr" data-tip="">Fator IVFR (0-100)</span> <span id="sort_ivfr">↕</span></th>
-          <th class="no-sort" id="thActions">Ações</th>
+          <th id="th-country">País / Cidade</th>
+          <th id="th-salary">Salário</th>
+          <th id="th-rent">Aluguel</th>
+          <th id="th-living">Despesas Fixas</th>
+          <th id="th-net">Sobra Mensal</th>
+          <th id="th-car-down" class="tooltip-header">Months to Car Down ℹ️</th>
+          <th id="th-house-down" class="tooltip-header">Months to House Down ℹ️</th>
         </tr>
       </thead>
-      <tbody id="tabelaCorpo"></tbody>
+      <tbody id="table-body"></tbody>
     </table>
   </div>
 
-  <div id="globalTooltip"></div>
-
   <script>
-    const USUARIO = "daniloliveira89";
-    const REPO = "indice-custo-vida";
-    const ARQUIVO = "dados.json";
-
-    const currencyMap = {
-      "Qatar": "QAR", "Spain": "EUR", "United States": "USD", "United Arab Emirates": "AED",
-      "Taiwan": "TWD", "Oman": "OMR", "Armenia": "AMD", "Japan": "JPY", "Singapore": "SGD",
-      "Thailand": "THB", "Bahrain": "BHD", "Slovenia": "EUR", "Saudi Arabia": "SAR", "Estonia": "EUR",
-      "Switzerland": "CHF", "South Korea": "KRW", "Chile": "CLP", "Croatia": "EUR", "Netherlands": "EUR",
-      "Denmark": "DKK", "Finland": "EUR", "Sweden": "SEK", "Czechia": "CZK", "Austria": "EUR",
-      "Poland": "PLN", "Portugal": "EUR", "Uzbekistan": "UZS", "Slovakia": "EUR", "Azerbaijan": "AZN",
-      "Israel": "ILS", "Cuba": "CUP", "Norway": "NOK", "Cyprus": "EUR", "Kuwait": "KWD", "Romania": "RON",
-      "Lithuania": "EUR", "Hungary": "HUF", "Luxembourg": "EUR", "Canada": "CAD", "Montenegro": "EUR",
-      "Latvia": "EUR", "Nepal": "NPR", "Bulgaria": "BGN", "Georgia": "GEL", "Germany": "EUR", "Serbia": "RSD",
-      "Kosovo": "EUR", "Russia": "RUB", "Malta": "EUR", "Türkiye": "TRY", "Jordan": "JOD",
-      "North Macedonia": "MKD", "Moldova": "MDL", "Sri Lanka": "LKR", "Bosnia & Herzegovina": "BAM",
-      "Philippines": "PHP", "Pakistan": "PKR", "Vietnam": "VND", "Panama": "PAB", "India": "INR",
-      "Tunisia": "TND", "Albania": "ALL", "Indonesia": "IDR", "Iraq": "IQD", "Ireland": "EUR",
-      "Kazakhstan": "KZT", "Lebanon": "LBP", "Greece": "EUR", "Australia": "AUD", "Ukraine": "UAH",
-      "United Kingdom": "GBP", "Egypt": "EGP", "New Zealand": "NZD", "Morocco": "MAD", "Italy": "EUR",
-      "Mauritius": "MUR", "Belgium": "EUR", "Iran": "IRR", "Belarus": "BYN", "Algeria": "DZD",
-      "Malaysia": "MYR", "Uruguay": "UYU", "Costa Rica": "CRC", "Mexico": "MXN", "Dominican Republic": "DOP",
-      "France": "EUR", "Kenya": "KES", "Zimbabwe": "ZWG", "Ecuador": "USD", "China": "CNY",
-      "Colombia": "COP", "Puerto Rico": "USD", "Bolivia": "BOB", "Bangladesh": "BDT", "Argentina": "ARS",
-      "Nigeria": "NGN", "Brazil": "BRL", "Peru": "PEN", "South Africa": "ZAR", "Venezuela": "VES", "Brasil": "BRL"
-    };
-
-    const currencySymbols = {
-      "USD": "$", "EUR": "€", "QAR": "﷼", "AED": "د.إ", "TWD": "NT$", "OMR": "﷼", "AMD": "֏", "JPY": "¥",
-      "SGD": "S$", "THB": "฿", "BHD": ".د.ب", "SAR": "﷼", "CHF": "Fr", "KRW": "₩", "CLP": "$", "DKK": "kr",
-      "SEK": "kr", "CZK": "Kč", "PLN": "zł", "UZS": "so'm", "AZN": "₼", "ILS": "₪", "CUP": "₱", "NOK": "kr",
-      "KWD": "د.ك", "RON": "lei", "HUF": "Ft", "CAD": "$", "NPR": "रू", "BGN": "лв", "GEL": "₾", "RSD": "дин",
-      "RUB": "₽", "TRY": "₺", "JOD": "د.ا", "MKD": "ден", "MDL": "L", "LKR": "Rs", "BAM": "KM", "PHP": "₱",
-      "PKR": "Rs", "VND": "₫", "PAB": "B/.", "INR": "₹", "TND": "د.ت", "ALL": "L", "IDR": "Rp", "IQD": "ع.د",
-      "KZT": "₸", "LBP": "ل.ل", "AUD": "$", "UAH": "₴", "GBP": "£", "EGP": "£", "NZD": "$", "MAD": "د.م.",
-      "MUR": "Rs", "IRR": "﷼", "BYN": "Br", "DZD": "د.ج", "MYR": "RM", "UYU": "$", "CRC": "₡", "MXN": "$",
-      "DOP": "RD$", "KES": "KSh", "ZWG": "Z$", "CNY": "¥", "COP": "$", "BOB": "Bs.", "BDT": "৳", "ARS": "$",
-      "NGN": "₦", "BRL": "R$", "PEN": "S/.", "ZAR": "R", "VES": "Bs.S"
-    };
-
-    let userExchangeRates = JSON.parse(localStorage.getItem('ivfr_rates')) || {
-      "USD": 1.0, "EUR": 0.92, "QAR": 3.64, "AED": 3.67, "TWD": 31.5, "OMR": 0.38, "AMD": 395.0,
-      "JPY": 150.0, "SGD": 1.34, "THB": 36.0, "BHD": 0.38, "SAR": 3.75, "CHF": 0.88, "KRW": 1330.0,
-      "CLP": 950.0, "DKK": 6.85, "SEK": 10.4, "CZK": 23.3, "PLN": 3.95, "UZS": 12500.0, "AZN": 1.7,
-      "ILS": 3.6, "CUP": 24.0, "NOK": 10.5, "KWD": 0.31, "RON": 4.6, "HUF": 360.0, "CAD": 1.35,
-      "NPR": 133.0, "BGN": 1.8, "GEL": 2.65, "RSD": 108.0, "RUB": 90.0, "TRY": 31.0, "JOD": 0.71,
-      "MKD": 56.5, "MDL": 17.8, "LKR": 305.0, "BAM": 1.8, "PHP": 56.0, "PKR": 278.0, "VND": 24500.0,
-      "PAB": 1.0, "INR": 83.0, "TND": 3.1, "ALL": 95.0, "IDR": 15600.0, "IQD": 1310.0, "KZT": 450.0,
-      "LBP": 89500.0, "AUD": 1.5, "UAH": 38.0, "GBP": 0.79, "EGP": 31.0, "NZD": 1.6, "MAD": 10.0,
-      "MUR": 46.0, "IRR": 42000.0, "BYN": 3.2, "DZD": 134.0, "MYR": 4.7, "UYU": 39.0, "CRC": 515.0,
-      "MXN": 17.0, "DOP": 58.0, "KES": 145.0, "ZWG": 13.5, "CNY": 7.2, "COP": 3900.0, "BOB": 6.9,
-      "BDT": 110.0, "ARS": 850.0, "NGN": 1500.0, "BRL": 5.15, "PEN": 3.8, "ZAR": 19.0, "VES": 36.0
-    };
-
-    let currentDisplayMode = localStorage.getItem('ivfr_display') || 'USD';
-    document.getElementById('displayMode').value = currentDisplayMode;
-    let selectedCountries = new Set(); 
-
-    function mudarModoExibicao(modo) {
-      currentDisplayMode = modo;
-      localStorage.setItem("ivfr_display", modo);
-      renderizarTabela();
-    }
-
-    function getConversionInfo(paisNome, modo) {
-      if (modo === 'USD') return { rate: 1, symbol: "$" };
-      if (modo === 'EUR') return { rate: userExchangeRates['EUR'] || 0.92, symbol: "€" };
-      const locCurr = currencyMap[paisNome] || "USD";
-      return { rate: userExchangeRates[locCurr] || 1, symbol: currencySymbols[locCurr] || locCurr + " " };
-    }
-
     const i18n = {
       pt: {
-        title: "Índice de Viabilidade Econômica (IVFR)",
-        subtitle: "Poder de compra real e velocidade de aquisição de bens por cidade.",
-        lastSync: "Última Sincronização: ",
-        optOriginalCurrency: "Moeda Local",
-        txtSettingsTitle: "Configurações",
-        txtRatesLabel: "Taxas de Câmbio (Base: 1 USD)",
-        txtSalaryIncreaseLabel: "Aumento Global de Salários (%)",
-        btnApplyIncrease: "Aplicar a Todos",
-        confirmIncrease: "Tem certeza que deseja aplicar ",
-        btnSaveConfig: "Salvar Configurações",
-        tokenLabel: "GitHub Personal Access Token (PAT):",
-        searchPlaceholder: "🔍 Buscar cidade ou país...",
-        filterAll: "Todos os Países",
-        filterSelected: "selecionados",
-        selectAll: "Todos",
-        selectNone: "Nenhum",
-        btnAddCity: "➕ Adicionar",
-        lblFlag: "Bandeira",
-        lblCity: "Cidade",
-        defaultCityName: "Nova Cidade",
-        lblCurrency: "Moeda",
-        lblSalary: "Salário Líq. (USD)",
-        lblRent: "Aluguel (USD)",
-        lblFood: "Comida (USD)",
-        lblInternet: "Internet (USD)",
-        lblGym: "Academia (USD)",
-        lblExtras: "Extras/Lazer (USD)",
-        lblCarInstallment: "Parc. Carro (USD)",
-        lblCarInstallmentTooltip: "Parcela média mensal do financiamento de um carro popular.",
-        lblIphone: "iPhone (USD)",
-        lblIphoneTooltip: "Preço à vista do modelo base do iPhone mais atual na moeda local.",
-        lblCarDown: "Entrada Carro (USD)",
-        lblCarDownTooltip: "Entrada média de 20% do valor de um carro popular padrão.",
-        lblHouseDown: "Entrada Casa (USD)",
-        lblHouseDownTooltip: "Entrada média de 20% do valor de uma casa/apartamento padrão.",
-        btnSubmitAdd: "Salvar",
-        btnSubmitUpdate: "Atualizar",
-        btnSubmitTooltip: "Grava as alterações diretamente no arquivo dados.json do repositório.",
-        btnCancel: "Cancelar",
-        thCountry: "País",
-        thCity: "Cidade",
-        thSalary: "Salário Líq.",
-        thFixed: "Custo Fixo Total",
-        thFixedTooltip: "Aluguel + Alimentação + Internet + Academia + Extras/Lazer + Parcela do Carro.",
-        thSurplus: "Sobra Líquida",
-        thMargin: "Margem Livre",
-        thMonthsIphone: "Meses p/ iPhone",
-        thMonthsIphoneTooltip: "Meses de sobra líquida necessários para comprar o iPhone à vista.",
-        thMonthsCar: "Meses Entrada Carro",
-        thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro.",
-        thMonthsHouse: "Meses Entrada Casa",
-        thMonthsHouseTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% de uma casa/apartamento.",
-        thIvfr: "Fator IVFR (0-100)",
-        thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Cor definida pela Margem Livre: >= 33,3% verde, entre 20% e 33,3% amarelo, abaixo de 20% vermelho.",
-        thActions: "Ações",
-        tipEdit: "Editar cidade",
-        tipDelete: "Remover cidade",
-        msgInfeasible: "Inviável",
-        msgSaving: "Gravando no GitHub...",
-        msgSaved: "✔️ Gravado com sucesso!",
-        msgError: "Erro ao gravar. Verifique o token.",
-        confirmDelete: "Deseja remover "
+        title: "Comparador de Poupança Global (Entregadores)",
+        country: "País / Cidade",
+        salary: "Salário",
+        rent: "Aluguel",
+        living: "Despesas Fixas",
+        net: "Sobra Líquida",
+        carDown: "Meses Entrada Carro ℹ️",
+        houseDown: "Meses Entrada Casa ℹ️",
+        carDownTooltip: "Meses de poupança líquida necessários para pagar a entrada de um Toyota Corolla Sedan (Híbrido) 2026 0km, considerando a menor taxa de entrada do mercado local.",
+        houseDownTooltip: "Meses de poupança necessários para atingir 20% de entrada em um imóvel padrão local."
       },
       en: {
-        title: "Economic Viability Index (IVFR)",
-        subtitle: "Real purchasing power and asset acquisition speed by city.",
-        lastSync: "Last Sync: ",
-        optOriginalCurrency: "Local Currency",
-        txtSettingsTitle: "Settings",
-        txtRatesLabel: "Exchange Rates (Base: 1 USD)",
-        txtSalaryIncreaseLabel: "Global Salary Increase (%)",
-        btnApplyIncrease: "Apply to All",
-        confirmIncrease: "Are you sure you want to apply ",
-        btnSaveConfig: "Save Settings",
-        tokenLabel: "GitHub Personal Access Token (PAT):",
-        searchPlaceholder: "🔍 Search city or country...",
-        filterAll: "All Countries",
-        filterSelected: "selected",
-        selectAll: "All",
-        selectNone: "None",
-        btnAddCity: "➕ Add City",
-        lblFlag: "Flag",
-        lblCity: "City",
-        defaultCityName: "New City",
-        lblCurrency: "Currency",
-        lblSalary: "Net Salary (USD)",
-        lblRent: "Rent (USD)",
-        lblFood: "Groceries (USD)",
-        lblInternet: "Internet (USD)",
-        lblGym: "Gym (USD)",
-        lblExtras: "Extras/Fun (USD)",
-        lblCarInstallment: "Car Installment (USD)",
-        lblCarInstallmentTooltip: "Average monthly car financing installment.",
-        lblIphone: "iPhone (USD)",
-        lblIphoneTooltip: "Retail price of latest base iPhone in local currency.",
-        lblCarDown: "Car Down Payment (USD)",
-        lblCarDownTooltip: "Average 20% down payment for a standard car.",
-        lblHouseDown: "House Down Payment (USD)",
-        lblHouseDownTooltip: "Average 20% down payment for a standard house/apartment.",
-        btnSubmitAdd: "Save",
-        btnSubmitUpdate: "Update",
-        btnSubmitTooltip: "Commits changes directly to the dados.json file in your GitHub repo.",
-        btnCancel: "Cancel",
-        thCountry: "Country",
-        thCity: "City",
-        thSalary: "Net Salary",
-        thFixed: "Total Fixed Costs",
-        thFixedTooltip: "Rent + Groceries + Internet + Gym + Extras + Car Installment.",
-        thSurplus: "Net Surplus",
-        thMargin: "Free Margin",
-        thMonthsIphone: "Months to iPhone",
-        thMonthsIphoneTooltip: "Months of net surplus required to buy the iPhone upfront.",
-        thMonthsCar: "Months to Car Down",
-        thMonthsCarTooltip: "Months of net surplus required to save the 20% car down payment.",
-        thMonthsHouse: "Months to House Down",
-        thMonthsHouseTooltip: "Months of net surplus required to save the 20% house/apartment down payment.",
-        thIvfr: "IVFR Factor (0-100)",
-        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Color set by Free Margin: >= 33.3% green, 20%-33.3% yellow, below 20% red.",
-        thActions: "Actions",
-        tipEdit: "Edit city",
-        tipDelete: "Delete city",
-        msgInfeasible: "Infeasible",
-        msgSaving: "Committing to GitHub...",
-        msgSaved: "✔️ Saved to GitHub!",
-        msgError: "Error saving. Check token.",
-        confirmDelete: "Delete "
+        title: "Global Delivery Driver Savings Comparator",
+        country: "Country / City",
+        salary: "Salary",
+        rent: "Rent",
+        living: "Living Costs",
+        net: "Net Savings",
+        carDown: "Months to Car Down ℹ️",
+        houseDown: "Months to House Down ℹ️",
+        carDownTooltip: "Months of net monthly savings needed to pay the down payment on a brand new 2026 Toyota Corolla Sedan (Hybrid), based on minimum local financing rates.",
+        houseDownTooltip: "Months of net savings needed to afford a 20% home down payment."
       },
       es: {
-        title: "Índice de Viabilidad Económica (IVFR)",
-        subtitle: "Poder adquisitivo real y velocidad de adquisición de bienes por ciudad.",
-        lastSync: "Última Sinc.: ",
-        optOriginalCurrency: "Moneda Local",
-        txtSettingsTitle: "Configuraciones",
-        txtRatesLabel: "Tasas de Cambio (Base: 1 USD)",
-        txtSalaryIncreaseLabel: "Aumento Global de Salarios (%)",
-        btnApplyIncrease: "Aplicar a Todos",
-        confirmIncrease: "¿Estás seguro de que quieres aplicar ",
-        btnSaveConfig: "Guardar Configuraciones",
-        tokenLabel: "GitHub Personal Access Token (PAT):",
-        searchPlaceholder: "🔍 Buscar ciudad o país...",
-        filterAll: "Todos los Países",
-        filterSelected: "seleccionados",
-        selectAll: "Todos",
-        selectNone: "Ninguno",
-        btnAddCity: "➕ Añadir",
-        lblFlag: "Bandera",
-        lblCity: "Ciudad",
-        defaultCityName: "Nueva Ciudad",
-        lblCurrency: "Moneda",
-        lblSalary: "Salario Neto (USD)",
-        lblRent: "Alquiler (USD)",
-        lblFood: "Comida (USD)",
-        lblInternet: "Internet (USD)",
-        lblGym: "Gimnasio (USD)",
-        lblExtras: "Extras/Ocio (USD)",
-        lblCarInstallment: "Cuota Coche (USD)",
-        lblCarInstallmentTooltip: "Cuota mensual promedio de financiación de coche estándar.",
-        lblIphone: "iPhone (USD)",
-        lblIphoneTooltip: "Precio al contado del último iPhone en moneda local.",
-        lblCarDown: "Entrada Coche (USD)",
-        lblCarDownTooltip: "Entrada del 20% para la compra de un coche estándar.",
-        lblHouseDown: "Entrada Casa (USD)",
-        lblHouseDownTooltip: "Entrada media del 20% para la compra de una casa/apartamento estándar.",
-        btnSubmitAdd: "Guardar",
-        btnSubmitUpdate: "Actualizar",
-        btnSubmitTooltip: "Guarda y hace commit directamente en el archivo dados.json de GitHub.",
-        btnCancel: "Cancelar",
-        thCountry: "País",
-        thCity: "Ciudad",
-        thSalary: "Salario Neto",
-        thFixed: "Coste Fijo Total",
-        thFixedTooltip: "Alquiler + Alimentación + Internet + Gimnasio + Extras + Cuota Coche.",
-        thSurplus: "Sobrante Neto",
-        thMargin: "Margen Libre",
-        thMonthsIphone: "Meses para iPhone",
-        thMonthsIphoneTooltip: "Meses de ahorro neto necesarios para adquirir el iPhone al contado.",
-        thMonthsCar: "Meses Entrada Coche",
-        thMonthsCarTooltip: "Meses de ahorro neto necesarios para la entrada del 20% del coche.",
-        thMonthsHouse: "Meses Entrada Casa",
-        thMonthsHouseTooltip: "Meses de ahorro neto necesarios para la entrada del 20% de una casa/apartamento.",
-        thIvfr: "Factor IVFR (0-100)",
-        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Color según el Margen Libre: >= 33,3% verde, entre 20% y 33,3% amarillo, por debajo de 20% rojo.",
-        thActions: "Acciones",
-        tipEdit: "Editar ciudad",
-        tipDelete: "Eliminar ciudad",
-        msgInfeasible: "Inviable",
-        msgSaving: "Guardando en GitHub...",
-        msgSaved: "✔️ ¡Guardado con éxito!",
-        msgError: "Error al guardar. Revise el token.",
-        confirmDelete: "¿Eliminar "
+        title: "Comparador Global de Ahorro (Repartidores)",
+        country: "País / Ciudad",
+        salary: "Salario",
+        rent: "Alquiler",
+        living: "Gastos Fijos",
+        net: "Ahorro Neto",
+        carDown: "Meses Entrada Coche ℹ️",
+        houseDown: "Meses Entrada Casa ℹ️",
+        carDownTooltip: "Meses de ahorro neto necesarios para pagar la entrada de un Toyota Corolla Sedan (Híbrido) 2026 0km, según la tasa mínima de enganche del mercado local.",
+        houseDownTooltip: "Meses de ahorro necesarios para cubrir el 20% de enganche de una vivienda típica."
       }
     };
 
-    let idiomaAtual = localStorage.getItem("ivfr_lang") || "pt";
-    let ultimaDataSincronizacao = null;
-    let baseDados = [];
-    let fileSha = "";
-    let colunaOrdenada = "ivfr";
-    let ordemAscendente = false;
+    const dataset = [
+      {"bandeira":"🇶🇦","cidade":"Doha","moeda":"$","salario":4102,"aluguel":1076,"alimentacao":430,"internet":46,"academia":134,"extras":410,"parcela":434,"iphone":829,"entrada":5484,"paisNome":"Qatar","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":11.5},
+      {"bandeira":"🇪🇸","cidade":"Murcia","moeda":"$","salario":1325,"aluguel":600,"alimentacao":250,"internet":30,"academia":20,"extras":65,"parcela":460,"iphone":1092,"entrada":5800,"paisNome":"Spain","preco_casa":72000,"entrada_casa_20pct":14400,"months_to_house_down":115.2},
+      {"bandeira":"🇺🇸","cidade":"Des Moines","moeda":"$","salario":2563,"aluguel":800,"alimentacao":350,"internet":50,"academia":20,"extras":150,"parcela":520,"iphone":829,"entrada":6000,"paisNome":"United States","preco_casa":120000,"entrada_casa_20pct":24000,"months_to_house_down":10.9},
+      {"bandeira":"🇺🇸","cidade":"Newport Beach","moeda":"$","salario":2563,"aluguel":1500,"alimentacao":450,"internet":65,"academia":75,"extras":450,"parcela":650,"iphone":829,"entrada":7500,"paisNome":"United States","preco_casa":600000,"entrada_casa_20pct":120000,"months_to_house_down":33.2},
+      {"bandeira":"🇦🇪","cidade":"Abu Dhabi","moeda":"$","salario":3077,"aluguel":1112,"alimentacao":345,"internet":54,"academia":65,"extras":310,"parcela":707,"iphone":925,"entrada":8928,"paisNome":"United Arab Emirates","preco_casa":150000,"entrada_casa_20pct":30000,"months_to_house_down":62},
+      {"bandeira":"🇹🇼","cidade":"Taipei","moeda":"$","salario":1745,"aluguel":331,"alimentacao":240,"internet":18,"academia":38,"extras":175,"parcela":535,"iphone":924,"entrada":6749,"paisNome":"Taiwan","preco_casa":480000,"entrada_casa_20pct":96000,"months_to_house_down":235.3},
+      {"bandeira":"🇴🇲","cidade":"Muscat","moeda":"$","salario":2472,"aluguel":382,"alimentacao":300,"internet":33,"academia":51,"extras":245,"parcela":404,"iphone":829,"entrada":5097,"paisNome":"Oman","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":11.4},
+      {"bandeira":"🇦🇲","cidade":"Yerevan","moeda":"$","salario":743,"aluguel":461,"alimentacao":160,"internet":8,"academia":77,"extras":75,"parcela":554,"iphone":829,"entrada":7000,"paisNome":"Armenia","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇯🇵","cidade":"Tokyo","moeda":"$","salario":1887,"aluguel":382,"alimentacao":250,"internet":24,"academia":54,"extras":190,"parcela":339,"iphone":792,"entrada":4277,"paisNome":"Japan","preco_casa":360000,"entrada_casa_20pct":72000,"months_to_house_down":111.1},
+      {"bandeira":"🇸🇬","cidade":"Singapore","moeda":"$","salario":1950,"aluguel":2043,"alimentacao":445,"internet":13,"academia":107,"extras":430,"parcela":2483,"iphone":1005,"entrada":31348,"paisNome":"Singapore","preco_casa":720000,"entrada_casa_20pct":144000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇹🇭","cidade":"Bangkok","moeda":"$","salario":608,"aluguel":296,"alimentacao":160,"internet":30,"academia":55,"extras":60,"parcela":556,"iphone":883,"entrada":7015,"paisNome":"Thailand","preco_casa":120000,"entrada_casa_20pct":24000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇧🇭","cidade":"Manama","moeda":"$","salario":2231,"aluguel":624,"alimentacao":280,"internet":26,"academia":73,"extras":225,"parcela":588,"iphone":829,"entrada":7419,"paisNome":"Bahrain","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":43.4},
+      {"bandeira":"🇸🇮","cidade":"Ljubljana","moeda":"$","salario":1767,"aluguel":655,"alimentacao":270,"internet":16,"academia":54,"extras":175,"parcela":476,"iphone":829,"entrada":6016,"paisNome":"Slovenia","preco_casa":210000,"entrada_casa_20pct":42000,"months_to_house_down":347.1},
+      {"bandeira":"🇸🇦","cidade":"Riyadh","moeda":"$","salario":1966,"aluguel":434,"alimentacao":255,"internet":32,"academia":88,"extras":195,"parcela":908,"iphone":829,"entrada":11459,"paisNome":"Saudi Arabia","preco_casa":72000,"entrada_casa_20pct":14400,"months_to_house_down":266.7},
+      {"bandeira":"🇪🇪","cidade":"Tallinn","moeda":"$","salario":1871,"aluguel":489,"alimentacao":250,"internet":20,"academia":50,"extras":185,"parcela":456,"iphone":829,"entrada":5752,"paisNome":"Estonia","preco_casa":180000,"entrada_casa_20pct":36000,"months_to_house_down":85.5},
+      {"bandeira":"🇨🇭","cidade":"Bern","moeda":"$","salario":4100,"aluguel":1660,"alimentacao":450,"internet":40,"academia":91,"extras":755,"parcela":694,"iphone":978,"entrada":8756,"paisNome":"Switzerland","preco_casa":540000,"entrada_casa_20pct":108000,"months_to_house_down":27.9},
+      {"bandeira":"🇰🇷","cidade":"Seoul","moeda":"$","salario":2105,"aluguel":375,"alimentacao":270,"internet":35,"academia":52,"extras":210,"parcela":406,"iphone":874,"entrada":5132,"paisNome":"South Korea","preco_casa":600000,"entrada_casa_20pct":120000,"months_to_house_down":158.5},
+      {"bandeira":"🇨🇱","cidade":"Santiago","moeda":"$","salario":719,"aluguel":361,"alimentacao":190,"internet":13,"academia":37,"extras":70,"parcela":310,"iphone":829,"entrada":3910,"paisNome":"Chile","preco_casa":120000,"entrada_casa_20pct":24000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇭🇷","cidade":"Zagreb","moeda":"$","salario":1661,"aluguel":570,"alimentacao":240,"internet":40,"academia":55,"extras":165,"parcela":428,"iphone":829,"entrada":5404,"paisNome":"Croatia","preco_casa":150000,"entrada_casa_20pct":30000,"months_to_house_down":184},
+      {"bandeira":"🇳🇱","cidade":"Amsterdam","moeda":"$","salario":2189,"aluguel":1323,"alimentacao":410,"internet":24,"academia":44,"extras":385,"parcela":674,"iphone":1103,"entrada":8511,"paisNome":"Netherlands","preco_casa":360000,"entrada_casa_20pct":72000,"months_to_house_down":71.1},
+      {"bandeira":"🇩🇰","cidade":"Copenhagen","moeda":"$","salario":4244,"aluguel":910,"alimentacao":440,"internet":18,"academia":46,"extras":425,"parcela":817,"iphone":1144,"entrada":10312,"paisNome":"Denmark","preco_casa":300000,"entrada_casa_20pct":60000,"months_to_house_down":37.8},
+      {"bandeira":"🇫🇮","cidade":"Helsinki","moeda":"$","salario":3043,"aluguel":724,"alimentacao":345,"internet":30,"academia":46,"extras":305,"parcela":596,"iphone":1137,"entrada":7525,"paisNome":"Finland","preco_casa":240000,"entrada_casa_20pct":48000,"months_to_house_down":48.1},
+      {"bandeira":"🇸🇪","cidade":"Stockholm","moeda":"$","salario":3268,"aluguel":734,"alimentacao":360,"internet":28,"academia":43,"extras":325,"parcela":550,"iphone":1127,"entrada":6942,"paisNome":"Sweden","preco_casa":300000,"entrada_casa_20pct":60000,"months_to_house_down":48.9},
+      {"bandeira":"🇨🇿","cidade":"Prague","moeda":"$","salario":1783,"aluguel":697,"alimentacao":270,"internet":28,"academia":59,"extras":180,"parcela":512,"iphone":1082,"entrada":6460,"paisNome":"Czechia","preco_casa":270000,"entrada_casa_20pct":54000,"months_to_house_down":1459.5},
+      {"bandeira":"🇦🇹","cidade":"Vienna","moeda":"$","salario":1780,"aluguel":831,"alimentacao":345,"internet":17,"academia":45,"extras":305,"parcela":483,"iphone":1080,"entrada":6095,"paisNome":"Austria","preco_casa":300000,"entrada_casa_20pct":60000,"months_to_house_down":57.9},
+      {"bandeira":"🇵🇱","cidade":"Warsaw","moeda":"$","salario":1073,"aluguel":618,"alimentacao":250,"internet":40,"academia":40,"extras":170,"parcela":515,"iphone":1051,"entrada":6502,"paisNome":"Poland","preco_casa":180000,"entrada_casa_20pct":36000,"months_to_house_down":800},
+      {"bandeira":"🇵🇹","cidade":"Lisbon","moeda":"$","salario":1336,"aluguel":838,"alimentacao":320,"internet":21,"academia":45,"extras":135,"parcela":547,"iphone":1126,"entrada":6912,"paisNome":"Portugal","preco_casa":180000,"entrada_casa_20pct":36000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇺🇿","cidade":"Tashkent","moeda":"$","salario":509,"aluguel":298,"alimentacao":140,"internet":4,"academia":47,"extras":50,"parcela":278,"iphone":829,"entrada":3508,"paisNome":"Uzbekistan","preco_casa":48000,"entrada_casa_20pct":9600,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇸🇰","cidade":"Bratislava","moeda":"$","salario":1343,"aluguel":567,"alimentacao":220,"internet":27,"academia":47,"extras":135,"parcela":424,"iphone":829,"entrada":5358,"paisNome":"Slovakia","preco_casa":180000,"entrada_casa_20pct":36000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇦🇿","cidade":"Baku","moeda":"$","salario":450,"aluguel":276,"alimentacao":140,"internet":25,"academia":36,"extras":45,"parcela":326,"iphone":829,"entrada":4118,"paisNome":"Azerbaijan","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇮🇱","cidade":"Jerusalem","moeda":"$","salario":3691,"aluguel":1226,"alimentacao":395,"internet":20,"academia":79,"extras":370,"parcela":957,"iphone":829,"entrada":12084,"paisNome":"Israel","preco_casa":420000,"entrada_casa_20pct":84000,"months_to_house_down":130.4},
+      {"bandeira":"🇨🇺","cidade":"Havana","moeda":"$","salario":35,"aluguel":507,"alimentacao":105,"internet":35,"academia":37,"extras":5,"parcela":1109,"iphone":829,"entrada":14000,"paisNome":"Cuba","preco_casa":30000,"entrada_casa_20pct":6000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇳🇴","cidade":"Oslo","moeda":"$","salario":4096,"aluguel":1087,"alimentacao":430,"internet":38,"academia":50,"extras":410,"parcela":758,"iphone":1247,"entrada":9571,"paisNome":"Norway","preco_casa":360000,"entrada_casa_20pct":72000,"months_to_house_down":54.4},
+      {"bandeira":"🇨🇾","cidade":"Nicosia","moeda":"$","salario":1888,"aluguel":834,"alimentacao":250,"internet":21,"academia":79,"extras":190,"parcela":536,"iphone":829,"entrada":6764,"paisNome":"Cyprus","preco_casa":150000,"entrada_casa_20pct":30000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇰🇼","cidade":"Kuwait City","moeda":"$","salario":2959,"aluguel":644,"alimentacao":335,"internet":20,"academia":108,"extras":295,"parcela":0,"iphone":829,"entrada":4000,"paisNome":"Kuwait","preco_casa":180000,"entrada_casa_20pct":36000,"months_to_house_down":23.1},
+      {"bandeira":"🇷🇴","cidade":"Bucharest","moeda":"$","salario":1053,"aluguel":376,"alimentacao":200,"internet":8,"academia":44,"extras":105,"parcela":464,"iphone":829,"entrada":5863,"paisNome":"Romania","preco_casa":96000,"entrada_casa_20pct":19200,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇱🇹","cidade":"Vilnius","moeda":"$","salario":1599,"aluguel":453,"alimentacao":210,"internet":15,"academia":41,"extras":160,"parcela":444,"iphone":829,"entrada":5611,"paisNome":"Lithuania","preco_casa":150000,"entrada_casa_20pct":30000,"months_to_house_down":108.7},
+      {"bandeira":"🇭🇺","cidade":"Budapest","moeda":"$","salario":1431,"aluguel":492,"alimentacao":220,"internet":29,"academia":53,"extras":145,"parcela":485,"iphone":1250,"entrada":6126,"paisNome":"Hungary","preco_casa":160000,"entrada_casa_20pct":32000,"months_to_house_down":4571.4},
+      {"bandeira":"🇱🇺","cidade":"Luxembourg","moeda":"$","salario":5614,"aluguel":1797,"alimentacao":450,"internet":30,"academia":62,"extras":560,"parcela":501,"iphone":1065,"entrada":6322,"paisNome":"Luxembourg","preco_casa":540000,"entrada_casa_20pct":108000,"months_to_house_down":48.8},
+      {"bandeira":"🇨🇦","cidade":"Ottawa","moeda":"$","salario":2450,"aluguel":1141,"alimentacao":335,"internet":43,"academia":43,"extras":295,"parcela":445,"iphone":801,"entrada":5614,"paisNome":"Canada","preco_casa":300000,"entrada_casa_20pct":60000,"months_to_house_down":91.2},
+      {"bandeira":"🇪🇸","cidade":"Madrid","moeda":"$","salario":1325,"aluguel":825,"alimentacao":265,"internet":20,"academia":47,"extras":205,"parcela":574,"iphone":1092,"entrada":7247,"paisNome":"Spain","preco_casa":240000,"entrada_casa_20pct":48000,"months_to_house_down":406.8},
+      {"bandeira":"🇲🇪","cidade":"Podgorica","moeda":"$","salario":1052,"aluguel":493,"alimentacao":180,"internet":17,"academia":47,"extras":105,"parcela":497,"iphone":829,"entrada":6270,"paisNome":"Montenegro","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇱🇻","cidade":"Riga","moeda":"$","salario":1328,"aluguel":318,"alimentacao":220,"internet":20,"academia":46,"extras":135,"parcela":444,"iphone":829,"entrada":5611,"paisNome":"Latvia","preco_casa":96000,"entrada_casa_20pct":19200,"months_to_house_down":132.4},
+      {"bandeira":"🇳🇵","cidade":"Kathmandu","moeda":"$","salario":208,"aluguel":63,"alimentacao":80,"internet":4,"academia":18,"extras":20,"parcela":471,"iphone":829,"entrada":5952,"paisNome":"Nepal","preco_casa":48000,"entrada_casa_20pct":9600,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇧🇬","cidade":"Sofia","moeda":"$","salario":1138,"aluguel":376,"alimentacao":190,"internet":30,"academia":34,"extras":115,"parcela":489,"iphone":829,"entrada":6178,"paisNome":"Bulgaria","preco_casa":110000,"entrada_casa_20pct":22000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇬🇪","cidade":"Tbilisi","moeda":"$","salario":546,"aluguel":352,"alimentacao":145,"internet":20,"academia":52,"extras":55,"parcela":329,"iphone":829,"entrada":4159,"paisNome":"Georgia","preco_casa":66000,"entrada_casa_20pct":13200,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇩🇪","cidade":"Berlin","moeda":"$","salario":2050,"aluguel":724,"alimentacao":375,"internet":20,"academia":42,"extras":345,"parcela":536,"iphone":1080,"entrada":6763,"paisNome":"Germany","preco_casa":360000,"entrada_casa_20pct":72000,"months_to_house_down":51.5},
+      {"bandeira":"🇷🇸","cidade":"Belgrade","moeda":"$","salario":974,"aluguel":376,"alimentacao":170,"internet":22,"academia":36,"extras":95,"parcela":497,"iphone":829,"entrada":6270,"paisNome":"Serbia","preco_casa":130000,"entrada_casa_20pct":26000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇽🇰","cidade":"Pristina","moeda":"$","salario":616,"aluguel":260,"alimentacao":120,"internet":11,"academia":24,"extras":60,"parcela":364,"iphone":829,"entrada":4602,"paisNome":"Kosovo","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇷🇺","cidade":"Moscow","moeda":"$","salario":700,"aluguel":421,"alimentacao":150,"internet":8,"academia":41,"extras":95,"parcela":652,"iphone":829,"entrada":8231,"paisNome":"Russia","preco_casa":180000,"entrada_casa_20pct":36000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇲🇹","cidade":"Valletta","moeda":"$","salario":1835,"aluguel":995,"alimentacao":245,"internet":27,"academia":70,"extras":185,"parcela":456,"iphone":829,"entrada":5752,"paisNome":"Malta","preco_casa":210000,"entrada_casa_20pct":42000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇹🇷","cidade":"Ankara","moeda":"$","salario":1072,"aluguel":424,"alimentacao":185,"internet":10,"academia":51,"extras":105,"parcela":716,"iphone":1649,"entrada":9039,"paisNome":"Türkiye","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇯🇴","cidade":"Amman","moeda":"$","salario":712,"aluguel":199,"alimentacao":155,"internet":46,"academia":46,"extras":70,"parcela":447,"iphone":829,"entrada":5642,"paisNome":"Jordan","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇲🇰","cidade":"Skopje","moeda":"$","salario":765,"aluguel":245,"alimentacao":130,"internet":20,"academia":32,"extras":75,"parcela":551,"iphone":829,"entrada":6959,"paisNome":"North Macedonia","preco_casa":72000,"entrada_casa_20pct":14400,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇲🇩","cidade":"Chișinău","moeda":"$","salario":767,"aluguel":400,"alimentacao":130,"internet":9,"academia":37,"extras":75,"parcela":485,"iphone":829,"entrada":6128,"paisNome":"Moldova","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇱🇰","cidade":"Colombo","moeda":"$","salario":220,"aluguel":155,"alimentacao":100,"internet":20,"academia":13,"extras":20,"parcela":476,"iphone":829,"entrada":6004,"paisNome":"Sri Lanka","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇧🇦","cidade":"Sarajevo","moeda":"$","salario":845,"aluguel":249,"alimentacao":140,"internet":18,"academia":34,"extras":85,"parcela":500,"iphone":829,"entrada":6319,"paisNome":"Bosnia & Herzegovina","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇵🇭","cidade":"Manila","moeda":"$","salario":334,"aluguel":189,"alimentacao":130,"internet":21,"academia":32,"extras":35,"parcela":350,"iphone":937,"entrada":4424,"paisNome":"Philippines","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇵🇰","cidade":"Islamabad","moeda":"$","salario":184,"aluguel":74,"alimentacao":85,"internet":5,"academia":15,"extras":20,"parcela":285,"iphone":829,"entrada":3594,"paisNome":"Pakistan","preco_casa":42000,"entrada_casa_20pct":8400,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇻🇳","cidade":"Hanoi","moeda":"$","salario":412,"aluguel":261,"alimentacao":110,"internet":20,"academia":21,"extras":40,"parcela":480,"iphone":952,"entrada":6063,"paisNome":"Vietnam","preco_casa":110000,"entrada_casa_20pct":22000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇵🇦","cidade":"Panama City","moeda":"$","salario":824,"aluguel":723,"alimentacao":165,"internet":28,"academia":49,"extras":80,"parcela":337,"iphone":829,"entrada":4252,"paisNome":"Panama","preco_casa":110000,"entrada_casa_20pct":22000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇮🇳","cidade":"New Delhi","moeda":"$","salario":234,"aluguel":92,"alimentacao":135,"internet":4,"academia":15,"extras":45,"parcela":200,"iphone":857,"entrada":2524,"paisNome":"India","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇹🇳","cidade":"Tunis","moeda":"$","salario":338,"aluguel":157,"alimentacao":130,"internet":25,"academia":28,"extras":35,"parcela":638,"iphone":829,"entrada":8060,"paisNome":"Tunisia","preco_casa":48000,"entrada_casa_20pct":9600,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇦🇱","cidade":"Tirana","moeda":"$","salario":753,"aluguel":372,"alimentacao":150,"internet":19,"academia":50,"extras":75,"parcela":547,"iphone":829,"entrada":6902,"paisNome":"Albania","preco_casa":75000,"entrada_casa_20pct":15000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇮🇩","cidade":"Jakarta","moeda":"$","salario":263,"aluguel":171,"alimentacao":125,"internet":4,"academia":21,"extras":25,"parcela":356,"iphone":829,"entrada":4496,"paisNome":"Indonesia","preco_casa":75000,"entrada_casa_20pct":15000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇮🇶","cidade":"Baghdad","moeda":"$","salario":575,"aluguel":204,"alimentacao":145,"internet":16,"academia":36,"extras":55,"parcela":272,"iphone":829,"entrada":3434,"paisNome":"Iraq","preco_casa":72000,"entrada_casa_20pct":14400,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇮🇪","cidade":"Dublin","moeda":"$","salario":3610,"aluguel":1612,"alimentacao":390,"internet":23,"academia":56,"extras":360,"parcela":635,"iphone":1114,"entrada":8014,"paisNome":"Ireland","preco_casa":300000,"entrada_casa_20pct":60000,"months_to_house_down":112.4},
+      {"bandeira":"🇰🇿","cidade":"Astana","moeda":"$","salario":629,"aluguel":322,"alimentacao":150,"internet":10,"academia":45,"extras":65,"parcela":356,"iphone":829,"entrada":4495,"paisNome":"Kazakhstan","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇱🇧","cidade":"Beirut","moeda":"$","salario":591,"aluguel":329,"alimentacao":145,"internet":20,"academia":51,"extras":60,"parcela":0,"iphone":829,"entrada":4000,"paisNome":"Lebanon","preco_casa":110000,"entrada_casa_20pct":22000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇬🇷","cidade":"Athens","moeda":"$","salario":1182,"aluguel":454,"alimentacao":200,"internet":25,"academia":50,"extras":120,"parcela":455,"iphone":829,"entrada":5747,"paisNome":"Greece","preco_casa":135000,"entrada_casa_20pct":27000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇦🇺","cidade":"Canberra","moeda":"$","salario":2750,"aluguel":1222,"alimentacao":415,"internet":20,"academia":54,"extras":395,"parcela":445,"iphone":975,"entrada":5613,"paisNome":"Australia","preco_casa":360000,"entrada_casa_20pct":72000,"months_to_house_down":51.8},
+      {"bandeira":"🇺🇦","cidade":"Kyiv","moeda":"$","salario":495,"aluguel":250,"alimentacao":160,"internet":6,"academia":26,"extras":50,"parcela":466,"iphone":829,"entrada":5878,"paisNome":"Ukraine","preco_casa":66000,"entrada_casa_20pct":13200,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇬🇧","cidade":"London","moeda":"$","salario":2684,"aluguel":1102,"alimentacao":365,"internet":20,"academia":47,"extras":330,"parcela":608,"iphone":1064,"entrada":7680,"paisNome":"United Kingdom","preco_casa":360000,"entrada_casa_20pct":72000,"months_to_house_down":88.9},
+      {"bandeira":"🇪🇬","cidade":"Cairo","moeda":"$","salario":145,"aluguel":88,"alimentacao":130,"internet":7,"academia":17,"extras":15,"parcela":536,"iphone":829,"entrada":6771,"paisNome":"Egypt","preco_casa":36000,"entrada_casa_20pct":7200,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇳🇿","cidade":"Wellington","moeda":"$","salario":2300,"aluguel":971,"alimentacao":335,"internet":33,"academia":38,"extras":295,"parcela":411,"iphone":981,"entrada":5191,"paisNome":"New Zealand","preco_casa":330000,"entrada_casa_20pct":66000,"months_to_house_down":77.5},
+      {"bandeira":"🇲🇦","cidade":"Rabat","moeda":"$","salario":482,"aluguel":217,"alimentacao":140,"internet":11,"academia":25,"extras":50,"parcela":564,"iphone":829,"entrada":7116,"paisNome":"Morocco","preco_casa":66000,"entrada_casa_20pct":13200,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇮🇹","cidade":"Rome","moeda":"$","salario":1516,"aluguel":656,"alimentacao":350,"internet":12,"academia":56,"extras":195,"parcela":591,"iphone":1114,"entrada":7462,"paisNome":"Italy","preco_casa":210000,"entrada_casa_20pct":42000,"months_to_house_down":428.6},
+      {"bandeira":"🇲🇺","cidade":"Port Louis","moeda":"$","salario":752,"aluguel":314,"alimentacao":160,"internet":14,"academia":32,"extras":75,"parcela":487,"iphone":829,"entrada":6153,"paisNome":"Mauritius","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇧🇪","cidade":"Brussels","moeda":"$","salario":1950,"aluguel":891,"alimentacao":345,"internet":24,"academia":38,"extras":305,"parcela":577,"iphone":1103,"entrada":7286,"paisNome":"Belgium","preco_casa":220000,"entrada_casa_20pct":44000,"months_to_house_down":51.3},
+      {"bandeira":"🇺🇸","cidade":"Washington, D.C.","moeda":"$","salario":2563,"aluguel":1440,"alimentacao":350,"internet":100,"academia":65,"extras":430,"parcela":0,"iphone":829,"entrada":4000,"paisNome":"United States","preco_casa":360000,"entrada_casa_20pct":72000,"months_to_house_down":37.2},
+      {"bandeira":"🇮🇷","cidade":"Tehran","moeda":"$","salario":249,"aluguel":188,"alimentacao":120,"internet":2,"academia":17,"extras":25,"parcela":950,"iphone":829,"entrada":12000,"paisNome":"Iran","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇧🇾","cidade":"Minsk","moeda":"$","salario":772,"aluguel":312,"alimentacao":150,"internet":9,"academia":36,"extras":75,"parcela":346,"iphone":829,"entrada":4365,"paisNome":"Belarus","preco_casa":84000,"entrada_casa_20pct":16800,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇩🇿","cidade":"Algiers","moeda":"$","salario":306,"aluguel":101,"alimentacao":120,"internet":10,"academia":20,"extras":30,"parcela":498,"iphone":829,"entrada":6282,"paisNome":"Algeria","preco_casa":66000,"entrada_casa_20pct":13200,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇲🇾","cidade":"Kuala Lumpur","moeda":"$","salario":924,"aluguel":275,"alimentacao":170,"internet":10,"academia":40,"extras":90,"parcela":665,"iphone":978,"entrada":8391,"paisNome":"Malaysia","preco_casa":90000,"entrada_casa_20pct":18000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇺🇾","cidade":"Montevideo","moeda":"$","salario":1031,"aluguel":496,"alimentacao":225,"internet":30,"academia":53,"extras":105,"parcela":628,"iphone":829,"entrada":7930,"paisNome":"Uruguay","preco_casa":120000,"entrada_casa_20pct":24000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇨🇷","cidade":"San José","moeda":"$","salario":1048,"aluguel":658,"alimentacao":185,"internet":30,"academia":60,"extras":105,"parcela":537,"iphone":829,"entrada":6779,"paisNome":"Costa Rica","preco_casa":84000,"entrada_casa_20pct":16800,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇲🇽","cidade":"Mexico City","moeda":"$","salario":481,"aluguel":502,"alimentacao":165,"internet":25,"academia":40,"extras":80,"parcela":354,"iphone":1142,"entrada":4474,"paisNome":"Mexico","preco_casa":110000,"entrada_casa_20pct":22000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇩🇴","cidade":"Santo Domingo","moeda":"$","salario":618,"aluguel":346,"alimentacao":150,"internet":30,"academia":36,"extras":60,"parcela":379,"iphone":829,"entrada":4781,"paisNome":"Dominican Republic","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇫🇷","cidade":"Paris","moeda":"$","salario":1840,"aluguel":701,"alimentacao":325,"internet":22,"academia":38,"extras":285,"parcela":563,"iphone":1103,"entrada":7109,"paisNome":"France","preco_casa":600000,"entrada_casa_20pct":120000,"months_to_house_down":132.2},
+      {"bandeira":"🇰🇪","cidade":"Nairobi","moeda":"$","salario":340,"aluguel":150,"alimentacao":125,"internet":10,"academia":39,"extras":35,"parcela":245,"iphone":829,"entrada":3088,"paisNome":"Kenya","preco_casa":60000,"entrada_casa_20pct":12000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇿🇼","cidade":"Harare","moeda":"$","salario":342,"aluguel":234,"alimentacao":125,"internet":19,"academia":47,"extras":35,"parcela":396,"iphone":829,"entrada":5000,"paisNome":"Zimbabwe","preco_casa":48000,"entrada_casa_20pct":9600,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇪🇨","cidade":"Quito","moeda":"$","salario":519,"aluguel":260,"alimentacao":120,"internet":13,"academia":34,"extras":50,"parcela":333,"iphone":829,"entrada":4198,"paisNome":"Ecuador","preco_casa":54000,"entrada_casa_20pct":10800,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇨🇳","cidade":"Beijing","moeda":"$","salario":1070,"aluguel":243,"alimentacao":185,"internet":9,"academia":42,"extras":105,"parcela":305,"iphone":884,"entrada":3845,"paisNome":"China","preco_casa":540000,"entrada_casa_20pct":108000,"months_to_house_down":596.7},
+      {"bandeira":"🇨🇴","cidade":"Bogotá","moeda":"$","salario":519,"aluguel":363,"alimentacao":140,"internet":12,"academia":26,"extras":50,"parcela":358,"iphone":829,"entrada":4524,"paisNome":"Colombia","preco_casa":66000,"entrada_casa_20pct":13200,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇵🇷","cidade":"San Juan","moeda":"$","salario":2613,"aluguel":669,"alimentacao":310,"internet":71,"academia":32,"extras":260,"parcela":634,"iphone":829,"entrada":8000,"paisNome":"Puerto Rico","preco_casa":150000,"entrada_casa_20pct":30000,"months_to_house_down":47.1},
+      {"bandeira":"🇧🇴","cidade":"Sucre","moeda":"$","salario":452,"aluguel":235,"alimentacao":105,"internet":26,"academia":30,"extras":45,"parcela":332,"iphone":829,"entrada":4186,"paisNome":"Bolivia","preco_casa":54000,"entrada_casa_20pct":10800,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇧🇩","cidade":"Dhaka","moeda":"$","salario":234,"aluguel":48,"alimentacao":90,"internet":5,"academia":13,"extras":25,"parcela":472,"iphone":829,"entrada":5958,"paisNome":"Bangladesh","preco_casa":48000,"entrada_casa_20pct":9600,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇦🇷","cidade":"Buenos Aires","moeda":"$","salario":720,"aluguel":364,"alimentacao":185,"internet":17,"academia":32,"extras":70,"parcela":436,"iphone":829,"entrada":5500,"paisNome":"Argentina","preco_casa":110000,"entrada_casa_20pct":22000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇳🇬","cidade":"Abuja","moeda":"$","salario":114,"aluguel":293,"alimentacao":110,"internet":19,"academia":31,"extras":10,"parcela":175,"iphone":829,"entrada":2208,"paisNome":"Nigeria","preco_casa":48000,"entrada_casa_20pct":9600,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇧🇷","cidade":"Indaiatuba","moeda":"$","salario":434,"aluguel":245,"alimentacao":140,"internet":14,"academia":25,"extras":55,"parcela":368,"iphone":1576,"entrada":4641,"paisNome":"Brazil","preco_casa":72000,"entrada_casa_20pct":50000,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇵🇪","cidade":"Lima","moeda":"$","salario":571,"aluguel":245,"alimentacao":130,"internet":25,"academia":31,"extras":55,"parcela":348,"iphone":829,"entrada":4398,"paisNome":"Peru","preco_casa":78000,"entrada_casa_20pct":15600,"months_to_house_down":"Infinity"},
+      {"bandeira":"🇿🇦","cidade":"Pretoria","moeda":"$","salario":365,"aluguel":418,"alimentacao":215,"internet":35,"academia":35,"extras":140,"parcela":568,"iphone":829,"entrada":7177,"paisNome":"South Africa","preco_casa":66000,"entrada_casa_20pct":13200,"months_to_house_down":2640},
+      {"bandeira":"🇻🇪","cidade":"Caracas","moeda":"$","salario":220,"aluguel":184,"alimentacao":120,"internet":20,"academia":38,"extras":20,"parcela":396,"iphone":829,"entrada":5000,"paisNome":"Venezuela","preco_casa":36000,"entrada_casa_20pct":7200,"months_to_house_down":"Infinity"}
+    ];
 
-    function getRegionCodeFromFlag(flag) {
-      if (!flag || flag === "🌐") return "";
-      try {
-        const codePoints = [...flag].map(c => c.codePointAt(0));
-        if (codePoints.length >= 2 && codePoints[0] >= 127462 && codePoints[0] <= 127487) {
-          return String.fromCharCode(codePoints[0] - 127397) + String.fromCharCode(codePoints[1] - 127397);
-        }
-      } catch(e) { return ""; }
-      return "";
-    }
-
-    function getCountryFromFlag(flag, langCode) {
-      const regionCode = getRegionCodeFromFlag(flag);
-      if (!regionCode) return "";
-      try {
-        const regionNames = new Intl.DisplayNames([langCode], {type: 'region'});
-        return regionNames.of(regionCode) || "";
-      } catch(e) { return ""; }
-    }
-
-    function getFlagImageUrl(flag) {
-      const regionCode = getRegionCodeFromFlag(flag);
-      if (!regionCode) return null;
-      return `https://flagcdn.com/w40/${regionCode.toLowerCase()}.png`;
-    }
-
-    function renderizarBandeira(bandeira) {
-      const flag = bandeira || "🌐";
-      const url = getFlagImageUrl(flag);
-      if (url) {
-        return `<img class="flag" src="${url}" alt="${flag}" loading="lazy" onerror="this.replaceWith(document.createTextNode('${flag}'))">`;
-      }
-      return `<span class="flag">${flag}</span>`;
-    }
-
-    function normalizarItem(item) {
-      let cidadeNome = item.cidade || item.pais || "Cidade";
-      let bandeira = item.bandeira || "🌐";
-      let moeda = item.moeda || "$";
-      let paisNome = getCountryFromFlag(bandeira, idiomaAtual);
-      
-      let sal = item.salario || 0;
-      // Recupera a base invisível. Se não houver, adota o próprio salário lido como a nova base.
-      let salBase = item.salarioBase || sal; 
-
-      return {
-        ...item,
-        bandeira,
-        paisNome,
-        cidade: cidadeNome,
-        moeda: moeda,
-        salario: sal,
-        salarioBase: salBase,
-        internet: item.internet || 0,
-        academia: item.academia || 0,
-        extras: item.extras || 0,
-        iphone: item.iphone || item.eletronico || 1000,
-        entrada: item.entrada || 4000,
-        entradaCasa: item.entradaCasa || item.entrada_casa_20pct || item.casa || 50000
-      };
-    }
-
-    function atualizarBotaoTema() {
-      const isLight = document.body.classList.contains("light-theme");
-      document.getElementById("btnTheme").innerText = isLight ? "🌙" : "☀️";
-    }
-
-    function alternarTema() {
-      document.body.classList.toggle("light-theme");
-      const temaAtual = document.body.classList.contains("light-theme") ? "light" : "dark";
-      localStorage.setItem("ivfr_theme", temaAtual);
-      atualizarBotaoTema();
-    }
-
-    if (localStorage.getItem("ivfr_theme") === "light") {
-      document.body.classList.add("light-theme");
-    }
-
-    function toggleLangMenu() {
-      document.getElementById("langMenu").classList.toggle("open");
-    }
-
-    function toggleCountryFilter() {
-      document.getElementById("countryFilterMenu").classList.toggle("open");
-    }
-
-    document.addEventListener("click", (e) => {
-      const langDropdown = document.getElementById("langDropdown");
-      const langMenu = document.getElementById("langMenu");
-      if (langDropdown && !langDropdown.contains(e.target)) {
-        langMenu.classList.remove("open");
-      }
-
-      const filterContainer = document.getElementById("countryFilterContainer");
-      const filterMenu = document.getElementById("countryFilterMenu");
-      if (filterContainer && !filterContainer.contains(e.target)) {
-        filterMenu.classList.remove("open");
-      }
-    });
-
-    const langFlagUrls = { pt: "https://flagcdn.com/w40/br.png", en: "https://flagcdn.com/w40/us.png", es: "https://flagcdn.com/w40/es.png" };
-
-    function mudarIdioma(lang) {
-      idiomaAtual = lang;
-      localStorage.setItem("ivfr_lang", lang);
-      document.getElementById("langCurrentFlag").src = langFlagUrls[lang];
-      document.getElementById("langMenu").classList.remove("open");
-      const t = i18n[lang];
-
-      document.getElementById("optOriginalCurrency").innerText = t.optOriginalCurrency;
-      document.getElementById("txtSettingsTitle").innerText = t.txtSettingsTitle;
-      document.getElementById("txtRatesLabel").innerText = t.txtRatesLabel;
-      
-      document.getElementById("txtSalaryIncreaseLabel").innerText = t.txtSalaryIncreaseLabel;
-      document.getElementById("btnApplyIncrease").innerText = t.btnApplyIncrease;
-      
-      document.getElementById("txtBtnSaveConfig").innerText = t.btnSaveConfig;
-      document.getElementById("txtTitle").innerText = t.title;
-      document.getElementById("txtSubtitle").innerText = t.subtitle;
-      document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
-      document.getElementById("searchInput").placeholder = t.searchPlaceholder;
-      document.getElementById("btnToggleForm").innerText = t.btnAddCity;
-      
-      document.getElementById("btnSelectAll").innerText = t.selectAll;
-      document.getElementById("btnSelectNone").innerText = t.selectNone;
-      
-      document.getElementById("lblFlag").innerText = t.lblFlag;
-      document.getElementById("lblCity").innerText = t.lblCity;
-      document.getElementById("lblCurrency").innerText = t.lblCurrency;
-      document.getElementById("lblSalary").innerText = t.lblSalary;
-      document.getElementById("lblRent").innerText = t.lblRent;
-      document.getElementById("lblFood").innerText = t.lblFood;
-      document.getElementById("lblInternet").innerText = t.lblInternet;
-      document.getElementById("lblGym").innerText = t.lblGym;
-      document.getElementById("lblExtras").innerText = t.lblExtras;
-      
-      document.getElementById("lblCarInstallment").innerText = t.lblCarInstallment;
-      document.getElementById("lblCarInstallment").setAttribute("data-tip", t.lblCarInstallmentTooltip);
-      document.getElementById("lblIphone").innerText = t.lblIphone;
-      document.getElementById("lblIphone").setAttribute("data-tip", t.lblIphoneTooltip);
-      document.getElementById("lblCarDown").innerText = t.lblCarDown;
-      document.getElementById("lblCarDown").setAttribute("data-tip", t.lblCarDownTooltip);
-      document.getElementById("lblHouseDown").innerText = t.lblHouseDown;
-      document.getElementById("lblHouseDown").setAttribute("data-tip", t.lblHouseDownTooltip);
-
-      const btnSubmit = document.getElementById("btnSubmit");
-      btnSubmit.innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
-      btnSubmit.setAttribute("data-tip", t.btnSubmitTooltip);
-
-      if (document.getElementById("editIndex").value === "-1") {
-        const cidadeInput = document.getElementById("cidade");
-        const nomesDefaultConhecidos = Object.values(i18n).map(d => d.defaultCityName);
-        if (nomesDefaultConhecidos.includes(cidadeInput.value)) {
-          cidadeInput.value = t.defaultCityName;
-        }
-      }
-      document.getElementById("btnCancel").innerText = t.btnCancel;
-      
-      document.getElementById("thCountry").innerText = t.thCountry;
-      document.getElementById("thCity").innerText = t.thCity;
-      document.getElementById("thSalary").innerText = t.thSalary;
-      document.getElementById("thFixed").innerText = t.thFixed;
-      document.getElementById("thFixed").setAttribute("data-tip", t.thFixedTooltip);
-      document.getElementById("thSurplus").innerText = t.thSurplus;
-      document.getElementById("thMargin").innerText = t.thMargin;
-      document.getElementById("thMonthsIphone").innerText = t.thMonthsIphone;
-      document.getElementById("thMonthsIphone").setAttribute("data-tip", t.thMonthsIphoneTooltip);
-      document.getElementById("thMonthsCar").innerText = t.thMonthsCar;
-      document.getElementById("thMonthsCar").setAttribute("data-tip", t.thMonthsCarTooltip);
-      document.getElementById("thMonthsHouse").innerText = t.thMonthsHouse;
-      document.getElementById("thMonthsHouse").setAttribute("data-tip", t.thMonthsHouseTooltip);
-      document.getElementById("thIvfr").innerText = t.thIvfr;
-      document.getElementById("thIvfr").setAttribute("data-tip", t.thIvfrTooltip);
-      document.getElementById("thActions").innerText = t.thActions;
-
-      popularFiltroPaises();
-      updateCountryFilterLabel();
-      atualizarTextoSincronizacao();
-      renderizarTabela();
-    }
-
-    function toggleSettings() {
-      const modal = document.getElementById("tokenModal");
-      if (modal.style.display === "block") {
-        modal.style.display = "none";
-      } else {
-        modal.style.display = "block";
-        const grid = document.getElementById("ratesGrid");
-        grid.innerHTML = "";
-        Object.keys(userExchangeRates).sort().forEach(moeda => {
-          if (moeda === 'USD') return;
-          grid.innerHTML += `
-            <div style="display:flex; flex-direction:column; gap:0.2rem;">
-              <label style="font-size:0.7rem;">${moeda}</label>
-              <input type="number" step="0.0001" id="rate_${moeda}" value="${userExchangeRates[moeda]}" style="padding:0.25rem;">
-            </div>`;
-        });
-      }
-    }
-
-    function salvarConfiguracoes() {
-      const tokenInput = document.getElementById("ghToken").value.trim();
-      const oldToken = localStorage.getItem("gh_pat");
-      
-      if (tokenInput) localStorage.setItem("gh_pat", tokenInput);
-      else localStorage.removeItem("gh_pat");
-
-      Object.keys(userExchangeRates).forEach(moeda => {
-        if (moeda === 'USD') return;
-        const input = document.getElementById(`rate_${moeda}`);
-        if (input) userExchangeRates[moeda] = parseFloat(input.value) || userExchangeRates[moeda];
-      });
-      
-      localStorage.setItem("ivfr_rates", JSON.stringify(userExchangeRates));
-      document.getElementById("tokenModal").style.display = "none";
-      
-      renderizarTabela();
-      
-      if (tokenInput !== oldToken) {
-        carregarDoGitHub();
-      }
-    }
-
-    function popularFiltroPaises() {
-      const list = document.getElementById("countryFilterList");
-      list.innerHTML = "";
-      
-      const paisesNormalizados = baseDados.map(normalizarItem);
-      const nomes = [...new Set(paisesNormalizados.map(i => i.paisNome))].filter(Boolean).sort();
-      
-      const hasSelection = selectedCountries.size > 0;
-
-      nomes.forEach(nome => {
-        const item = paisesNormalizados.find(i => i.paisNome === nome);
-        const isChecked = !hasSelection || selectedCountries.has(nome) ? "checked" : "";
-        
-        list.insertAdjacentHTML('beforeend', `
-          <label class="multi-select-option">
-            <input type="checkbox" value="${nome}" onchange="updateCountryFilter()" ${isChecked}>
-            ${renderizarBandeira(item.bandeira)} <span>${nome}</span>
-          </label>
-        `);
-      });
-    }
-
-    function onBuscaChange() {
-      renderizarTabela();
-      filtrarOpcoesPaises();
-    }
-
-    function filtrarOpcoesPaises() {
-      const termo = document.getElementById("searchInput").value.toLowerCase();
-      document.querySelectorAll('#countryFilterList .multi-select-option').forEach(opt => {
-        const texto = opt.innerText.toLowerCase();
-        opt.style.display = texto.includes(termo) ? "flex" : "none";
-      });
-    }
-
-    function selectAllCountries(selectAll) {
-      const checkboxes = document.querySelectorAll('#countryFilterList input[type="checkbox"]');
-      checkboxes.forEach(cb => cb.checked = selectAll);
-      updateCountryFilter();
-    }
-
-    function updateCountryFilter() {
-      const checkboxes = document.querySelectorAll('#countryFilterList input[type="checkbox"]');
-      selectedCountries.clear();
-      let allChecked = true;
-      let noneChecked = true;
-      
-      checkboxes.forEach(cb => {
-        if (cb.checked) {
-          selectedCountries.add(cb.value);
-          noneChecked = false;
-        } else {
-          allChecked = false;
-        }
-      });
-
-      if (allChecked || noneChecked) {
-        selectedCountries.clear(); 
-      }
-
-      updateCountryFilterLabel();
-      renderizarTabela();
-    }
-
-    function updateCountryFilterLabel() {
-      const label = document.getElementById("countryFilterLabel");
-      const t = i18n[idiomaAtual];
-      
-      if (selectedCountries.size === 0) {
-        label.innerText = t.filterAll;
-      } else {
-        label.innerText = `${selectedCountries.size} ${t.filterSelected}`;
-      }
-    }
-
-    function abrirFormulario() {
-      document.getElementById("formCard").style.display = "block";
-      document.getElementById("btnToggleForm").style.display = "none";
-      document.getElementById("editIndex").value = "-1";
-      document.getElementById("btnSubmit").innerText = i18n[idiomaAtual].btnSubmitAdd;
-      document.getElementById("cidade").value = i18n[idiomaAtual].defaultCityName;
-
-      const moedaSelect = document.getElementById("moeda");
-      Array.from(moedaSelect.options).filter(o => o.dataset.custom).forEach(o => o.remove());
-      moedaSelect.value = "$";
-    }
-
-    function fecharFormulario() {
-      document.getElementById("formCard").style.display = "none";
-      document.getElementById("btnToggleForm").style.display = "inline-block";
-    }
-
-    function calcularValoresCompletos(item) {
-      const custoFixo = (item.aluguel || 0) + (item.alimentacao || 0) + (item.internet || 0) + (item.academia || 0) + (item.extras || 0) + (item.parcela || 0);
-      const sobra = (item.salario || 0) - custoFixo;
-      const t = i18n[idiomaAtual];
-
-      const conv = getConversionInfo(item.paisNome, currentDisplayMode);
-      const r = conv.rate;
-      const sym = conv.symbol;
-      
-      const salD = (item.salario || 0) * r;
-      const custoD = custoFixo * r;
-      const sobraD = sobra * r;
-
-      if (sobra <= 0) {
-        return {
-          ...item,
-          custoFixo, sobra, margem: 0, margemStr: "0.0%",
-          mesesIphone: 999, mesesIphoneStr: t.msgInfeasible,
-          mesesCarro: 999, mesesCarroStr: t.msgInfeasible,
-          mesesCasa: 999, mesesCasaStr: t.msgInfeasible,
-          ivfr: 0.0, classe: "score-low",
-          salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-          custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-          sobraDisplay: sym + sobraD.toLocaleString(undefined, {maximumFractionDigits: 0})
-        };
-      }
-
-      const margem = sobra / item.salario;
-      const precoIphone = item.iphone || 1000;
-      const precoEntrada = item.entrada || 4000;
-      const precoEntradaCasa = item.entradaCasa || 50000;
-      
-      const mesesIphone = precoIphone / sobra;
-      const mesesCarro = precoEntrada / sobra;
-      const mesesCasa = precoEntradaCasa / sobra;
-      const tempoTotalBens = (precoIphone + precoEntrada) / sobra;
-      
-      const penalidadeTempo = 1 / (1 + Math.log(1 + tempoTotalBens));
-      const ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
-
-      // Classificação de cor baseada na Margem Livre (Free Margin):
-      // >= 33,3% verde | entre 20% e 33,3% amarelo | abaixo de 20% vermelho
-      const margemPct = margem * 100;
-      let classe = "score-low";
-      if (margemPct >= 33.3) classe = "score-high";
-      else if (margemPct >= 20) classe = "score-mid";
-
-      return {
-        ...item,
-        custoFixo, sobra, margem, margemStr: (margem * 100).toFixed(1) + "%",
-        mesesIphone, mesesIphoneStr: mesesIphone.toFixed(1) + " m",
-        mesesCarro, mesesCarroStr: mesesCarro.toFixed(1) + " m",
-        mesesCasa, mesesCasaStr: mesesCasa.toFixed(1) + " m",
-        ivfr: parseFloat(ivfr.toFixed(1)), classe,
-        salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-        custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-        sobraDisplay: sym + sobraD.toLocaleString(undefined, {maximumFractionDigits: 0})
-      };
-    }
-
-    function ordenarColuna(campo) {
-      if (colunaOrdenada === campo) {
-        ordemAscendente = !ordemAscendente;
-      } else {
-        colunaOrdenada = campo;
-        ordemAscendente = campo === "cidade" || campo === "paisNome" ? true : false;
-      }
-      renderizarTabela();
-    }
-
-    function renderizarTabela() {
-      const tbody = document.getElementById("tabelaCorpo");
+    function renderTable() {
+      const tbody = document.getElementById("table-body");
       tbody.innerHTML = "";
-      const t = i18n[idiomaAtual];
-      const termoBusca = document.getElementById("searchInput").value.toLowerCase();
 
-      ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "mesesCasa", "ivfr"].forEach(col => {
-        const el = document.getElementById("sort_" + col);
-        if (el) {
-          el.innerText = (colunaOrdenada === col) ? (ordemAscendente ? "▲" : "▼") : "↕";
-          el.style.color = (colunaOrdenada === col) ? "var(--score-high)" : "var(--subtext)";
-        }
-      });
-
-      let dadosProcessados = baseDados
-        .map((item, originalIndex) => ({
-          ...calcularValoresCompletos(normalizarItem(item)),
-          originalIndex
-        }))
-        .filter(item => {
-          if (selectedCountries.size > 0 && !selectedCountries.has(item.paisNome)) return false;
-          const searchString = `${item.paisNome} ${item.cidade}`.toLowerCase();
-          return searchString.includes(termoBusca);
-        });
-
-      dadosProcessados.sort((a, b) => {
-        let vA = a[colunaOrdenada];
-        let vB = b[colunaOrdenada];
-
-        if (typeof vA === "string") {
-          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(a[colunaOrdenada]);
-        }
-        return ordemAscendente ? (vA - vB) : (vB - vA);
-      });
-
-      dadosProcessados.forEach(item => {
-        tbody.insertAdjacentHTML("beforeend", `
-          <tr>
-            <td>${renderizarBandeira(item.bandeira)} <strong>${item.paisNome}</strong></td>
-            <td><strong>${item.cidade}</strong></td>
-            <td>${item.salarioDisplay}</td>
-            <td>${item.custoFixoDisplay}</td>
-            <td class="${item.classe}"><strong>${item.sobraDisplay}</strong></td>
-            <td>${item.margemStr}</td>
-            <td>${item.mesesIphoneStr}</td>
-            <td>${item.mesesCarroStr}</td>
-            <td>${item.mesesCasaStr}</td>
-            <td><span class="score ${item.classe}">${item.ivfr.toFixed(1)}</span> / 100</td>
-            <td>
-              <button class="btn-action" onclick="carregarParaEdicao(${item.originalIndex})" data-tip="${t.tipEdit}">✎</button>
-              <button class="btn-action btn-delete" onclick="removerPais(${item.originalIndex})" data-tip="${t.tipDelete}">✕</button>
-            </td>
-          </tr>
-        `);
-      });
-    }
-
-    function formatarDataHora(data) {
-      const m = data.getMonth() + 1;
-      const d = data.getDate();
-      const y = data.getFullYear();
-      let hours = data.getHours();
-      const minutes = String(data.getMinutes()).padStart(2, '0');
-      const ampm = hours >= 12 ? 'PM' : 'AM';
-      hours = hours % 12;
-      hours = hours ? hours : 12;
-      const strHours = String(hours).padStart(2, '0');
-      return `${m}/${d}/${y} ${strHours}:${minutes} ${ampm}`;
-    }
-
-    function atualizarTextoSincronizacao() {
-      const el = document.getElementById("txtLastUpdate");
-      if (!el) return;
-      const t = i18n[idiomaAtual];
-      el.innerText = t.lastSync + (ultimaDataSincronizacao ? formatarDataHora(ultimaDataSincronizacao) : "--");
-    }
-
-    async function buscarUltimaAtualizacao(headers) {
-      try {
-        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/commits?path=${ARQUIVO}&page=1&per_page=1`, { headers });
-        if (res.ok) {
-          const commits = await res.json();
-          if (commits.length > 0) {
-            ultimaDataSincronizacao = new Date(commits[0].commit.committer.date);
-            atualizarTextoSincronizacao();
-          }
-        }
-      } catch(e) {
-        console.warn("Falha ao buscar data do commit.");
-      }
-    }
-
-    async function carregarDoGitHub() {
-      try {
-        const token = localStorage.getItem("gh_pat");
-        const headers = {};
-        if (token) headers["Authorization"] = `Bearer ${token}`;
-
-        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?nocache=${Date.now()}`, { headers });
-        const data = await res.json();
-        fileSha = data.sha;
-        const jsonText = decodeURIComponent(escape(atob(data.content)));
-        baseDados = JSON.parse(jsonText).map(normalizarItem);
+      dataset.forEach(item => {
+        const livingCosts = item.alimentacao + item.internet + item.academia + item.extras;
+        const netSavings = item.salario - (item.aluguel + livingCosts);
         
-        popularFiltroPaises();
-        renderizarTabela();
-        buscarUltimaAtualizacao(headers);
-        
-      } catch (err) {
-        console.warn("Aguardando carregamento de base do GitHub.");
-      }
-    }
-
-    async function gravarNoGitHub() {
-      const token = localStorage.getItem("gh_pat");
-      const msg = document.getElementById("statusMsg");
-      const t = i18n[idiomaAtual];
-      
-      if (!token) {
-        alert(t.tokenLabel);
-        return;
-      }
-
-      msg.style.display = "inline";
-      msg.style.color = "var(--score-mid)";
-      msg.innerText = t.msgSaving;
-
-      const conteudoBase64 = btoa(unescape(encodeURIComponent(JSON.stringify(baseDados, null, 2))));
-
-      try {
-        const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}`, {
-          method: "PUT",
-          headers: {
-            "Authorization": `Bearer ${token}`,
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            message: "Atualização de cidades via dashboard",
-            content: conteudoBase64,
-            sha: fileSha
-          })
-        });
-
-        if (res.ok) {
-          const result = await res.json();
-          fileSha = result.content.sha;
-          msg.style.color = "var(--score-high)";
-          msg.innerText = t.msgSaved;
-          fecharFormulario();
-          carregarDoGitHub();
-        } else {
-          msg.style.color = "var(--score-low)";
-          msg.innerText = t.msgError;
+        let monthsCar = "Infinity";
+        if (netSavings > 0) {
+          monthsCar = (item.entrada / netSavings).toFixed(1);
         }
-      } catch (e) {
-        msg.style.color = "var(--score-low)";
-        msg.innerText = t.msgError;
-      }
 
-      setTimeout(() => { msg.style.display = "none"; }, 4000);
-    }
-
-    function salvarPais() {
-      const index = parseInt(document.getElementById("editIndex").value);
-      const inputSalario = parseFloat(document.getElementById("salario").value) || 0;
-      const entradaCasaVal = parseFloat(document.getElementById("entradaCasa").value) || 0;
-      const existente = (index >= 0 && baseDados[index]) ? baseDados[index] : {};
-      
-      const dados = {
-        ...existente, // preserva campos extras como preco_casa, months_to_house_down, etc.
-        bandeira: document.getElementById("bandeira").value || "🌐",
-        cidade: document.getElementById("cidade").value,
-        moeda: document.getElementById("moeda").value || "$",
-        salario: inputSalario,
-        salarioBase: inputSalario, // Atualiza a base para o valor recém-inserido manualmente
-        aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
-        alimentacao: parseFloat(document.getElementById("alimentacao").value) || 0,
-        internet: parseFloat(document.getElementById("internet").value) || 0,
-        academia: parseFloat(document.getElementById("academia").value) || 0,
-        extras: parseFloat(document.getElementById("extras").value) || 0,
-        parcela: parseFloat(document.getElementById("parcela").value) || 0,
-        iphone: parseFloat(document.getElementById("iphone").value) || 0,
-        entrada: parseFloat(document.getElementById("entrada").value) || 0,
-        entradaCasa: entradaCasaVal,
-        entrada_casa_20pct: entradaCasaVal // mantém sincronizado com a nomenclatura do dataset original
-      };
-
-      if (index >= 0) baseDados[index] = dados;
-      else baseDados.push(dados);
-
-      fecharFormulario();
-      popularFiltroPaises();
-      renderizarTabela();
-      gravarNoGitHub();
-    }
-
-    function removerPais(index) {
-      const t = i18n[idiomaAtual];
-      if (confirm(`${t.confirmDelete}${baseDados[index].cidade}?`)) {
-        baseDados.splice(index, 1);
-        popularFiltroPaises();
-        renderizarTabela();
-        gravarNoGitHub();
-      }
-    }
-
-    function aplicarAumentoGlobal() {
-      const input = document.getElementById("globalSalaryIncrease");
-      const percentual = parseFloat(input.value.replace(",", ".")) || 0;
-      const t = i18n[idiomaAtual];
-
-      const confirmMsg = t.confirmIncrease ? `${t.confirmIncrease} ${percentual}%?` : `Aplicar ${percentual}%?`;
-
-      if (confirm(confirmMsg)) {
-        const fator = 1 + (percentual / 100);
-
-        // Atualiza a visualização a partir do salário original (base)
-        baseDados = baseDados.map(item => {
-          const base = item.salarioBase || item.salario;
-          return {
-            ...item,
-            salarioBase: base, // Mantém o valor original intacto
-            salario: Math.round(base * fator) // Aplica a % sempre em cima do original
-          };
-        });
-
-        popularFiltroPaises();
-        renderizarTabela();
-        gravarNoGitHub();
-
-        document.getElementById("tokenModal").style.display = "none";
-      }
-    }
-
-    function setMoedaSelect(valor) {
-      const select = document.getElementById("moeda");
-      const existe = Array.from(select.options).some(opt => opt.value === valor);
-      if (!existe) {
-        const opt = document.createElement("option");
-        opt.value = valor;
-        opt.textContent = valor;
-        opt.dataset.custom = "1";
-        select.appendChild(opt);
-      }
-      select.value = valor;
-    }
-
-    function carregarParaEdicao(index) {
-      const item = baseDados[index];
-      const t = i18n[idiomaAtual];
-      
-      abrirFormulario();
-      
-      document.getElementById("editIndex").value = index;
-      document.getElementById("bandeira").value = item.bandeira || "🌐";
-      document.getElementById("cidade").value = item.cidade;
-      setMoedaSelect(item.moeda || "$");
-      document.getElementById("salario").value = item.salario;
-      document.getElementById("aluguel").value = item.aluguel;
-      document.getElementById("alimentacao").value = item.alimentacao;
-      document.getElementById("internet").value = item.internet || 0;
-      document.getElementById("academia").value = item.academia || 0;
-      document.getElementById("extras").value = item.extras || 0;
-      document.getElementById("parcela").value = item.parcela;
-      document.getElementById("iphone").value = item.iphone;
-      document.getElementById("entrada").value = item.entrada;
-      document.getElementById("entradaCasa").value = item.entradaCasa;
-
-      document.getElementById("btnSubmit").innerText = t.btnSubmitUpdate;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    function cancelarEdicao() {
-      fecharFormulario();
-    }
-
-    const tipBox = document.getElementById("globalTooltip");
-    document.addEventListener("mouseover", (e) => {
-      const target = e.target.closest("[data-tip]");
-      if (target) {
-        const text = target.getAttribute("data-tip");
-        if (text) {
-          tipBox.innerText = text;
-          tipBox.style.display = "block";
-          const rect = target.getBoundingClientRect();
-          tipBox.style.top = Math.max(10, rect.top - tipBox.offsetHeight - 8) + "px";
-          tipBox.style.left = Math.min(window.innerWidth - 290, Math.max(10, rect.left + (rect.width/2) - (tipBox.offsetWidth/2))) + "px";
+        let monthsHouse = item.months_to_house_down;
+        if (netSavings > 0 && typeof item.entrada_casa_20pct === "number") {
+          monthsHouse = (item.entrada_casa_20pct / netSavings).toFixed(1);
+        } else if (netSavings <= 0) {
+          monthsHouse = "Infinity";
         }
-      }
-    });
 
-    document.addEventListener("mouseout", (e) => {
-      if (e.target.closest("[data-tip]")) {
-        tipBox.style.display = "none";
-      }
-    });
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${item.bandeira} ${item.cidade}, ${item.paisNome}</td>
+          <td>$${item.salario.toLocaleString()}</td>
+          <td>$${item.aluguel.toLocaleString()}</td>
+          <td>$${livingCosts.toLocaleString()}</td>
+          <td style="color:${netSavings > 0 ? '#4ade80' : '#f87171'}">$${netSavings.toLocaleString()}</td>
+          <td class="${monthsCar === 'Infinity' ? 'infinity' : ''}">${monthsCar}</td>
+          <td class="${monthsHouse === 'Infinity' ? 'infinity' : ''}">${monthsHouse}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
 
-    const tokenSalvo = localStorage.getItem("gh_pat");
-    if (tokenSalvo) document.getElementById("ghToken").value = tokenSalvo;
-    atualizarBotaoTema();
-    mudarIdioma(idiomaAtual);
-    carregarDoGitHub();
+    function changeLanguage(lang) {
+      const t = i18n[lang] || i18n.pt;
+      document.documentElement.lang = lang;
+      document.getElementById("page-title").innerText = t.title;
+      document.getElementById("th-country").innerText = t.country;
+      document.getElementById("th-salary").innerText = t.salary;
+      document.getElementById("th-rent").innerText = t.rent;
+      document.getElementById("th-living").innerText = t.living;
+      document.getElementById("th-net").innerText = t.net;
+      
+      const thCar = document.getElementById("th-car-down");
+      thCar.innerText = t.carDown;
+      thCar.title = t.carDownTooltip;
+
+      const thHouse = document.getElementById("th-house-down");
+      thHouse.innerText = t.houseDown;
+      thHouse.title = t.houseDownTooltip;
+    }
+
+    // Inicialização
+    changeLanguage("pt");
+    renderTable();
   </script>
 </body>
 </html>
