@@ -1092,8 +1092,11 @@
     function salvarPais() {
       const index = parseInt(document.getElementById("editIndex").value);
       const inputSalario = parseFloat(document.getElementById("salario").value) || 0;
+      const entradaCasaVal = parseFloat(document.getElementById("entradaCasa").value) || 0;
+      const existente = (index >= 0 && baseDados[index]) ? baseDados[index] : {};
       
       const dados = {
+        ...existente, // preserva campos extras como preco_casa, months_to_house_down, etc.
         bandeira: document.getElementById("bandeira").value || "🌐",
         cidade: document.getElementById("cidade").value,
         moeda: document.getElementById("moeda").value || "$",
@@ -1107,7 +1110,8 @@
         parcela: parseFloat(document.getElementById("parcela").value) || 0,
         iphone: parseFloat(document.getElementById("iphone").value) || 0,
         entrada: parseFloat(document.getElementById("entrada").value) || 0,
-        entradaCasa: parseFloat(document.getElementById("entradaCasa").value) || 0
+        entradaCasa: entradaCasaVal,
+        entrada_casa_20pct: entradaCasaVal // mantém sincronizado com a nomenclatura do dataset original
       };
 
       if (index >= 0) baseDados[index] = dados;
