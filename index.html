@@ -1308,9 +1308,10 @@
 
       const formatMeses = (m) => {
         if (!isFinite(m)) return "∞";
+        const yearUnit = idiomaAtual === "en" ? " y" : " a";
         if (m > 12) {
           const anos = m / 12;
-          return anos >= 10 ? anos.toFixed(0) + " a" : anos.toFixed(1) + " a";
+          return (anos >= 10 ? anos.toFixed(0) : anos.toFixed(1)) + yearUnit;
         }
         return m.toFixed(1) + " m";
       };
