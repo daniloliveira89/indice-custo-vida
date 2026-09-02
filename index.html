@@ -353,10 +353,15 @@
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.85rem;
-      margin-right: 0.2rem;
+      display: block;
+      width: 100%;
+      margin-bottom: 0.25rem;
+      text-align: center;
     }
+    .btn-action:last-child { margin-bottom: 0; }
     .btn-action:hover { background: var(--border); color: var(--text); }
     .btn-delete:hover { background: #ef4444; color: #fff; }
+    td:last-child { min-width: 42px; vertical-align: middle; }
 
     .status-msg { font-size: 0.85rem; color: var(--score-high); display: none; }
     .loading-msg {
@@ -533,7 +538,7 @@
         <div><label id="lblFood">Comida (USD)</label><input id="alimentacao" type="number" value="400"></div>
         <div><label id="lblInternet">Internet (USD)</label><input id="internet" type="number" value="50"></div>
         <div><label id="lblGym">Academia (USD)</label><input id="academia" type="number" value="40"></div>
-        <div><label id="lblExtras">Extras/Lazer (USD)</label><input id="extras" type="number" value="200"></div>
+        <div><label id="lblExtras">Extras/Lazer</label><input id="extras" type="number" value="150" min="0" max="150"></div>
         <div><label><span class="has-tooltip" id="lblCarInstallment" data-tip="">Parc. Carro (USD)</span></label><input id="parcela" type="number" value="300"></div>
         <div><label><span class="has-tooltip" id="lblIphone" data-tip="">iPhone (USD)</span></label><input id="iphone" type="number" value="1000"></div>
         <div><label><span class="has-tooltip" id="lblCarDown" data-tip="">Entrada Carro (USD)</span></label><input id="entrada" type="number" value="4000"></div>
@@ -908,6 +913,17 @@
       let sal = Number(item.salario) || 0;
       let salBase = Number(item.salarioBase) || sal;
 
+      // Limita Extras/Fun a no máximo 150 USD
+      let extrasVal = Math.min(Number(item.extras) || 0, 150);
+
+      // Para países da zona do Euro, força Extras em ~100 EUR (convertido para USD)
+      const euroCountries = ["Spain","Slovenia","Estonia","Croatia","Netherlands","Finland","Austria","Portugal","Slovakia","Cyprus","Lithuania","Luxembourg","Montenegro","Latvia","Germany","Kosovo","Malta","Ireland","Greece","Italy","Belgium","France"];
+      if (euroCountries.includes(paisNome)) {
+        const eurRate = userExchangeRates["EUR"] || 0.92;
+        // 100 EUR em USD
+        extrasVal = Math.min(Math.round(100 / eurRate), 150);
+      }
+
       return {
         ...item,
         bandeira,
@@ -920,7 +936,7 @@
         alimentacao: Number(item.alimentacao) || 0,
         internet: Number(item.internet) || 0,
         academia: Number(item.academia) || 0,
-        extras: Number(item.extras) || 0,
+        extras: extrasVal,
         parcela: Number(item.parcela) || 0,
         iphone: Number(item.iphone) || Number(item.eletronico) || 1000,
         entrada: Number(item.entrada) || Number(item.entrada_carro) || 4000,
@@ -1292,7 +1308,10 @@
 
       const formatMeses = (m) => {
         if (!isFinite(m)) return "∞";
-        if (m > 999) return m.toFixed(0) + " m";
+        if (m > 12) {
+          const anos = m / 12;
+          return anos >= 10 ? anos.toFixed(0) + " a" : anos.toFixed(1) + " a";
+        }
         return m.toFixed(1) + " m";
       };
 
@@ -1578,7 +1597,7 @@
         alimentacao: toUSD(parseFloat(document.getElementById("alimentacao").value) || 0, rate),
         internet: toUSD(parseFloat(document.getElementById("internet").value) || 0, rate),
         academia: toUSD(parseFloat(document.getElementById("academia").value) || 0, rate),
-        extras: toUSD(parseFloat(document.getElementById("extras").value) || 0, rate),
+        extras: Math.min(toUSD(parseFloat(document.getElementById("extras").value) || 0, rate), 150),
         parcela: toUSD(parseFloat(document.getElementById("parcela").value) || 0, rate),
         iphone: toUSD(parseFloat(document.getElementById("iphone").value) || 0, rate),
         entrada: toUSD(parseFloat(document.getElementById("entrada").value) || 0, rate),
@@ -1676,7 +1695,7 @@
       document.getElementById("alimentacao").value = toLocal(item.alimentacao, rate);
       document.getElementById("internet").value = toLocal(item.internet || 0, rate);
       document.getElementById("academia").value = toLocal(item.academia || 0, rate);
-      document.getElementById("extras").value = toLocal(item.extras || 0, rate);
+      document.getElementById("extras").value = Math.min(toLocal(item.extras || 0, rate), 150);
       document.getElementById("parcela").value = toLocal(item.parcela, rate);
       document.getElementById("iphone").value = toLocal(item.iphone, rate);
       document.getElementById("entrada").value = toLocal(item.entrada, rate);
