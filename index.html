@@ -2,14 +2,9 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Índice de Viabilidade Econômica (IVFR)</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-    * , *::before, *::after { box-sizing: border-box; }
-
     :root {
       --bg: #0f172a;
       --card-bg: #1e293b;
@@ -24,8 +19,10 @@
       --score-high: #4ade80;
       --score-mid: #facc15;
       --score-low: #f87171;
-      --accent: #38bdf8;
-      --stripe: #1a2540;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --success: #059669;
+      --danger: #991b1b;
     }
 
     body.light-theme {
@@ -42,131 +39,362 @@
       --score-high: #16a34a;
       --score-mid: #ca8a04;
       --score-low: #dc2626;
-      --accent: #0284c7;
-      --stripe: #eef2f7;
     }
 
-    body { font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif; background: var(--bg); color: var(--text); padding: 2rem; margin: 0; transition: background 0.2s, color 0.2s; -webkit-text-size-adjust: 100%; }
-    .container { max-width: 1350px; margin: 0 auto; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      padding: 1rem;
+      margin: 0;
+      transition: background 0.2s, color 0.2s;
+      line-height: 1.4;
+    }
+    .container { max-width: 1480px; margin: 0 auto; }
 
-    :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
-    
-    .header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
-    h1 { font-size: 1.7rem; font-weight: 700; letter-spacing: -0.01em; margin: 0 0 0.3rem 0; }
-    p.sub { color: var(--subtext); font-size: 0.88rem; margin: 0; max-width: 60ch; }
-    
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    h1 { font-size: 1.5rem; margin: 0 0 0.25rem 0; font-weight: 700; }
+    p.sub { color: var(--subtext); font-size: 0.85rem; margin: 0; }
+
     .top-right-panel { display: flex; flex-direction: column; align-items: flex-end; gap: 0.35rem; }
-    .top-actions { display: flex; gap: 0.4rem; align-items: center; }
-    select.lang-select, .btn-icon { background: var(--card-bg); border: 1px solid var(--border); color: var(--text); padding: 0.4rem 0.6rem; border-radius: 6px; cursor: pointer; font-size: 0.95rem; }
+    .top-actions { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
+    select.lang-select, .btn-icon {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem 0.6rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
     .btn-icon:hover, select.lang-select:hover { background: var(--border); }
 
     .lang-dropdown { position: relative; }
     .lang-current { display: flex; align-items: center; padding: 0.35rem 0.5rem; }
     .lang-current .flag-icon { width: 1.4rem; height: auto; display: block; border-radius: 2px; }
-    .lang-menu { display: none; position: absolute; top: calc(100% + 4px); right: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; overflow: hidden; z-index: 20; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.25); }
+    .lang-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+      z-index: 30;
+      min-width: 140px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
     .lang-menu.open { display: block; }
-    .lang-option { display: flex; align-items: center; gap: 0.5rem; padding: 0.5rem 0.7rem; cursor: pointer; font-size: 0.85rem; color: var(--text); white-space: nowrap; }
+    .lang-option {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 0.7rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text);
+      white-space: nowrap;
+    }
     .lang-option:hover { background: var(--border); }
     .lang-option .flag-icon { width: 1.3rem; height: auto; border-radius: 2px; }
     .last-update { font-size: 0.75rem; color: var(--subtext); }
 
-    .token-modal { display: none; background: var(--modal-bg); border: 1px solid var(--border); padding: 1.5rem; border-radius: 8px; margin-bottom: 1.2rem; }
+    /* Modal */
+    .token-modal {
+      display: none;
+      background: var(--modal-bg);
+      border: 1px solid var(--border);
+      padding: 1.5rem;
+      border-radius: 8px;
+      margin-bottom: 1.2rem;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
     .token-row { display: flex; gap: 0.5rem; margin-top: 0.5rem; }
-    .settings-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: start; }
 
-    /* Estilos do Filtro Customizado de Países (Multi-select) */
-    .table-toolbar { display: flex; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 0.6rem; }
-    .search-input { width: 100%; min-width: 0; padding: 0.5rem 0.6rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; font-size: 0.8rem; transition: border-color 0.15s; }
-    .search-input:hover { border-color: var(--subtext); }
-    .btn-clear-filters { flex: 0 0 auto; }
-    .results-count { font-size: 0.78rem; color: var(--subtext); white-space: nowrap; }
-    .multi-select-container { position: relative; display: inline-block; flex: 1 1 220px; max-width: 280px; }
-    .multi-select-btn { padding: 0.55rem 0.8rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; width: 100%; font-size: 0.85rem; user-select: none; transition: border-color 0.15s; }
+    /* Toolbar */
+    .table-toolbar {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+    }
+    .search-input {
+      max-width: 280px;
+      padding: 0.55rem 0.75rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: var(--text);
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .multi-select-container { position: relative; display: inline-block; }
+    .multi-select-btn {
+      padding: 0.55rem 0.8rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: var(--text);
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-width: 240px;
+      font-size: 0.85rem;
+      user-select: none;
+      gap: 0.5rem;
+    }
     .multi-select-btn:hover { border-color: var(--subtext); }
-    .multi-select-menu { display: none; position: absolute; top: calc(100% + 4px); left: 0; background: var(--card-bg); border: 1px solid var(--border); border-radius: 6px; max-height: 350px; overflow-y: auto; z-index: 50; min-width: 100%; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.35); }
+    .multi-select-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      max-height: 360px;
+      overflow-y: auto;
+      z-index: 50;
+      min-width: 100%;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
+    }
     .multi-select-menu.open { display: block; }
-    .multi-select-search { padding: 0.6rem 0.8rem 0.3rem 0.8rem; position: sticky; top: 0; background: var(--card-bg); z-index: 3; }
-    .multi-select-actions { display: flex; justify-content: space-between; padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); position: sticky; top: 40px; background: var(--card-bg); z-index: 2; }
-    .multi-select-actions button { background: none; border: none; color: var(--score-high); cursor: pointer; font-size: 0.75rem; padding: 0; font-weight: bold; }
+    .multi-select-search {
+      padding: 0.6rem 0.8rem 0.3rem;
+      position: sticky;
+      top: 0;
+      background: var(--card-bg);
+      z-index: 3;
+    }
+    .multi-select-search input {
+      width: 100%;
+      padding: 0.4rem 0.5rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: var(--text);
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+    .multi-select-actions {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.5rem 0.8rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 38px;
+      background: var(--card-bg);
+      z-index: 2;
+    }
+    .multi-select-actions button {
+      background: none;
+      border: none;
+      color: var(--score-high);
+      cursor: pointer;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
     .multi-select-actions button:hover { text-decoration: underline; }
-    .multi-select-option { display: flex; align-items: center; gap: 0.6rem; padding: 0.55rem 0.8rem; cursor: pointer; font-size: 0.85rem; color: var(--text); user-select: none; }
+    .multi-select-option {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.45rem 0.8rem;
+      cursor: pointer;
+      font-size: 0.85rem;
+      color: var(--text);
+      user-select: none;
+    }
     .multi-select-option:hover { background: var(--th-hover); }
     .multi-select-option input { width: auto; margin: 0; cursor: pointer; accent-color: var(--score-high); }
 
-    .card { background: var(--card-bg); padding: 1.2rem; border-radius: 8px; margin-bottom: 1.5rem; border: 1px solid var(--border); display: none; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(95px, 1fr)); gap: 0.6rem; }
-    label { display: block; font-size: 0.75rem; color: var(--subtext); margin-bottom: 0.2rem; }
-    input, .grid select { width: 100%; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box; font-size: 0.85rem; }
-    
-    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; }
-    button.btn-main { background: #2563eb; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-    button.btn-main:hover { background: #1d4ed8; }
-    button.btn-sec { background: #059669; color: #fff; border: none; padding: 0.45rem 0.8rem; border-radius: 4px; cursor: pointer; font-weight: bold; font-size: 0.85rem; }
-    button.btn-sec:hover { background: #047857; }
-    button.btn-cancel { background: #991b1b; color: #fff; border: none; padding: 0.45rem 0.85rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; }
+    .btn-group-toolbar { display: flex; gap: 0.4rem; margin-left: auto; flex-wrap: wrap; }
 
-    .table-wrapper { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
-    table { min-width: 980px; border-collapse: collapse; background: var(--card-bg); }
-    th, td { padding: 0.75rem 0.7rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.85rem; white-space: nowrap; }
-    th { background: var(--th-bg); color: var(--subtext); user-select: none; cursor: pointer; font-weight: 600; }
+    /* Form Card */
+    .card {
+      background: var(--card-bg);
+      padding: 1.2rem;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+      display: none;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+      gap: 0.65rem;
+    }
+    label {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--subtext);
+      margin-bottom: 0.2rem;
+      font-weight: 500;
+    }
+    input, .grid select {
+      width: 100%;
+      padding: 0.45rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      color: var(--text);
+      border-radius: 4px;
+      font-size: 0.85rem;
+    }
+
+    .btn-group { display: flex; gap: 0.5rem; margin-top: 1rem; align-items: center; flex-wrap: wrap; }
+    button.btn-main {
+      background: var(--primary);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    button.btn-main:hover { background: var(--primary-hover); }
+    button.btn-sec {
+      background: var(--success);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 0.9rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+    }
+    button.btn-sec:hover { background: #047857; }
+    button.btn-cancel {
+      background: var(--danger);
+      color: #fff;
+      border: none;
+      padding: 0.5rem 0.9rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    button.btn-outline {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.5rem 0.85rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.85rem;
+    }
+    button.btn-outline:hover { background: var(--border); }
+
+    /* Table */
+    .table-wrapper {
+      overflow-x: auto;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      -webkit-overflow-scrolling: touch;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 1000px;
+    }
+    th, td {
+      padding: 0.7rem 0.65rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.84rem;
+      white-space: nowrap;
+    }
+    th {
+      background: var(--th-bg);
+      color: var(--subtext);
+      user-select: none;
+      cursor: pointer;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
     th:hover { color: var(--text); background: var(--th-hover); }
     th.no-sort { cursor: default; }
     th.no-sort:hover { background: var(--th-bg); color: var(--subtext); }
 
-    tbody tr:nth-child(even) td { background: var(--stripe); }
-    tbody tr:hover td { background: var(--th-hover); }
+    .flag { font-size: 1.2rem; margin-right: 0.35rem; vertical-align: middle; }
+    img.flag {
+      width: 1.35rem;
+      height: auto;
+      border-radius: 2px;
+      box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+      vertical-align: middle;
+      margin-right: 0.35rem;
+    }
+    .score { font-size: 0.95rem; font-weight: 700; }
+    .score-high { color: var(--score-high); text-shadow: 0 0 8px var(--score-high), 0 0 16px rgba(74, 222, 128, 0.45); }
+    .score-mid { color: var(--score-mid); text-shadow: 0 0 8px var(--score-mid), 0 0 16px rgba(250, 204, 21, 0.4); }
+    .score-low { color: var(--score-low); text-shadow: 0 0 8px var(--score-low), 0 0 16px rgba(248, 113, 113, 0.4); }
+    .surplus-high { color: var(--score-high); text-shadow: 0 0 8px var(--score-high), 0 0 16px rgba(74, 222, 128, 0.45); font-weight: 700; }
+    .surplus-mid { color: var(--score-mid); text-shadow: 0 0 8px var(--score-mid), 0 0 16px rgba(250, 204, 21, 0.4); font-weight: 700; }
+    .surplus-low { color: var(--score-low); text-shadow: 0 0 8px var(--score-low), 0 0 16px rgba(248, 113, 113, 0.4); font-weight: 700; }
 
-    th:nth-child(n+3):not(:last-child), td:nth-child(n+3):not(:last-child) { text-align: right; font-variant-numeric: tabular-nums; }
-    th:last-child, td:last-child { text-align: center; }
-
-    th:first-child, td:first-child { position: sticky; left: 0; z-index: 1; background: var(--card-bg); }
-    tbody tr:nth-child(even) td:first-child { background: var(--stripe); }
-    tbody tr:hover td:first-child { background: var(--th-hover); }
-
-    .flag { font-size: 1.25rem; margin-right: 0.4rem; vertical-align: middle; }
-    img.flag { width: 1.4rem; height: auto; border-radius: 2px; box-shadow: 0 0 0 1px rgba(0,0,0,0.1); vertical-align: middle; }
-
-    .badge { display: inline-block; padding: 0.2rem 0.55rem; border-radius: 999px; font-weight: 600; font-variant-numeric: tabular-nums; }
-    .score { font-size: 0.85rem; }
-    .score-high, .badge.score-high { color: var(--score-high); }
-    .score-mid, .badge.score-mid { color: var(--score-mid); }
-    .score-low, .badge.score-low { color: var(--score-low); }
-    .badge.score-high { background: color-mix(in srgb, var(--score-high) 16%, transparent); }
-    .badge.score-mid { background: color-mix(in srgb, var(--score-mid) 16%, transparent); }
-    .badge.score-low { background: color-mix(in srgb, var(--score-low) 16%, transparent); }
-
-    .action-buttons { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
-    .btn-action { background: var(--input-bg); color: var(--subtext); border: none; padding: 0.3rem 0.55rem; border-radius: 4px; cursor: pointer; font-size: 0.85rem; margin-right: 0; transition: background 0.15s, color 0.15s; }
+    .btn-action {
+      background: var(--input-bg);
+      color: var(--subtext);
+      border: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      margin-right: 0.2rem;
+    }
     .btn-action:hover { background: var(--border); color: var(--text); }
     .btn-delete:hover { background: #ef4444; color: #fff; }
 
-    .empty-state td { text-align: center; color: var(--subtext); padding: 2.5rem 1rem; font-size: 0.9rem; position: static; background: var(--card-bg) !important; }
-
     .status-msg { font-size: 0.85rem; color: var(--score-high); display: none; }
+    .loading-msg {
+      text-align: center;
+      padding: 2.5rem;
+      color: var(--subtext);
+      font-size: 0.95rem;
+    }
 
-    .has-tooltip { border-bottom: 1px dotted var(--subtext); display: inline-block; cursor: pointer; }
-    label .has-tooltip { cursor: default; }
-    
+    .has-tooltip {
+      border-bottom: 1px dotted var(--subtext);
+      display: inline-block;
+      cursor: help;
+    }
+
     #globalTooltip {
-      position: fixed; display: none; background: var(--modal-bg); color: var(--text); padding: 0.5rem 0.75rem; border-radius: 6px; font-size: 0.75rem; border: 1px solid var(--border); line-height: 1.35; z-index: 999999; max-width: 270px; pointer-events: none; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+      position: fixed;
+      display: none;
+      background: var(--modal-bg);
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      border-radius: 6px;
+      font-size: 0.75rem;
+      border: 1px solid var(--border);
+      line-height: 1.35;
+      z-index: 999999;
+      max-width: 280px;
+      pointer-events: none;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4);
     }
 
-    @media (max-width: 720px) {
-      body { padding: 1.1rem; }
-      h1 { font-size: 1.35rem; }
-      .header { gap: 0.75rem; }
-      .top-right-panel { align-items: stretch; width: 100%; }
-      .top-actions { justify-content: flex-end; }
-      .multi-select-container { max-width: none; }
-    }
-
-    @media (max-width: 520px) {
-      .table-toolbar { flex-direction: column; align-items: stretch; }
-      .table-toolbar > * { width: 100%; margin-left: 0 !important; }
-      .multi-select-container { flex: 1 1 auto; max-width: none; }
-      .results-count { text-align: center; }
-      .grid { grid-template-columns: repeat(2, 1fr); }
-      .settings-grid { grid-template-columns: 1fr; }
+    @media (max-width: 768px) {
+      body { padding: 0.75rem; }
+      h1 { font-size: 1.25rem; }
+      .table-toolbar { gap: 0.5rem; }
+      .search-input { max-width: 100%; width: 100%; }
+      .multi-select-btn { min-width: 100%; }
+      .btn-group-toolbar { margin-left: 0; width: 100%; }
     }
   </style>
 </head>
@@ -185,7 +413,7 @@
             <option value="ORIGINAL" id="optOriginalCurrency">Moeda Local</option>
           </select>
           <button class="btn-icon" onclick="alternarTema()" id="btnTheme" data-tip="Alternar Tema">☀️</button>
-          
+
           <div class="lang-dropdown" id="langDropdown">
             <button type="button" class="btn-icon lang-current" id="langCurrentBtn" onclick="toggleLangMenu()" data-tip="Idioma / Language">
               <img id="langCurrentFlag" class="flag-icon" src="https://flagcdn.com/w40/br.png" alt="pt">
@@ -196,49 +424,49 @@
               <div class="lang-option" onclick="mudarIdioma('es')"><img class="flag-icon" src="https://flagcdn.com/w40/es.png" alt="es"> <span>Español</span></div>
             </div>
           </div>
-          
+
           <button class="btn-icon" onclick="toggleSettings()" data-tip="Configurações">⚙️</button>
         </div>
         <div class="last-update" id="txtLastUpdate">Last Sync: --</div>
       </div>
     </div>
 
-    <!-- Modal Unificado de Configurações -->
-    <div id="tokenModal" class="token-modal" style="max-height: 80vh; overflow-y: auto;">
-      <h3 id="txtSettingsTitle" style="margin-top:0; margin-bottom:1rem; color:var(--text); font-size:1.1rem;">Configurações</h3>
-      
-      <div class="settings-grid">
+    <!-- Settings Modal -->
+    <div id="tokenModal" class="token-modal">
+      <h3 id="txtSettingsTitle" style="margin-top:0; margin-bottom:1rem; font-size:1.1rem;">Configurações</h3>
+
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:1.25rem; margin-bottom:1.25rem;">
+        <!-- Coluna 1: Token -->
         <div>
-          <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">GitHub Personal Access Token (PAT):</label>
-          <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="font-size:0.75rem; display:block; margin-top:0.2rem;">github.com/settings/personal-access-tokens</a>
-          <div class="token-row" style="margin-top: 0.5rem;">
-            <input id="ghToken" type="password" placeholder="github_pat_..." style="flex:1;">
-          </div>
+          <label id="txtTokenLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:600;">GitHub Personal Access Token (PAT):</label>
+          <a href="https://github.com/settings/personal-access-tokens" target="_blank" rel="noopener" style="font-size:0.72rem; display:block; margin:0.2rem 0 0.4rem;">github.com/settings/personal-access-tokens</a>
+          <input id="ghToken" type="password" placeholder="github_pat_..." style="width:100%; padding:0.45rem; background:var(--input-bg); border:1px solid var(--input-border); color:var(--text); border-radius:4px;">
         </div>
 
+        <!-- Coluna 2: Aumento Global -->
         <div>
-          <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">Aumento Global de Salários (%)</label>
-          <div style="display: flex; gap: 0.5rem; margin-top: 0.5rem;">
-            <input type="number" id="globalSalaryIncrease" step="0.1" value="0" placeholder="Ex: 15 ou -10" style="flex: 1; padding: 0.45rem; background: var(--input-bg); border: 1px solid var(--input-border); color: var(--text); border-radius: 4px; box-sizing: border-box;">
-            <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease">Aplicar a Todos</button>
+          <label id="txtSalaryIncreaseLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:600;">Aumento Global de Salários (%)</label>
+          <div style="display:flex; gap:0.5rem; margin-top:0.55rem;">
+            <input type="number" id="globalSalaryIncrease" step="0.1" value="0" placeholder="Ex: 15 ou -10" style="flex:1; padding:0.45rem; background:var(--input-bg); border:1px solid var(--input-border); color:var(--text); border-radius:4px;">
+            <button class="btn-sec" onclick="aplicarAumentoGlobal()" id="btnApplyIncrease" style="white-space:nowrap;">Aplicar a Todos</button>
           </div>
         </div>
       </div>
 
-      <hr style="border: 0; border-top: 1px solid var(--border); margin: 1rem 0;">
-      
-      <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:bold;">Taxas de Câmbio (Base: 1 USD)</label>
-      <div id="ratesGrid" style="display:grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 0.5rem; margin-top:0.8rem;"></div>
+      <hr style="border:0; border-top:1px solid var(--border); margin:1rem 0;">
 
-      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top: 1.5rem; width: 100%;">Salvar Configurações</button>
+      <label id="txtRatesLabel" style="font-size:0.8rem; color:var(--subtext); font-weight:600;">Taxas de Câmbio (Base: 1 USD)</label>
+      <div id="ratesGrid" style="display:grid; grid-template-columns:repeat(auto-fill, minmax(110px, 1fr)); gap:0.5rem; margin-top:0.8rem;"></div>
+
+      <button class="btn-sec" onclick="salvarConfiguracoes()" id="txtBtnSaveConfig" style="margin-top:1.5rem; width:100%;">Salvar Configurações</button>
     </div>
 
+    <!-- Toolbar -->
     <div class="table-toolbar">
-      <!-- Multi-Select Customizado de Países (com busca embutida) -->
       <div class="multi-select-container" id="countryFilterContainer">
         <div class="multi-select-btn" onclick="toggleCountryFilter()">
           <span id="countryFilterLabel">Todos os Países</span>
-          <span style="font-size: 0.7rem; color: var(--subtext);">▼</span>
+          <span style="font-size:0.7rem; color:var(--subtext);">▼</span>
         </div>
         <div class="multi-select-menu" id="countryFilterMenu">
           <div class="multi-select-search">
@@ -252,19 +480,31 @@
         </div>
       </div>
 
-      <button type="button" class="btn-icon btn-clear-filters" id="btnClearFilters" onclick="limparFiltros()" data-tip="">✕</button>
-
-      <span class="results-count" id="resultsCount"></span>
-
-      <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()" style="margin-left: auto;">➕ Adicionar</button>
+      <div class="btn-group-toolbar">
+        <div class="multi-select-container" id="columnsFilterContainer" style="position:relative;">
+          <div class="multi-select-btn" onclick="toggleColumnsFilter()" style="min-width:160px;">
+            <span id="columnsFilterLabel">Colunas</span>
+            <span style="font-size:0.7rem; color:var(--subtext);">▼</span>
+          </div>
+          <div class="multi-select-menu" id="columnsFilterMenu" style="min-width:200px;">
+            <div class="multi-select-actions" style="top:0;">
+              <button type="button" onclick="selectAllColumns(true)">Todos</button>
+              <button type="button" onclick="selectAllColumns(false)">Nenhum</button>
+            </div>
+            <div id="columnsFilterList"></div>
+          </div>
+        </div>
+        <button id="btnToggleForm" class="btn-sec" onclick="abrirFormulario()">➕ Adicionar</button>
+      </div>
     </div>
-    
+
+    <!-- Form -->
     <div class="card" id="formCard">
       <input type="hidden" id="editIndex" value="-1">
       <div class="grid">
         <div style="max-width:65px"><label id="lblFlag">Bandeira</label><input id="bandeira" value="🌐" maxlength="4"></div>
         <div><label id="lblCity">Cidade</label><input id="cidade" value="Nova Cidade"></div>
-        <div style="max-width:90px"><label id="lblCurrency">Moeda</label>
+        <div style="max-width:95px"><label id="lblCurrency">Moeda</label>
           <select id="moeda">
             <option value="$">$ — Dólar</option>
             <option value="R$">R$ — Real</option>
@@ -300,16 +540,17 @@
         <div><label><span class="has-tooltip" id="lblHouseDown" data-tip="">Entrada Casa (USD)</span></label><input id="entradaCasa" type="number" value="50000"></div>
       </div>
       <div class="btn-group">
-        <button id="btnSubmit" class="btn-main" onclick="salvarPais()" data-tip="">Salvar</button>
+        <button id="btnSubmit" class="btn-main" onclick="salvarPais()">Salvar</button>
         <button id="btnCancel" class="btn-cancel" onclick="cancelarEdicao()">Cancelar</button>
         <span id="statusMsg" class="status-msg">Gravando...</span>
       </div>
     </div>
 
+    <!-- Table -->
     <div class="table-wrapper">
       <table id="tabela">
         <thead>
-          <tr>
+          <tr id="tableHeaderRow">
             <th onclick="ordenarColuna('paisNome')"><span id="thCountry">País</span> <span id="sort_paisNome">↕</span></th>
             <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
             <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
@@ -319,11 +560,16 @@
             <th onclick="ordenarColuna('mesesIphone')"><span class="has-tooltip" id="thMonthsIphone" data-tip="">Meses p/ iPhone</span> <span id="sort_mesesIphone">↕</span></th>
             <th onclick="ordenarColuna('mesesCarro')"><span class="has-tooltip" id="thMonthsCar" data-tip="">Meses Entrada Carro</span> <span id="sort_mesesCarro">↕</span></th>
             <th onclick="ordenarColuna('mesesCasa')"><span class="has-tooltip" id="thMonthsHouse" data-tip="">Meses Entrada Casa</span> <span id="sort_mesesCasa">↕</span></th>
+            <th class="col-optional col-housePrice" style="display:none;" onclick="ordenarColuna('precoCasa')"><span id="thHousePrice">Preço Casa</span> <span id="sort_precoCasa">↕</span></th>
+            <th class="col-optional col-carInstallment" style="display:none;" onclick="ordenarColuna('parcela')"><span id="thCarInstallment">Parc. Carro</span> <span id="sort_parcela">↕</span></th>
+            <th class="col-optional col-carPrice" style="display:none;" onclick="ordenarColuna('precoCarro')"><span id="thCarPrice">Preço Carro</span> <span id="sort_precoCarro">↕</span></th>
             <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr" data-tip="">Fator IVFR</span> <span id="sort_ivfr">↕</span></th>
             <th class="no-sort" id="thActions">Ações</th>
           </tr>
         </thead>
-        <tbody id="tabelaCorpo"></tbody>
+        <tbody id="tabelaCorpo">
+          <tr><td colspan="14" class="loading-msg" id="loadingMsg">Carregando dados...</td></tr>
+        </tbody>
       </table>
     </div>
   </div>
@@ -387,20 +633,10 @@
 
     let currentDisplayMode = localStorage.getItem('ivfr_display') || 'USD';
     document.getElementById('displayMode').value = currentDisplayMode;
-    let selectedCountries = new Set(); 
+    let selectedCountries = new Set();
 
-    function mudarModoExibicao(modo) {
-      currentDisplayMode = modo;
-      localStorage.setItem("ivfr_display", modo);
-      renderizarTabela();
-    }
-
-    function getConversionInfo(paisNome, modo) {
-      if (modo === 'USD') return { rate: 1, symbol: "$" };
-      if (modo === 'EUR') return { rate: userExchangeRates['EUR'] || 0.92, symbol: "€" };
-      const locCurr = currencyMap[paisNome] || "USD";
-      return { rate: userExchangeRates[locCurr] || 1, symbol: currencySymbols[locCurr] || locCurr + " " };
-    }
+    // Colunas opcionais (persistidas)
+    let visibleOptionalCols = JSON.parse(localStorage.getItem('ivfr_optional_cols') || '{"housePrice":false,"carInstallment":false,"carPrice":false}');
 
     const i18n = {
       pt: {
@@ -421,23 +657,27 @@
         selectAll: "Todos",
         selectNone: "Nenhum",
         btnAddCity: "➕ Adicionar",
+        columnsLabel: "Colunas",
+        colHousePrice: "Preço Casa",
+        colCarInstallment: "Parc. Carro",
+        colCarPrice: "Preço Carro",
         lblFlag: "Bandeira",
         lblCity: "Cidade",
         defaultCityName: "Nova Cidade",
         lblCurrency: "Moeda",
-        lblSalary: "Salário Líq. (USD)",
-        lblRent: "Aluguel (USD)",
-        lblFood: "Comida (USD)",
-        lblInternet: "Internet (USD)",
-        lblGym: "Academia (USD)",
-        lblExtras: "Extras/Lazer (USD)",
-        lblCarInstallment: "Parc. Carro (USD)",
+        lblSalary: "Salário Líq.",
+        lblRent: "Aluguel",
+        lblFood: "Comida",
+        lblInternet: "Internet",
+        lblGym: "Academia",
+        lblExtras: "Extras/Lazer",
+        lblCarInstallment: "Parc. Carro",
         lblCarInstallmentTooltip: "Parcela média mensal do financiamento de um carro popular.",
-        lblIphone: "iPhone (USD)",
-        lblIphoneTooltip: "Preço à vista do modelo base do iPhone mais atual na moeda local.",
-        lblCarDown: "Entrada Carro (USD)",
+        lblIphone: "iPhone",
+        lblIphoneTooltip: "Preço à vista do modelo base do iPhone mais atual.",
+        lblCarDown: "Entrada Carro",
         lblCarDownTooltip: "Entrada média de 20% do valor de um carro popular padrão.",
-        lblHouseDown: "Entrada Casa (USD)",
+        lblHouseDown: "Entrada Casa",
         lblHouseDownTooltip: "Entrada média de 20% do valor de uma casa/apartamento padrão.",
         btnSubmitAdd: "Salvar",
         btnSubmitUpdate: "Atualizar",
@@ -456,20 +696,20 @@
         thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro.",
         thMonthsHouse: "Meses Entrada Casa",
         thMonthsHouseTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% de uma casa/apartamento.",
+        thHousePrice: "Preço Casa",
+        thCarInstallment: "Parc. Carro",
+        thCarPrice: "Preço Carro",
         thIvfr: "Fator IVFR",
-        thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Cor definida pela Margem Livre: >= 33,3% verde, entre 20% e 33,3% amarelo, abaixo de 20% vermelho.",
+        thIvfrTooltip: "Índice ponderado de margem livre retida penalizado pelo tempo para adquirir os bens. Cor definida pela Margem Livre: ≥ 33,3% verde, 20–33,3% amarelo, < 20% vermelho.",
         thActions: "Ações",
         tipEdit: "Editar cidade",
         tipDelete: "Remover cidade",
-        msgInfeasible: "Inviável",
         msgSaving: "Gravando no GitHub...",
         msgSaved: "✔️ Gravado com sucesso!",
         msgError: "Erro ao gravar. Verifique o token.",
         confirmDelete: "Deseja remover ",
-        btnClearFilters: "Limpar filtros",
-        resultsCountLabel: "cidades",
-        resultsCountOf: "de",
-        emptyState: "Nenhuma cidade encontrada com os filtros atuais."
+        loading: "Carregando dados...",
+        loadError: "Erro ao carregar. Tentando fallback local..."
       },
       en: {
         title: "Economic Viability Index (IVFR)",
@@ -489,23 +729,27 @@
         selectAll: "All",
         selectNone: "None",
         btnAddCity: "➕ Add City",
+        columnsLabel: "Columns",
+        colHousePrice: "House Price",
+        colCarInstallment: "Car Installment",
+        colCarPrice: "Car Price",
         lblFlag: "Flag",
         lblCity: "City",
         defaultCityName: "New City",
         lblCurrency: "Currency",
-        lblSalary: "Net Salary (USD)",
-        lblRent: "Rent (USD)",
-        lblFood: "Groceries (USD)",
-        lblInternet: "Internet (USD)",
-        lblGym: "Gym (USD)",
-        lblExtras: "Extras/Fun (USD)",
-        lblCarInstallment: "Car Installment (USD)",
+        lblSalary: "Net Salary",
+        lblRent: "Rent",
+        lblFood: "Groceries",
+        lblInternet: "Internet",
+        lblGym: "Gym",
+        lblExtras: "Extras/Fun",
+        lblCarInstallment: "Car Installment",
         lblCarInstallmentTooltip: "Average monthly car financing installment.",
-        lblIphone: "iPhone (USD)",
-        lblIphoneTooltip: "Retail price of latest base iPhone in local currency.",
-        lblCarDown: "Car Down Payment (USD)",
+        lblIphone: "iPhone",
+        lblIphoneTooltip: "Retail price of latest base iPhone.",
+        lblCarDown: "Car Down Payment",
         lblCarDownTooltip: "Average 20% down payment for a standard car.",
-        lblHouseDown: "House Down Payment (USD)",
+        lblHouseDown: "House Down Payment",
         lblHouseDownTooltip: "Average 20% down payment for a standard house/apartment.",
         btnSubmitAdd: "Save",
         btnSubmitUpdate: "Update",
@@ -524,20 +768,20 @@
         thMonthsCarTooltip: "Months of net surplus required to save the 20% car down payment.",
         thMonthsHouse: "Months to House Down",
         thMonthsHouseTooltip: "Months of net surplus required to save the 20% house/apartment down payment.",
+        thHousePrice: "House Price",
+        thCarInstallment: "Car Installment",
+        thCarPrice: "Car Price",
         thIvfr: "IVFR Factor",
-        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Color set by Free Margin: >= 33.3% green, 20%-33.3% yellow, below 20% red.",
+        thIvfrTooltip: "Synthetic score balancing free cashflow and acquisition speed. Color by Free Margin: ≥ 33.3% green, 20–33.3% yellow, < 20% red.",
         thActions: "Actions",
         tipEdit: "Edit city",
         tipDelete: "Delete city",
-        msgInfeasible: "Infeasible",
         msgSaving: "Committing to GitHub...",
         msgSaved: "✔️ Saved to GitHub!",
         msgError: "Error saving. Check token.",
         confirmDelete: "Delete ",
-        btnClearFilters: "Clear filters",
-        resultsCountLabel: "cities",
-        resultsCountOf: "of",
-        emptyState: "No cities found matching the current filters."
+        loading: "Loading data...",
+        loadError: "Load error. Trying local fallback..."
       },
       es: {
         title: "Índice de Viabilidad Económica (IVFR)",
@@ -557,23 +801,27 @@
         selectAll: "Todos",
         selectNone: "Ninguno",
         btnAddCity: "➕ Añadir",
+        columnsLabel: "Columnas",
+        colHousePrice: "Precio Casa",
+        colCarInstallment: "Cuota Coche",
+        colCarPrice: "Precio Coche",
         lblFlag: "Bandera",
         lblCity: "Ciudad",
         defaultCityName: "Nueva Ciudad",
         lblCurrency: "Moneda",
-        lblSalary: "Salario Neto (USD)",
-        lblRent: "Alquiler (USD)",
-        lblFood: "Comida (USD)",
-        lblInternet: "Internet (USD)",
-        lblGym: "Gimnasio (USD)",
-        lblExtras: "Extras/Ocio (USD)",
-        lblCarInstallment: "Cuota Coche (USD)",
+        lblSalary: "Salario Neto",
+        lblRent: "Alquiler",
+        lblFood: "Comida",
+        lblInternet: "Internet",
+        lblGym: "Gimnasio",
+        lblExtras: "Extras/Ocio",
+        lblCarInstallment: "Cuota Coche",
         lblCarInstallmentTooltip: "Cuota mensual promedio de financiación de coche estándar.",
-        lblIphone: "iPhone (USD)",
-        lblIphoneTooltip: "Precio al contado del último iPhone en moneda local.",
-        lblCarDown: "Entrada Coche (USD)",
+        lblIphone: "iPhone",
+        lblIphoneTooltip: "Precio al contado del último iPhone base.",
+        lblCarDown: "Entrada Coche",
         lblCarDownTooltip: "Entrada del 20% para la compra de un coche estándar.",
-        lblHouseDown: "Entrada Casa (USD)",
+        lblHouseDown: "Entrada Casa",
         lblHouseDownTooltip: "Entrada media del 20% para la compra de una casa/apartamento estándar.",
         btnSubmitAdd: "Guardar",
         btnSubmitUpdate: "Actualizar",
@@ -592,20 +840,20 @@
         thMonthsCarTooltip: "Meses de ahorro neto necesarios para la entrada del 20% del coche.",
         thMonthsHouse: "Meses Entrada Casa",
         thMonthsHouseTooltip: "Meses de ahorro neto necesarios para la entrada del 20% de una casa/apartamento.",
+        thHousePrice: "Precio Casa",
+        thCarInstallment: "Cuota Coche",
+        thCarPrice: "Precio Coche",
         thIvfr: "Factor IVFR",
-        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Color según el Margen Libre: >= 33,3% verde, entre 20% y 33,3% amarillo, por debajo de 20% rojo.",
+        thIvfrTooltip: "Índice sintético que equilibra el margen libre y la velocidad de adquisición. Color según el Margen Libre: ≥ 33,3% verde, 20–33,3% amarillo, < 20% rojo.",
         thActions: "Acciones",
         tipEdit: "Editar ciudad",
         tipDelete: "Eliminar ciudad",
-        msgInfeasible: "Inviable",
         msgSaving: "Guardando en GitHub...",
         msgSaved: "✔️ ¡Guardado con éxito!",
         msgError: "Error al guardar. Revise el token.",
         confirmDelete: "¿Eliminar ",
-        btnClearFilters: "Limpiar filtros",
-        resultsCountLabel: "ciudades",
-        resultsCountOf: "de",
-        emptyState: "No se encontraron ciudades con los filtros actuales."
+        loading: "Cargando datos...",
+        loadError: "Error al cargar. Intentando fallback local..."
       }
     };
 
@@ -623,7 +871,7 @@
         if (codePoints.length >= 2 && codePoints[0] >= 127462 && codePoints[0] <= 127487) {
           return String.fromCharCode(codePoints[0] - 127397) + String.fromCharCode(codePoints[1] - 127397);
         }
-      } catch(e) { return ""; }
+      } catch (e) { return ""; }
       return "";
     }
 
@@ -631,9 +879,9 @@
       const regionCode = getRegionCodeFromFlag(flag);
       if (!regionCode) return "";
       try {
-        const regionNames = new Intl.DisplayNames([langCode], {type: 'region'});
+        const regionNames = new Intl.DisplayNames([langCode], { type: 'region' });
         return regionNames.of(regionCode) || "";
-      } catch(e) { return ""; }
+      } catch (e) { return ""; }
     }
 
     function getFlagImageUrl(flag) {
@@ -655,26 +903,29 @@
       let cidadeNome = item.cidade || item.pais || "Cidade";
       let bandeira = item.bandeira || "🌐";
       let moeda = item.moeda || "$";
-      let paisNome = getCountryFromFlag(bandeira, idiomaAtual);
-      
-      let sal = item.salario || 0;
-      // Recupera a base invisível. Se não houver, adota o próprio salário lido como a nova base.
-      let salBase = item.salarioBase || sal; 
+      let paisNome = item.paisNome || getCountryFromFlag(bandeira, idiomaAtual) || "—";
+
+      let sal = Number(item.salario) || 0;
+      let salBase = Number(item.salarioBase) || sal;
 
       return {
         ...item,
         bandeira,
         paisNome,
         cidade: cidadeNome,
-        moeda: moeda,
+        moeda,
         salario: sal,
         salarioBase: salBase,
-        internet: item.internet || 0,
-        academia: item.academia || 0,
-        extras: item.extras || 0,
-        iphone: item.iphone || item.eletronico || 1000,
-        entrada: item.entrada || 4000,
-        entradaCasa: item.entradaCasa || item.entrada_casa_20pct || item.casa || 50000
+        aluguel: Number(item.aluguel) || 0,
+        alimentacao: Number(item.alimentacao) || 0,
+        internet: Number(item.internet) || 0,
+        academia: Number(item.academia) || 0,
+        extras: Number(item.extras) || 0,
+        parcela: Number(item.parcela) || 0,
+        iphone: Number(item.iphone) || Number(item.eletronico) || 1000,
+        entrada: Number(item.entrada) || Number(item.entrada_carro) || 4000,
+        entradaCasa: Number(item.entradaCasa) || Number(item.entrada_casa_20pct) || Number(item.casa) || 50000,
+        precoCasa: Number(item.preco_casa) || Number(item.precoCasa) || 0
       };
     }
 
@@ -702,6 +953,45 @@
       document.getElementById("countryFilterMenu").classList.toggle("open");
     }
 
+    function toggleColumnsFilter() {
+      document.getElementById("columnsFilterMenu").classList.toggle("open");
+    }
+
+    function popularFiltroColunas() {
+      const t = i18n[idiomaAtual];
+      const list = document.getElementById("columnsFilterList");
+      if (!list) return;
+      list.innerHTML = `
+        <label class="multi-select-option">
+          <input type="checkbox" data-col="housePrice" ${visibleOptionalCols.housePrice ? "checked" : ""} onchange="updateColumnsFilter()">
+          ${t.colHousePrice}
+        </label>
+        <label class="multi-select-option">
+          <input type="checkbox" data-col="carInstallment" ${visibleOptionalCols.carInstallment ? "checked" : ""} onchange="updateColumnsFilter()">
+          ${t.colCarInstallment}
+        </label>
+        <label class="multi-select-option">
+          <input type="checkbox" data-col="carPrice" ${visibleOptionalCols.carPrice ? "checked" : ""} onchange="updateColumnsFilter()">
+          ${t.colCarPrice}
+        </label>
+      `;
+    }
+
+    function updateColumnsFilter() {
+      const checks = document.querySelectorAll('#columnsFilterList input[type="checkbox"]');
+      checks.forEach(cb => {
+        visibleOptionalCols[cb.dataset.col] = cb.checked;
+      });
+      localStorage.setItem('ivfr_optional_cols', JSON.stringify(visibleOptionalCols));
+      renderizarTabela();
+    }
+
+    function selectAllColumns(selectAll) {
+      const checks = document.querySelectorAll('#columnsFilterList input[type="checkbox"]');
+      checks.forEach(cb => cb.checked = selectAll);
+      updateColumnsFilter();
+    }
+
     document.addEventListener("click", (e) => {
       const langDropdown = document.getElementById("langDropdown");
       const langMenu = document.getElementById("langMenu");
@@ -714,9 +1004,19 @@
       if (filterContainer && !filterContainer.contains(e.target)) {
         filterMenu.classList.remove("open");
       }
+
+      const colsContainer = document.getElementById("columnsFilterContainer");
+      const colsMenu = document.getElementById("columnsFilterMenu");
+      if (colsContainer && !colsContainer.contains(e.target)) {
+        colsMenu.classList.remove("open");
+      }
     });
 
-    const langFlagUrls = { pt: "https://flagcdn.com/w40/br.png", en: "https://flagcdn.com/w40/us.png", es: "https://flagcdn.com/w40/es.png" };
+    const langFlagUrls = {
+      pt: "https://flagcdn.com/w40/br.png",
+      en: "https://flagcdn.com/w40/us.png",
+      es: "https://flagcdn.com/w40/es.png"
+    };
 
     function mudarIdioma(lang) {
       idiomaAtual = lang;
@@ -728,21 +1028,18 @@
       document.getElementById("optOriginalCurrency").innerText = t.optOriginalCurrency;
       document.getElementById("txtSettingsTitle").innerText = t.txtSettingsTitle;
       document.getElementById("txtRatesLabel").innerText = t.txtRatesLabel;
-      
       document.getElementById("txtSalaryIncreaseLabel").innerText = t.txtSalaryIncreaseLabel;
       document.getElementById("btnApplyIncrease").innerText = t.btnApplyIncrease;
-      
       document.getElementById("txtBtnSaveConfig").innerText = t.btnSaveConfig;
       document.getElementById("txtTitle").innerText = t.title;
       document.getElementById("txtSubtitle").innerText = t.subtitle;
       document.getElementById("txtTokenLabel").innerText = t.tokenLabel;
       document.getElementById("searchInput").placeholder = t.searchPlaceholder;
-      document.getElementById("btnClearFilters").setAttribute("data-tip", t.btnClearFilters);
       document.getElementById("btnToggleForm").innerText = t.btnAddCity;
-      
+      document.getElementById("columnsFilterLabel").innerText = t.columnsLabel;
       document.getElementById("btnSelectAll").innerText = t.selectAll;
       document.getElementById("btnSelectNone").innerText = t.selectNone;
-      
+
       document.getElementById("lblFlag").innerText = t.lblFlag;
       document.getElementById("lblCity").innerText = t.lblCity;
       document.getElementById("lblCurrency").innerText = t.lblCurrency;
@@ -752,7 +1049,7 @@
       document.getElementById("lblInternet").innerText = t.lblInternet;
       document.getElementById("lblGym").innerText = t.lblGym;
       document.getElementById("lblExtras").innerText = t.lblExtras;
-      
+
       document.getElementById("lblCarInstallment").innerText = t.lblCarInstallment;
       document.getElementById("lblCarInstallment").setAttribute("data-tip", t.lblCarInstallmentTooltip);
       document.getElementById("lblIphone").innerText = t.lblIphone;
@@ -761,6 +1058,14 @@
       document.getElementById("lblCarDown").setAttribute("data-tip", t.lblCarDownTooltip);
       document.getElementById("lblHouseDown").innerText = t.lblHouseDown;
       document.getElementById("lblHouseDown").setAttribute("data-tip", t.lblHouseDownTooltip);
+
+      // Optional column headers
+      const thHP = document.getElementById("thHousePrice");
+      const thCI = document.getElementById("thCarInstallment");
+      const thCP = document.getElementById("thCarPrice");
+      if (thHP) thHP.innerText = t.thHousePrice;
+      if (thCI) thCI.innerText = t.thCarInstallment;
+      if (thCP) thCP.innerText = t.thCarPrice;
 
       const btnSubmit = document.getElementById("btnSubmit");
       btnSubmit.innerText = document.getElementById("editIndex").value === "-1" ? t.btnSubmitAdd : t.btnSubmitUpdate;
@@ -774,7 +1079,7 @@
         }
       }
       document.getElementById("btnCancel").innerText = t.btnCancel;
-      
+
       document.getElementById("thCountry").innerText = t.thCountry;
       document.getElementById("thCity").innerText = t.thCity;
       document.getElementById("thSalary").innerText = t.thSalary;
@@ -793,6 +1098,7 @@
       document.getElementById("thActions").innerText = t.thActions;
 
       popularFiltroPaises();
+      popularFiltroColunas();
       updateCountryFilterLabel();
       atualizarTextoSincronizacao();
       renderizarTabela();
@@ -820,7 +1126,7 @@
     function salvarConfiguracoes() {
       const tokenInput = document.getElementById("ghToken").value.trim();
       const oldToken = localStorage.getItem("gh_pat");
-      
+
       if (tokenInput) localStorage.setItem("gh_pat", tokenInput);
       else localStorage.removeItem("gh_pat");
 
@@ -829,12 +1135,11 @@
         const input = document.getElementById(`rate_${moeda}`);
         if (input) userExchangeRates[moeda] = parseFloat(input.value) || userExchangeRates[moeda];
       });
-      
+
       localStorage.setItem("ivfr_rates", JSON.stringify(userExchangeRates));
       document.getElementById("tokenModal").style.display = "none";
-      
       renderizarTabela();
-      
+
       if (tokenInput !== oldToken) {
         carregarDoGitHub();
       }
@@ -843,16 +1148,16 @@
     function popularFiltroPaises() {
       const list = document.getElementById("countryFilterList");
       list.innerHTML = "";
-      
+
       const paisesNormalizados = baseDados.map(normalizarItem);
       const nomes = [...new Set(paisesNormalizados.map(i => i.paisNome))].filter(Boolean).sort();
-      
+
       const hasSelection = selectedCountries.size > 0;
 
       nomes.forEach(nome => {
         const item = paisesNormalizados.find(i => i.paisNome === nome);
         const isChecked = !hasSelection || selectedCountries.has(nome) ? "checked" : "";
-        
+
         list.insertAdjacentHTML('beforeend', `
           <label class="multi-select-option">
             <input type="checkbox" value="${nome}" onchange="updateCountryFilter()" ${isChecked}>
@@ -886,7 +1191,7 @@
       selectedCountries.clear();
       let allChecked = true;
       let noneChecked = true;
-      
+
       checkboxes.forEach(cb => {
         if (cb.checked) {
           selectedCountries.add(cb.value);
@@ -897,7 +1202,7 @@
       });
 
       if (allChecked || noneChecked) {
-        selectedCountries.clear(); 
+        selectedCountries.clear();
       }
 
       updateCountryFilterLabel();
@@ -907,7 +1212,7 @@
     function updateCountryFilterLabel() {
       const label = document.getElementById("countryFilterLabel");
       const t = i18n[idiomaAtual];
-      
+
       if (selectedCountries.size === 0) {
         label.innerText = t.filterAll;
       } else {
@@ -925,6 +1230,9 @@
       const moedaSelect = document.getElementById("moeda");
       Array.from(moedaSelect.options).filter(o => o.dataset.custom).forEach(o => o.remove());
       moedaSelect.value = "$";
+
+      // Labels padrão (USD para nova cidade)
+      updateFormLabelsWithCurrency("$");
     }
 
     function fecharFormulario() {
@@ -932,63 +1240,83 @@
       document.getElementById("btnToggleForm").style.display = "inline-block";
     }
 
+    function getConversionInfo(paisNome, modo) {
+      if (modo === 'USD') return { rate: 1, symbol: "$" };
+      if (modo === 'EUR') return { rate: userExchangeRates['EUR'] || 0.92, symbol: "€" };
+      const locCurr = currencyMap[paisNome] || "USD";
+      return { rate: userExchangeRates[locCurr] || 1, symbol: currencySymbols[locCurr] || locCurr + " " };
+    }
+
     function calcularValoresCompletos(item) {
-      const custoFixo = (item.aluguel || 0) + (item.alimentacao || 0) + (item.internet || 0) + (item.academia || 0) + (item.extras || 0) + (item.parcela || 0);
+      const custoFixo = (item.aluguel || 0) + (item.alimentacao || 0) + (item.internet || 0) +
+                       (item.academia || 0) + (item.extras || 0) + (item.parcela || 0);
       const sobra = (item.salario || 0) - custoFixo;
-      const t = i18n[idiomaAtual];
 
       const conv = getConversionInfo(item.paisNome, currentDisplayMode);
       const r = conv.rate;
       const sym = conv.symbol;
-      
+
       const salD = (item.salario || 0) * r;
       const custoD = custoFixo * r;
       const sobraD = sobra * r;
+      const parcelaD = (item.parcela || 0) * r;
+      const precoCasaD = (item.precoCasa || 0) * r;
+      // Preço do carro estimado como entrada / 0.2 (entrada = 20%)
+      const precoCarro = (item.entrada || 0) / 0.2;
+      const precoCarroD = precoCarro * r;
 
-      if (sobra <= 0) {
-        return {
-          ...item,
-          custoFixo, sobra, margem: 0, margemStr: "0.0%",
-          mesesIphone: 999, mesesIphoneStr: t.msgInfeasible,
-          mesesCarro: 999, mesesCarroStr: t.msgInfeasible,
-          mesesCasa: 999, mesesCasaStr: t.msgInfeasible,
-          ivfr: 0.0, classe: "score-low",
-          salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-          custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-          sobraDisplay: sym + sobraD.toLocaleString(undefined, {maximumFractionDigits: 0})
-        };
-      }
-
-      const margem = sobra / item.salario;
       const precoIphone = item.iphone || 1000;
       const precoEntrada = item.entrada || 4000;
       const precoEntradaCasa = item.entradaCasa || 50000;
-      
-      const mesesIphone = precoIphone / sobra;
-      const mesesCarro = precoEntrada / sobra;
-      const mesesCasa = precoEntradaCasa / sobra;
-      const tempoTotalBens = (precoIphone + precoEntrada) / sobra;
-      
-      const penalidadeTempo = 1 / (1 + Math.log(1 + tempoTotalBens));
-      const ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
 
-      // Classificação de cor baseada na Margem Livre (Free Margin):
-      // >= 33,3% verde | entre 20% e 33,3% amarelo | abaixo de 20% vermelho
-      const margemPct = margem * 100;
-      let classe = "score-low";
-      if (margemPct >= 33.3) classe = "score-high";
-      else if (margemPct >= 20) classe = "score-mid";
+      let mesesIphone, mesesCarro, mesesCasa, margem, ivfr, classe;
+
+      if (sobra <= 0) {
+        mesesIphone = Infinity;
+        mesesCarro = Infinity;
+        mesesCasa = Infinity;
+        margem = 0;
+        ivfr = 0;
+        classe = "score-low";
+      } else {
+        mesesIphone = precoIphone / sobra;
+        mesesCarro = precoEntrada / sobra;
+        mesesCasa = precoEntradaCasa / sobra;
+        margem = sobra / item.salario;
+        const tempoTotalBens = (precoIphone + precoEntrada) / sobra;
+        const penalidadeTempo = 1 / (1 + Math.log(1 + tempoTotalBens));
+        ivfr = Math.min(100, Math.max(0, margem * 100 * penalidadeTempo * 1.5));
+        const margemPct = margem * 100;
+        classe = margemPct >= 33.3 ? "score-high" : (margemPct >= 20 ? "score-mid" : "score-low");
+      }
+
+      const formatMeses = (m) => {
+        if (!isFinite(m)) return "∞";
+        if (m > 999) return m.toFixed(0) + " m";
+        return m.toFixed(1) + " m";
+      };
+
+      const surplusClass = classe === "score-high" ? "surplus-high" : (classe === "score-mid" ? "surplus-mid" : "surplus-low");
 
       return {
         ...item,
-        custoFixo, sobra, margem, margemStr: (margem * 100).toFixed(1) + "%",
-        mesesIphone, mesesIphoneStr: mesesIphone.toFixed(1) + " m",
-        mesesCarro, mesesCarroStr: mesesCarro.toFixed(1) + " m",
-        mesesCasa, mesesCasaStr: mesesCasa.toFixed(1) + " m",
-        ivfr: parseFloat(ivfr.toFixed(1)), classe,
-        salarioDisplay: sym + salD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-        custoFixoDisplay: sym + custoD.toLocaleString(undefined, {maximumFractionDigits: 0}),
-        sobraDisplay: sym + sobraD.toLocaleString(undefined, {maximumFractionDigits: 0})
+        custoFixo, sobra, margem,
+        margemStr: ((margem || 0) * 100).toFixed(1) + "%",
+        mesesIphone, mesesIphoneStr: formatMeses(mesesIphone),
+        mesesCarro, mesesCarroStr: formatMeses(mesesCarro),
+        mesesCasa, mesesCasaStr: formatMeses(mesesCasa),
+        precoCasa: item.precoCasa || 0,
+        precoCarro,
+        parcela: item.parcela || 0,
+        ivfr: parseFloat((ivfr || 0).toFixed(1)),
+        classe,
+        surplusClass,
+        salarioDisplay: sym + Math.round(salD).toLocaleString(),
+        custoFixoDisplay: sym + Math.round(custoD).toLocaleString(),
+        sobraDisplay: sym + Math.round(sobraD).toLocaleString(),
+        precoCasaDisplay: item.precoCasa ? sym + Math.round(precoCasaD).toLocaleString() : "—",
+        parcelaDisplay: sym + Math.round(parcelaD).toLocaleString(),
+        precoCarroDisplay: precoCarro ? sym + Math.round(precoCarroD).toLocaleString() : "—"
       };
     }
 
@@ -997,18 +1325,30 @@
         ordemAscendente = !ordemAscendente;
       } else {
         colunaOrdenada = campo;
-        ordemAscendente = campo === "cidade" || campo === "paisNome" ? true : false;
+        ordemAscendente = (campo === "cidade" || campo === "paisNome");
       }
       renderizarTabela();
     }
 
+    function applyOptionalColumnsVisibility() {
+      document.querySelectorAll('.col-housePrice').forEach(el => {
+        el.style.display = visibleOptionalCols.housePrice ? '' : 'none';
+      });
+      document.querySelectorAll('.col-carInstallment').forEach(el => {
+        el.style.display = visibleOptionalCols.carInstallment ? '' : 'none';
+      });
+      document.querySelectorAll('.col-carPrice').forEach(el => {
+        el.style.display = visibleOptionalCols.carPrice ? '' : 'none';
+      });
+    }
+
     function renderizarTabela() {
       const tbody = document.getElementById("tabelaCorpo");
-      tbody.innerHTML = "";
       const t = i18n[idiomaAtual];
       const termoBusca = document.getElementById("searchInput").value.toLowerCase();
 
-      ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "mesesCasa", "ivfr"].forEach(col => {
+      const sortCols = ["paisNome", "cidade", "salario", "custoFixo", "sobra", "margem", "mesesIphone", "mesesCarro", "mesesCasa", "precoCasa", "parcela", "precoCarro", "ivfr"];
+      sortCols.forEach(col => {
         const el = document.getElementById("sort_" + col);
         if (el) {
           el.innerText = (colunaOrdenada === col) ? (ordemAscendente ? "▲" : "▼") : "↕";
@@ -1030,60 +1370,57 @@
       dadosProcessados.sort((a, b) => {
         let vA = a[colunaOrdenada];
         let vB = b[colunaOrdenada];
-
         if (typeof vA === "string") {
-          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(a[colunaOrdenada]);
+          return ordemAscendente ? vA.localeCompare(vB) : vB.localeCompare(vA);
         }
+        // Handle Infinity
+        if (!isFinite(vA)) vA = ordemAscendente ? Infinity : -Infinity;
+        if (!isFinite(vB)) vB = ordemAscendente ? Infinity : -Infinity;
         return ordemAscendente ? (vA - vB) : (vB - vA);
       });
 
-      atualizarContadorResultados(dadosProcessados.length, baseDados.length);
+      applyOptionalColumnsVisibility();
+
+      const colCount = 11 + (visibleOptionalCols.housePrice ? 1 : 0) + (visibleOptionalCols.carInstallment ? 1 : 0) + (visibleOptionalCols.carPrice ? 1 : 0);
 
       if (dadosProcessados.length === 0) {
-        tbody.insertAdjacentHTML("beforeend", `<tr class="empty-state"><td colspan="11">${t.emptyState}</td></tr>`);
+        tbody.innerHTML = `<tr><td colspan="${colCount}" class="loading-msg">${t.loading}</td></tr>`;
         return;
       }
 
+      tbody.innerHTML = "";
       dadosProcessados.forEach(item => {
+        let optionalCells = "";
+        if (visibleOptionalCols.housePrice) {
+          optionalCells += `<td class="col-optional col-housePrice">${item.precoCasaDisplay}</td>`;
+        }
+        if (visibleOptionalCols.carInstallment) {
+          optionalCells += `<td class="col-optional col-carInstallment">${item.parcelaDisplay}</td>`;
+        }
+        if (visibleOptionalCols.carPrice) {
+          optionalCells += `<td class="col-optional col-carPrice">${item.precoCarroDisplay}</td>`;
+        }
+
         tbody.insertAdjacentHTML("beforeend", `
           <tr>
             <td>${renderizarBandeira(item.bandeira)} <strong>${item.paisNome}</strong></td>
             <td><strong>${item.cidade}</strong></td>
             <td>${item.salarioDisplay}</td>
             <td>${item.custoFixoDisplay}</td>
-            <td><span class="badge ${item.classe}">${item.sobraDisplay}</span></td>
+            <td class="${item.surplusClass}">${item.sobraDisplay}</td>
             <td>${item.margemStr}</td>
             <td>${item.mesesIphoneStr}</td>
             <td>${item.mesesCarroStr}</td>
             <td>${item.mesesCasaStr}</td>
-            <td><span class="badge score ${item.classe}">${item.ivfr.toFixed(1)}</span></td>
+            ${optionalCells}
+            <td><span class="score ${item.classe}">${item.ivfr.toFixed(1)}</span></td>
             <td>
-              <div class="action-buttons">
-                <button class="btn-action" onclick="carregarParaEdicao(${item.originalIndex})" data-tip="${t.tipEdit}">✎</button>
-                <button class="btn-action btn-delete" onclick="removerPais(${item.originalIndex})" data-tip="${t.tipDelete}">✕</button>
-              </div>
+              <button class="btn-action" onclick="carregarParaEdicao(${item.originalIndex})" data-tip="${t.tipEdit}">✎</button>
+              <button class="btn-action btn-delete" onclick="removerPais(${item.originalIndex})" data-tip="${t.tipDelete}">✕</button>
             </td>
           </tr>
         `);
       });
-    }
-
-    function atualizarContadorResultados(filtrado, total) {
-      const el = document.getElementById("resultsCount");
-      if (!el) return;
-      const t = i18n[idiomaAtual];
-      el.innerText = filtrado === total
-        ? `${total} ${t.resultsCountLabel}`
-        : `${filtrado} ${t.resultsCountOf} ${total} ${t.resultsCountLabel}`;
-    }
-
-    function limparFiltros() {
-      document.getElementById("searchInput").value = "";
-      selectedCountries.clear();
-      document.querySelectorAll('#countryFilterList input[type="checkbox"]').forEach(cb => cb.checked = true);
-      updateCountryFilterLabel();
-      filtrarOpcoesPaises();
-      renderizarTabela();
     }
 
     function formatarDataHora(data) {
@@ -1116,29 +1453,56 @@
             atualizarTextoSincronizacao();
           }
         }
-      } catch(e) {
+      } catch (e) {
         console.warn("Falha ao buscar data do commit.");
       }
     }
 
+    async function carregarLocalFallback() {
+      try {
+        const res = await fetch(`./dados.json?nocache=${Date.now()}`);
+        if (!res.ok) throw new Error("Local fetch failed");
+        const data = await res.json();
+        baseDados = data.map(normalizarItem);
+        popularFiltroPaises();
+        renderizarTabela();
+        ultimaDataSincronizacao = new Date();
+        atualizarTextoSincronizacao();
+        console.info("Dados carregados via fallback local.");
+      } catch (err) {
+        console.error("Fallback local também falhou:", err);
+        document.getElementById("tabelaCorpo").innerHTML =
+          `<tr><td colspan="14" class="loading-msg" style="color:var(--score-low)">Não foi possível carregar os dados.</td></tr>`;
+      }
+    }
+
     async function carregarDoGitHub() {
+      const t = i18n[idiomaAtual];
+      document.getElementById("tabelaCorpo").innerHTML =
+        `<tr><td colspan="14" class="loading-msg">${t.loading}</td></tr>`;
+
       try {
         const token = localStorage.getItem("gh_pat");
         const headers = {};
         if (token) headers["Authorization"] = `Bearer ${token}`;
 
         const res = await fetch(`https://api.github.com/repos/${USUARIO}/${REPO}/contents/${ARQUIVO}?nocache=${Date.now()}`, { headers });
+
+        if (!res.ok) throw new Error(`GitHub API ${res.status}`);
+
         const data = await res.json();
         fileSha = data.sha;
         const jsonText = decodeURIComponent(escape(atob(data.content)));
         baseDados = JSON.parse(jsonText).map(normalizarItem);
-        
+
         popularFiltroPaises();
         renderizarTabela();
         buscarUltimaAtualizacao(headers);
-        
       } catch (err) {
-        console.warn("Aguardando carregamento de base do GitHub.");
+        console.warn("Falha no GitHub, tentando fallback local...", err);
+        document.getElementById("tabelaCorpo").innerHTML =
+          `<tr><td colspan="14" class="loading-msg">${t.loadError}</td></tr>`;
+        await carregarLocalFallback();
       }
     }
 
@@ -1146,7 +1510,7 @@
       const token = localStorage.getItem("gh_pat");
       const msg = document.getElementById("statusMsg");
       const t = i18n[idiomaAtual];
-      
+
       if (!token) {
         alert(t.tokenLabel);
         return;
@@ -1193,27 +1557,33 @@
 
     function salvarPais() {
       const index = parseInt(document.getElementById("editIndex").value);
-      const inputSalario = parseFloat(document.getElementById("salario").value) || 0;
-      const entradaCasaVal = parseFloat(document.getElementById("entradaCasa").value) || 0;
-      const existente = (index >= 0 && baseDados[index]) ? baseDados[index] : {};
-      
+      const existente = (index >= 0 && baseDados[index]) ? normalizarItem(baseDados[index]) : {};
+      const bandeira = document.getElementById("bandeira").value || "🌐";
+      const paisNome = existente.paisNome || getCountryFromFlag(bandeira, idiomaAtual) || "United States";
+      const rate = getLocalRate(paisNome);
+
+      // Converte valores do formulário (moeda local) de volta para USD
+      const inputSalario = toUSD(parseFloat(document.getElementById("salario").value) || 0, rate);
+      const entradaCasaVal = toUSD(parseFloat(document.getElementById("entradaCasa").value) || 0, rate);
+
       const dados = {
-        ...existente, // preserva campos extras como preco_casa, months_to_house_down, etc.
-        bandeira: document.getElementById("bandeira").value || "🌐",
+        ...existente,
+        bandeira,
         cidade: document.getElementById("cidade").value,
         moeda: document.getElementById("moeda").value || "$",
+        paisNome,
         salario: inputSalario,
-        salarioBase: inputSalario, // Atualiza a base para o valor recém-inserido manualmente
-        aluguel: parseFloat(document.getElementById("aluguel").value) || 0,
-        alimentacao: parseFloat(document.getElementById("alimentacao").value) || 0,
-        internet: parseFloat(document.getElementById("internet").value) || 0,
-        academia: parseFloat(document.getElementById("academia").value) || 0,
-        extras: parseFloat(document.getElementById("extras").value) || 0,
-        parcela: parseFloat(document.getElementById("parcela").value) || 0,
-        iphone: parseFloat(document.getElementById("iphone").value) || 0,
-        entrada: parseFloat(document.getElementById("entrada").value) || 0,
+        salarioBase: inputSalario,
+        aluguel: toUSD(parseFloat(document.getElementById("aluguel").value) || 0, rate),
+        alimentacao: toUSD(parseFloat(document.getElementById("alimentacao").value) || 0, rate),
+        internet: toUSD(parseFloat(document.getElementById("internet").value) || 0, rate),
+        academia: toUSD(parseFloat(document.getElementById("academia").value) || 0, rate),
+        extras: toUSD(parseFloat(document.getElementById("extras").value) || 0, rate),
+        parcela: toUSD(parseFloat(document.getElementById("parcela").value) || 0, rate),
+        iphone: toUSD(parseFloat(document.getElementById("iphone").value) || 0, rate),
+        entrada: toUSD(parseFloat(document.getElementById("entrada").value) || 0, rate),
         entradaCasa: entradaCasaVal,
-        entrada_casa_20pct: entradaCasaVal // mantém sincronizado com a nomenclatura do dataset original
+        entrada_casa_20pct: entradaCasaVal
       };
 
       if (index >= 0) baseDados[index] = dados;
@@ -1240,25 +1610,23 @@
       const percentual = parseFloat(input.value.replace(",", ".")) || 0;
       const t = i18n[idiomaAtual];
 
-      const confirmMsg = t.confirmIncrease ? `${t.confirmIncrease} ${percentual}%?` : `Aplicar ${percentual}%?`;
+      const confirmMsg = `${t.confirmIncrease}${percentual}%?`;
 
       if (confirm(confirmMsg)) {
         const fator = 1 + (percentual / 100);
 
-        // Atualiza a visualização a partir do salário original (base)
         baseDados = baseDados.map(item => {
           const base = item.salarioBase || item.salario;
           return {
             ...item,
-            salarioBase: base, // Mantém o valor original intacto
-            salario: Math.round(base * fator) // Aplica a % sempre em cima do original
+            salarioBase: base,
+            salario: Math.round(base * fator)
           };
         });
 
         popularFiltroPaises();
         renderizarTabela();
         gravarNoGitHub();
-
         document.getElementById("tokenModal").style.display = "none";
       }
     }
@@ -1276,35 +1644,77 @@
       select.value = valor;
     }
 
+    function getLocalRate(paisNome) {
+      const locCurr = currencyMap[paisNome] || "USD";
+      return userExchangeRates[locCurr] || 1;
+    }
+
+    function toLocal(valueUSD, rate) {
+      return Math.round((valueUSD || 0) * rate);
+    }
+
+    function toUSD(valueLocal, rate) {
+      if (!rate || rate === 0) return valueLocal || 0;
+      return Math.round((valueLocal || 0) / rate);
+    }
+
     function carregarParaEdicao(index) {
-      const item = baseDados[index];
+      const item = normalizarItem(baseDados[index]);
       const t = i18n[idiomaAtual];
-      
+      const rate = getLocalRate(item.paisNome);
+
       abrirFormulario();
-      
+
       document.getElementById("editIndex").value = index;
       document.getElementById("bandeira").value = item.bandeira || "🌐";
       document.getElementById("cidade").value = item.cidade;
       setMoedaSelect(item.moeda || "$");
-      document.getElementById("salario").value = item.salario;
-      document.getElementById("aluguel").value = item.aluguel;
-      document.getElementById("alimentacao").value = item.alimentacao;
-      document.getElementById("internet").value = item.internet || 0;
-      document.getElementById("academia").value = item.academia || 0;
-      document.getElementById("extras").value = item.extras || 0;
-      document.getElementById("parcela").value = item.parcela;
-      document.getElementById("iphone").value = item.iphone;
-      document.getElementById("entrada").value = item.entrada;
-      document.getElementById("entradaCasa").value = item.entradaCasa;
+
+      // Valores na moeda local do país
+      document.getElementById("salario").value = toLocal(item.salario, rate);
+      document.getElementById("aluguel").value = toLocal(item.aluguel, rate);
+      document.getElementById("alimentacao").value = toLocal(item.alimentacao, rate);
+      document.getElementById("internet").value = toLocal(item.internet || 0, rate);
+      document.getElementById("academia").value = toLocal(item.academia || 0, rate);
+      document.getElementById("extras").value = toLocal(item.extras || 0, rate);
+      document.getElementById("parcela").value = toLocal(item.parcela, rate);
+      document.getElementById("iphone").value = toLocal(item.iphone, rate);
+      document.getElementById("entrada").value = toLocal(item.entrada, rate);
+      document.getElementById("entradaCasa").value = toLocal(item.entradaCasa, rate);
+
+      // Atualiza labels com símbolo da moeda local
+      const sym = currencySymbols[currencyMap[item.paisNome] || "USD"] || "$";
+      updateFormLabelsWithCurrency(sym);
 
       document.getElementById("btnSubmit").innerText = t.btnSubmitUpdate;
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function updateFormLabelsWithCurrency(sym) {
+      const t = i18n[idiomaAtual];
+      document.getElementById("lblSalary").innerText = `${t.lblSalary} (${sym})`;
+      document.getElementById("lblRent").innerText = `${t.lblRent} (${sym})`;
+      document.getElementById("lblFood").innerText = `${t.lblFood} (${sym})`;
+      document.getElementById("lblInternet").innerText = `${t.lblInternet} (${sym})`;
+      document.getElementById("lblGym").innerText = `${t.lblGym} (${sym})`;
+      document.getElementById("lblExtras").innerText = `${t.lblExtras} (${sym})`;
+      document.getElementById("lblCarInstallment").innerText = `${t.lblCarInstallment} (${sym})`;
+      document.getElementById("lblIphone").innerText = `${t.lblIphone} (${sym})`;
+      document.getElementById("lblCarDown").innerText = `${t.lblCarDown} (${sym})`;
+      document.getElementById("lblHouseDown").innerText = `${t.lblHouseDown} (${sym})`;
     }
 
     function cancelarEdicao() {
       fecharFormulario();
     }
 
+    function mudarModoExibicao(modo) {
+      currentDisplayMode = modo;
+      localStorage.setItem("ivfr_display", modo);
+      renderizarTabela();
+    }
+
+    // Tooltips
     const tipBox = document.getElementById("globalTooltip");
     document.addEventListener("mouseover", (e) => {
       const target = e.target.closest("[data-tip]");
@@ -1315,7 +1725,7 @@
           tipBox.style.display = "block";
           const rect = target.getBoundingClientRect();
           tipBox.style.top = Math.max(10, rect.top - tipBox.offsetHeight - 8) + "px";
-          tipBox.style.left = Math.min(window.innerWidth - 290, Math.max(10, rect.left + (rect.width/2) - (tipBox.offsetWidth/2))) + "px";
+          tipBox.style.left = Math.min(window.innerWidth - 290, Math.max(10, rect.left + (rect.width / 2) - (tipBox.offsetWidth / 2))) + "px";
         }
       }
     });
@@ -1326,10 +1736,12 @@
       }
     });
 
+    // Init
     const tokenSalvo = localStorage.getItem("gh_pat");
     if (tokenSalvo) document.getElementById("ghToken").value = tokenSalvo;
     atualizarBotaoTema();
     mudarIdioma(idiomaAtual);
+    popularFiltroColunas();
     carregarDoGitHub();
   </script>
 </body>
