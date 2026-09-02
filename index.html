@@ -393,6 +393,31 @@
       box-shadow: 0 10px 15px -3px rgba(0,0,0,0.4);
     }
 
+    #btnScrollBottom {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      font-size: 1.35rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 9999;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.15s, transform 0.15s;
+    }
+    #btnScrollBottom:hover {
+      background: var(--border);
+      transform: translateY(2px);
+    }
+
     @media (max-width: 768px) {
       body { padding: 0.75rem; }
       h1 { font-size: 1.25rem; }
@@ -559,15 +584,15 @@
             <th onclick="ordenarColuna('paisNome')"><span id="thCountry">País</span> <span id="sort_paisNome">↕</span></th>
             <th onclick="ordenarColuna('cidade')"><span id="thCity">Cidade</span> <span id="sort_cidade">↕</span></th>
             <th onclick="ordenarColuna('salario')"><span id="thSalary">Salário Líq.</span> <span id="sort_salario">↕</span></th>
-            <th onclick="ordenarColuna('custoFixo')"><span class="has-tooltip" id="thFixed" data-tip="">Custo Fixo Total</span> <span id="sort_custoFixo">↕</span></th>
+            <th onclick="ordenarColuna('custoFixo')"><span class="has-tooltip" id="thFixed" data-tip="">Custo Total</span> <span id="sort_custoFixo">↕</span></th>
             <th onclick="ordenarColuna('sobra')"><span id="thSurplus">Sobra Líquida</span> <span id="sort_sobra">↕</span></th>
             <th onclick="ordenarColuna('margem')"><span id="thMargin">Margem Livre</span> <span id="sort_margem">↕</span></th>
-            <th onclick="ordenarColuna('mesesIphone')"><span class="has-tooltip" id="thMonthsIphone" data-tip="">Meses p/ iPhone</span> <span id="sort_mesesIphone">↕</span></th>
-            <th onclick="ordenarColuna('mesesCarro')"><span class="has-tooltip" id="thMonthsCar" data-tip="">Meses Entrada Carro</span> <span id="sort_mesesCarro">↕</span></th>
-            <th onclick="ordenarColuna('mesesCasa')"><span class="has-tooltip" id="thMonthsHouse" data-tip="">Meses Entrada Casa</span> <span id="sort_mesesCasa">↕</span></th>
-            <th class="col-optional col-housePrice" style="display:none;" onclick="ordenarColuna('precoCasa')"><span id="thHousePrice">Preço Casa</span> <span id="sort_precoCasa">↕</span></th>
+            <th onclick="ordenarColuna('mesesIphone')"><span class="has-tooltip" id="thMonthsIphone" data-tip="">p/ iPhone</span> <span id="sort_mesesIphone">↕</span></th>
+            <th onclick="ordenarColuna('mesesCarro')"><span class="has-tooltip" id="thMonthsCar" data-tip="">Entrada Carro</span> <span id="sort_mesesCarro">↕</span></th>
+            <th onclick="ordenarColuna('mesesCasa')"><span class="has-tooltip" id="thMonthsHouse" data-tip="">Entrada Casa</span> <span id="sort_mesesCasa">↕</span></th>
             <th class="col-optional col-carInstallment" style="display:none;" onclick="ordenarColuna('parcela')"><span id="thCarInstallment">Parc. Carro</span> <span id="sort_parcela">↕</span></th>
             <th class="col-optional col-carPrice" style="display:none;" onclick="ordenarColuna('precoCarro')"><span id="thCarPrice">Preço Carro</span> <span id="sort_precoCarro">↕</span></th>
+            <th class="col-optional col-housePrice" style="display:none;" onclick="ordenarColuna('precoCasa')"><span id="thHousePrice">Preço Casa</span> <span id="sort_precoCasa">↕</span></th>
             <th onclick="ordenarColuna('ivfr')"><span class="has-tooltip" id="thIvfr" data-tip="">Fator IVFR</span> <span id="sort_ivfr">↕</span></th>
             <th class="no-sort" id="thActions">Ações</th>
           </tr>
@@ -578,6 +603,11 @@
       </table>
     </div>
   </div>
+
+  <!-- Scroll to bottom button -->
+  <button id="btnScrollBottom" onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" title="Ir para o final" aria-label="Scroll to bottom">
+    ↓
+  </button>
 
   <div id="globalTooltip"></div>
 
@@ -691,15 +721,15 @@
         thCountry: "País",
         thCity: "Cidade",
         thSalary: "Salário Líq.",
-        thFixed: "Custo Fixo Total",
+        thFixed: "Custo Total",
         thFixedTooltip: "Aluguel + Alimentação + Internet + Academia + Extras/Lazer + Parcela do Carro.",
         thSurplus: "Sobra Líquida",
         thMargin: "Margem Livre",
-        thMonthsIphone: "Meses p/ iPhone",
+        thMonthsIphone: "p/ iPhone",
         thMonthsIphoneTooltip: "Meses de sobra líquida necessários para comprar o iPhone à vista.",
-        thMonthsCar: "Meses Entrada Carro",
+        thMonthsCar: "Entrada Carro",
         thMonthsCarTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% do carro.",
-        thMonthsHouse: "Meses Entrada Casa",
+        thMonthsHouse: "Entrada Casa",
         thMonthsHouseTooltip: "Meses de sobra líquida necessários para pagar a entrada de 20% de uma casa/apartamento.",
         thHousePrice: "Preço Casa",
         thCarInstallment: "Parc. Carro",
@@ -763,15 +793,15 @@
         thCountry: "Country",
         thCity: "City",
         thSalary: "Net Salary",
-        thFixed: "Total Fixed Costs",
+        thFixed: "Total Costs",
         thFixedTooltip: "Rent + Groceries + Internet + Gym + Extras + Car Installment.",
         thSurplus: "Net Surplus",
         thMargin: "Free Margin",
-        thMonthsIphone: "Months to iPhone",
+        thMonthsIphone: "to iPhone",
         thMonthsIphoneTooltip: "Months of net surplus required to buy the iPhone upfront.",
-        thMonthsCar: "Months to Car Down",
+        thMonthsCar: "to Car Down",
         thMonthsCarTooltip: "Months of net surplus required to save the 20% car down payment.",
-        thMonthsHouse: "Months to House Down",
+        thMonthsHouse: "to House Down",
         thMonthsHouseTooltip: "Months of net surplus required to save the 20% house/apartment down payment.",
         thHousePrice: "House Price",
         thCarInstallment: "Car Installment",
@@ -835,15 +865,15 @@
         thCountry: "País",
         thCity: "Ciudad",
         thSalary: "Salario Neto",
-        thFixed: "Coste Fijo Total",
+        thFixed: "Coste Total",
         thFixedTooltip: "Alquiler + Alimentación + Internet + Gimnasio + Extras + Cuota Coche.",
         thSurplus: "Sobrante Neto",
         thMargin: "Margen Libre",
-        thMonthsIphone: "Meses para iPhone",
+        thMonthsIphone: "p/ iPhone",
         thMonthsIphoneTooltip: "Meses de ahorro neto necesarios para adquirir el iPhone al contado.",
-        thMonthsCar: "Meses Entrada Coche",
+        thMonthsCar: "Entrada Coche",
         thMonthsCarTooltip: "Meses de ahorro neto necesarios para la entrada del 20% del coche.",
-        thMonthsHouse: "Meses Entrada Casa",
+        thMonthsHouse: "Entrada Casa",
         thMonthsHouseTooltip: "Meses de ahorro neto necesarios para la entrada del 20% de una casa/apartamento.",
         thHousePrice: "Precio Casa",
         thCarInstallment: "Cuota Coche",
@@ -979,16 +1009,16 @@
       if (!list) return;
       list.innerHTML = `
         <label class="multi-select-option">
-          <input type="checkbox" data-col="housePrice" ${visibleOptionalCols.housePrice ? "checked" : ""} onchange="updateColumnsFilter()">
-          ${t.colHousePrice}
-        </label>
-        <label class="multi-select-option">
           <input type="checkbox" data-col="carInstallment" ${visibleOptionalCols.carInstallment ? "checked" : ""} onchange="updateColumnsFilter()">
           ${t.colCarInstallment}
         </label>
         <label class="multi-select-option">
           <input type="checkbox" data-col="carPrice" ${visibleOptionalCols.carPrice ? "checked" : ""} onchange="updateColumnsFilter()">
           ${t.colCarPrice}
+        </label>
+        <label class="multi-select-option">
+          <input type="checkbox" data-col="housePrice" ${visibleOptionalCols.housePrice ? "checked" : ""} onchange="updateColumnsFilter()">
+          ${t.colHousePrice}
         </label>
       `;
     }
@@ -1316,7 +1346,8 @@
         return m.toFixed(1) + " m";
       };
 
-      const surplusClass = classe === "score-high" ? "surplus-high" : (classe === "score-mid" ? "surplus-mid" : "surplus-low");
+      // Net Surplus: verde se positivo, vermelho se negativo/zero
+      const surplusClass = sobra > 0 ? "surplus-high" : "surplus-low";
 
       return {
         ...item,
@@ -1411,14 +1442,14 @@
       tbody.innerHTML = "";
       dadosProcessados.forEach(item => {
         let optionalCells = "";
-        if (visibleOptionalCols.housePrice) {
-          optionalCells += `<td class="col-optional col-housePrice">${item.precoCasaDisplay}</td>`;
-        }
         if (visibleOptionalCols.carInstallment) {
           optionalCells += `<td class="col-optional col-carInstallment">${item.parcelaDisplay}</td>`;
         }
         if (visibleOptionalCols.carPrice) {
           optionalCells += `<td class="col-optional col-carPrice">${item.precoCarroDisplay}</td>`;
+        }
+        if (visibleOptionalCols.housePrice) {
+          optionalCells += `<td class="col-optional col-housePrice">${item.precoCasaDisplay}</td>`;
         }
 
         tbody.insertAdjacentHTML("beforeend", `
