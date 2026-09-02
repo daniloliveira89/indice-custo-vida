@@ -18,7 +18,8 @@
     "months_to_house_down": 11.5,
     "salarioBase": 800,
     "entradaCasa": 28000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 140000
   },
   {
     "bandeira": "🇪🇸",
@@ -39,7 +40,8 @@
     "months_to_house_down": 115.2,
     "salarioBase": 1750,
     "entradaCasa": 32000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 160000
   },
   {
     "bandeira": "🇺🇸",
@@ -60,7 +62,8 @@
     "months_to_house_down": 10.9,
     "salarioBase": 3500,
     "entradaCasa": 56000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 280000
   },
   {
     "bandeira": "🇺🇸",
@@ -81,7 +84,8 @@
     "months_to_house_down": 33.2,
     "salarioBase": 3500,
     "entradaCasa": 56000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 280000
   },
   {
     "bandeira": "🇦🇪",
@@ -102,7 +106,8 @@
     "months_to_house_down": 62,
     "salarioBase": 980,
     "entradaCasa": 38000,
-    "entrada_carro": 4800
+    "entrada_carro": 4800,
+    "precoCasa": 190000
   },
   {
     "bandeira": "🇹🇼",
@@ -123,7 +128,8 @@
     "months_to_house_down": 235.3,
     "salarioBase": 780,
     "entradaCasa": 64000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 320000
   },
   {
     "bandeira": "🇴🇲",
@@ -144,7 +150,8 @@
     "months_to_house_down": 11.4,
     "salarioBase": 730,
     "entradaCasa": 19000,
-    "entrada_carro": 4200
+    "entrada_carro": 4200,
+    "precoCasa": 95000
   },
   {
     "bandeira": "🇦🇲",
@@ -165,7 +172,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 320,
     "entradaCasa": 13000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 65000
   },
   {
     "bandeira": "🇯🇵",
@@ -186,7 +194,8 @@
     "months_to_house_down": 111.1,
     "salarioBase": 2050,
     "entradaCasa": 48000,
-    "entrada_carro": 2000
+    "entrada_carro": 2000,
+    "precoCasa": 240000
   },
   {
     "bandeira": "🇸🇬",
@@ -207,7 +216,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 1650,
     "entradaCasa": 112500,
-    "entrada_carro": 45000
+    "entrada_carro": 45000,
+    "precoCasa": 450000
   },
   {
     "bandeira": "🇹🇭",
@@ -228,7 +238,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 290,
     "entradaCasa": 15000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 75000
   },
   {
     "bandeira": "🇧🇭",
@@ -249,7 +260,8 @@
     "months_to_house_down": 43.4,
     "salarioBase": 2231,
     "entradaCasa": 18000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 90000
   },
   {
     "bandeira": "🇸🇮",
@@ -270,7 +282,8 @@
     "months_to_house_down": 347.1,
     "salarioBase": 1100,
     "entradaCasa": 36000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 180000
   },
   {
     "bandeira": "🇸🇦",
@@ -291,7 +304,8 @@
     "months_to_house_down": 266.7,
     "salarioBase": 880,
     "entradaCasa": 24000,
-    "entrada_carro": 4800
+    "entrada_carro": 4800,
+    "precoCasa": 120000
   },
   {
     "bandeira": "🇪🇪",
@@ -312,7 +326,8 @@
     "months_to_house_down": 85.5,
     "salarioBase": 1050,
     "entradaCasa": 28000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 140000
   },
   {
     "bandeira": "🇨🇭",
@@ -333,7 +348,8 @@
     "months_to_house_down": 27.9,
     "salarioBase": 6000,
     "entradaCasa": 110000,
-    "entrada_carro": 4200
+    "entrada_carro": 4200,
+    "precoCasa": 550000
   },
   {
     "bandeira": "🇰🇷",
@@ -354,7 +370,8 @@
     "months_to_house_down": 158.5,
     "salarioBase": 780,
     "entradaCasa": 70000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 350000
   },
   {
     "bandeira": "🇨🇱",
@@ -375,7 +392,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 560,
     "entradaCasa": 19000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 95000
   },
   {
     "bandeira": "🇭🇷",
@@ -396,7 +414,8 @@
     "months_to_house_down": 184,
     "salarioBase": 770,
     "entradaCasa": 26000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 130000
   },
   {
     "bandeira": "🇳🇱",
@@ -417,7 +436,8 @@
     "months_to_house_down": 71.1,
     "salarioBase": 2250,
     "entradaCasa": 68000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 340000
   },
   {
     "bandeira": "🇩🇰",
@@ -438,7 +458,8 @@
     "months_to_house_down": 37.8,
     "salarioBase": 2150,
     "entradaCasa": 58000,
-    "entrada_carro": 7500
+    "entrada_carro": 7500,
+    "precoCasa": 290000
   },
   {
     "bandeira": "🇫🇮",
@@ -459,7 +480,8 @@
     "months_to_house_down": 48.1,
     "salarioBase": 2150,
     "entradaCasa": 44000,
-    "entrada_carro": 3800
+    "entrada_carro": 3800,
+    "precoCasa": 220000
   },
   {
     "bandeira": "🇸🇪",
@@ -480,7 +502,8 @@
     "months_to_house_down": 48.9,
     "salarioBase": 2150,
     "entradaCasa": 54000,
-    "entrada_carro": 3800
+    "entrada_carro": 3800,
+    "precoCasa": 270000
   },
   {
     "bandeira": "🇨🇿",
@@ -501,7 +524,8 @@
     "months_to_house_down": 1459.5,
     "salarioBase": 1000,
     "entradaCasa": 42000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 210000
   },
   {
     "bandeira": "🇦🇹",
@@ -522,7 +546,8 @@
     "months_to_house_down": 57.9,
     "salarioBase": 2150,
     "entradaCasa": 56000,
-    "entrada_carro": 3600
+    "entrada_carro": 3600,
+    "precoCasa": 280000
   },
   {
     "bandeira": "🇵🇱",
@@ -543,7 +568,8 @@
     "months_to_house_down": 800,
     "salarioBase": 920,
     "entradaCasa": 29000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 145000
   },
   {
     "bandeira": "🇵🇹",
@@ -564,7 +590,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 1150,
     "entradaCasa": 34000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 170000
   },
   {
     "bandeira": "🇺🇿",
@@ -585,7 +612,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 245,
     "entradaCasa": 9000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 45000
   },
   {
     "bandeira": "🇸🇰",
@@ -606,7 +634,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 935,
     "entradaCasa": 30000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 150000
   },
   {
     "bandeira": "🇦🇿",
@@ -627,7 +656,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 230,
     "entradaCasa": 10000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 50000
   },
   {
     "bandeira": "🇮🇱",
@@ -648,7 +678,8 @@
     "months_to_house_down": 130.4,
     "salarioBase": 1400,
     "entradaCasa": 76000,
-    "entrada_carro": 8000
+    "entrada_carro": 8000,
+    "precoCasa": 380000
   },
   {
     "bandeira": "🇨🇺",
@@ -669,7 +700,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 35,
     "entradaCasa": 5000,
-    "entrada_carro": 8000
+    "entrada_carro": 8000,
+    "precoCasa": 25000
   },
   {
     "bandeira": "🇳🇴",
@@ -690,7 +722,8 @@
     "months_to_house_down": 54.4,
     "salarioBase": 2100,
     "entradaCasa": 66000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 330000
   },
   {
     "bandeira": "🇨🇾",
@@ -711,7 +744,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 1050,
     "entradaCasa": 30000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 150000
   },
   {
     "bandeira": "🇰🇼",
@@ -732,7 +766,8 @@
     "months_to_house_down": 23.1,
     "salarioBase": 900,
     "entradaCasa": 44000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 220000
   },
   {
     "bandeira": "🇷🇴",
@@ -753,7 +788,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 620,
     "entradaCasa": 19000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 95000
   },
   {
     "bandeira": "🇱🇹",
@@ -774,7 +810,8 @@
     "months_to_house_down": 108.7,
     "salarioBase": 970,
     "entradaCasa": 24000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 120000
   },
   {
     "bandeira": "🇭🇺",
@@ -795,7 +832,8 @@
     "months_to_house_down": 4571.4,
     "salarioBase": 780,
     "entradaCasa": 26000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 130000
   },
   {
     "bandeira": "🇱🇺",
@@ -816,7 +854,8 @@
     "months_to_house_down": 48.8,
     "salarioBase": 1750,
     "entradaCasa": 116000,
-    "entrada_carro": 3800
+    "entrada_carro": 3800,
+    "precoCasa": 580000
   },
   {
     "bandeira": "🇨🇦",
@@ -837,7 +876,8 @@
     "months_to_house_down": 91.2,
     "salarioBase": 2500,
     "entradaCasa": 62000,
-    "entrada_carro": 2500
+    "entrada_carro": 2500,
+    "precoCasa": 310000
   },
   {
     "bandeira": "🇪🇸",
@@ -858,7 +898,8 @@
     "months_to_house_down": 406.8,
     "salarioBase": 1750,
     "entradaCasa": 32000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 160000
   },
   {
     "bandeira": "🇲🇪",
@@ -879,7 +920,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 470,
     "entradaCasa": 17000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 85000
   },
   {
     "bandeira": "🇱🇻",
@@ -900,7 +942,8 @@
     "months_to_house_down": 132.4,
     "salarioBase": 1328,
     "entradaCasa": 19200,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 96000
   },
   {
     "bandeira": "🇳🇵",
@@ -921,7 +964,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 85,
     "entradaCasa": 8000,
-    "entrada_carro": 10000
+    "entrada_carro": 10000,
+    "precoCasa": 40000
   },
   {
     "bandeira": "🇧🇬",
@@ -942,7 +986,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 600,
     "entradaCasa": 18000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 90000
   },
   {
     "bandeira": "🇬🇪",
@@ -963,7 +1008,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 300,
     "entradaCasa": 11600,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 58000
   },
   {
     "bandeira": "🇩🇪",
@@ -984,7 +1030,8 @@
     "months_to_house_down": 51.5,
     "salarioBase": 2700,
     "entradaCasa": 64000,
-    "entrada_carro": 3800
+    "entrada_carro": 3800,
+    "precoCasa": 320000
   },
   {
     "bandeira": "🇷🇸",
@@ -1005,7 +1052,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 490,
     "entradaCasa": 19000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 95000
   },
   {
     "bandeira": "🇽🇰",
@@ -1026,7 +1074,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 275,
     "entradaCasa": 11000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 55000
   },
   {
     "bandeira": "🇷🇺",
@@ -1047,7 +1096,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 400,
     "entradaCasa": 22000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 110000
   },
   {
     "bandeira": "🇲🇹",
@@ -1068,7 +1118,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 970,
     "entradaCasa": 44000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 220000
   },
   {
     "bandeira": "🇹🇷",
@@ -1089,7 +1140,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 510,
     "entradaCasa": 12000,
-    "entrada_carro": 12000
+    "entrada_carro": 12000,
+    "precoCasa": 60000
   },
   {
     "bandeira": "🇯🇴",
@@ -1110,7 +1162,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 270,
     "entradaCasa": 13000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 65000
   },
   {
     "bandeira": "🇲🇰",
@@ -1131,7 +1184,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 430,
     "entradaCasa": 13000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 65000
   },
   {
     "bandeira": "🇲🇩",
@@ -1152,7 +1206,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 440,
     "entradaCasa": 11000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 55000
   },
   {
     "bandeira": "🇱🇰",
@@ -1173,7 +1228,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 125,
     "entradaCasa": 9000,
-    "entrada_carro": 8000
+    "entrada_carro": 8000,
+    "precoCasa": 45000
   },
   {
     "bandeira": "🇧🇦",
@@ -1194,7 +1250,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 460,
     "entradaCasa": 15000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 75000
   },
   {
     "bandeira": "🇵🇭",
@@ -1215,7 +1272,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 240,
     "entradaCasa": 13000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 65000
   },
   {
     "bandeira": "🇵🇰",
@@ -1236,7 +1294,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 135,
     "entradaCasa": 7000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 35000
   },
   {
     "bandeira": "🇻🇳",
@@ -1257,7 +1316,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 260,
     "entradaCasa": 16000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 80000
   },
   {
     "bandeira": "🇵🇦",
@@ -1278,7 +1338,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 550,
     "entradaCasa": 18000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 90000
   },
   {
     "bandeira": "🇮🇳",
@@ -1299,7 +1360,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 200,
     "entradaCasa": 9000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 45000
   },
   {
     "bandeira": "🇹🇳",
@@ -1320,7 +1382,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 195,
     "entradaCasa": 8400,
-    "entrada_carro": 6000
+    "entrada_carro": 6000,
+    "precoCasa": 42000
   },
   {
     "bandeira": "🇦🇱",
@@ -1341,7 +1404,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 420,
     "entradaCasa": 14000,
-    "entrada_carro": 3200
+    "entrada_carro": 3200,
+    "precoCasa": 70000
   },
   {
     "bandeira": "🇮🇩",
@@ -1362,7 +1426,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 205,
     "entradaCasa": 11000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 55000
   },
   {
     "bandeira": "🇮🇶",
@@ -1383,7 +1448,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 250,
     "entradaCasa": 13000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 65000
   },
   {
     "bandeira": "🇮🇪",
@@ -1404,7 +1470,8 @@
     "months_to_house_down": 112.4,
     "salarioBase": 2200,
     "entradaCasa": 58000,
-    "entrada_carro": 3800
+    "entrada_carro": 3800,
+    "precoCasa": 290000
   },
   {
     "bandeira": "🇰🇿",
@@ -1425,7 +1492,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 310,
     "entradaCasa": 11000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 55000
   },
   {
     "bandeira": "🇱🇧",
@@ -1446,7 +1514,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 170,
     "entradaCasa": 15000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 75000
   },
   {
     "bandeira": "🇬🇷",
@@ -1467,7 +1536,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 1182,
     "entradaCasa": 27000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 135000
   },
   {
     "bandeira": "🇦🇺",
@@ -1488,7 +1558,8 @@
     "months_to_house_down": 51.8,
     "salarioBase": 2250,
     "entradaCasa": 76000,
-    "entrada_carro": 2500
+    "entrada_carro": 2500,
+    "precoCasa": 380000
   },
   {
     "bandeira": "🇺🇦",
@@ -1509,7 +1580,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 180,
     "entradaCasa": 10000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 50000
   },
   {
     "bandeira": "🇬🇧",
@@ -1530,7 +1602,8 @@
     "months_to_house_down": 88.9,
     "salarioBase": 2300,
     "entradaCasa": 64000,
-    "entrada_carro": 3800
+    "entrada_carro": 3800,
+    "precoCasa": 320000
   },
   {
     "bandeira": "🇪🇬",
@@ -1551,7 +1624,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 145,
     "entradaCasa": 7200,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 36000
   },
   {
     "bandeira": "🇳🇿",
@@ -1572,7 +1646,8 @@
     "months_to_house_down": 77.5,
     "salarioBase": 1600,
     "entradaCasa": 68000,
-    "entrada_carro": 2500
+    "entrada_carro": 2500,
+    "precoCasa": 340000
   },
   {
     "bandeira": "🇲🇦",
@@ -1593,7 +1668,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 220,
     "entradaCasa": 11000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 55000
   },
   {
     "bandeira": "🇮🇹",
@@ -1614,7 +1690,8 @@
     "months_to_house_down": 428.6,
     "salarioBase": 1950,
     "entradaCasa": 38000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 190000
   },
   {
     "bandeira": "🇲🇺",
@@ -1635,7 +1712,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 280,
     "entradaCasa": 14000,
-    "entrada_carro": 5000
+    "entrada_carro": 5000,
+    "precoCasa": 70000
   },
   {
     "bandeira": "🇧🇪",
@@ -1656,28 +1734,30 @@
     "months_to_house_down": 51.3,
     "salarioBase": 2450,
     "entradaCasa": 46000,
-    "entrada_carro": 3800
+    "entrada_carro": 3800,
+    "precoCasa": 230000
   },
   {
     "bandeira": "🇺🇸",
     "cidade": "Washington, D.C.",
     "moeda": "$",
-    "salario": 3500,
+    "salario": 3000,
     "aluguel": 1440,
-    "alimentacao": 350,
+    "alimentacao": 450,
     "internet": 100,
     "academia": 65,
-    "extras": 430,
-    "parcela": 0,
+    "extras": 200,
+    "parcela": 450,
     "iphone": 1199,
     "entrada": 4000,
     "paisNome": "United States",
     "preco_casa": 280000,
     "entrada_casa_20pct": 56000,
     "months_to_house_down": 37.2,
-    "salarioBase": 3500,
+    "salarioBase": 3000,
     "entradaCasa": 56000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 280000
   },
   {
     "bandeira": "🇮🇷",
@@ -1698,7 +1778,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 150,
     "entradaCasa": 12000,
-    "entrada_carro": 9000
+    "entrada_carro": 9000,
+    "precoCasa": 60000
   },
   {
     "bandeira": "🇧🇾",
@@ -1719,7 +1800,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 400,
     "entradaCasa": 13000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 65000
   },
   {
     "bandeira": "🇩🇿",
@@ -1740,7 +1822,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 215,
     "entradaCasa": 10000,
-    "entrada_carro": 5000
+    "entrada_carro": 5000,
+    "precoCasa": 50000
   },
   {
     "bandeira": "🇲🇾",
@@ -1761,7 +1844,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 924,
     "entradaCasa": 18000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 90000
   },
   {
     "bandeira": "🇺🇾",
@@ -1782,7 +1866,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 1020,
     "entradaCasa": 22000,
-    "entrada_carro": 6500
+    "entrada_carro": 6500,
+    "precoCasa": 110000
   },
   {
     "bandeira": "🇨🇷",
@@ -1803,7 +1888,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 540,
     "entradaCasa": 17000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 85000
   },
   {
     "bandeira": "🇲🇽",
@@ -1824,7 +1910,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 520,
     "entradaCasa": 16000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 80000
   },
   {
     "bandeira": "🇩🇴",
@@ -1845,7 +1932,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 330,
     "entradaCasa": 12000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 60000
   },
   {
     "bandeira": "🇫🇷",
@@ -1866,7 +1954,8 @@
     "months_to_house_down": 132.2,
     "salarioBase": 2300,
     "entradaCasa": 52000,
-    "entrada_carro": 3500
+    "entrada_carro": 3500,
+    "precoCasa": 260000
   },
   {
     "bandeira": "🇰🇪",
@@ -1887,7 +1976,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 145,
     "entradaCasa": 9000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 45000
   },
   {
     "bandeira": "🇿🇼",
@@ -1908,7 +1998,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 90,
     "entradaCasa": 7000,
-    "entrada_carro": 5000
+    "entrada_carro": 5000,
+    "precoCasa": 35000
   },
   {
     "bandeira": "🇪🇨",
@@ -1929,7 +2020,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 400,
     "entradaCasa": 11000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 55000
   },
   {
     "bandeira": "🇨🇳",
@@ -1950,7 +2042,8 @@
     "months_to_house_down": 596.7,
     "salarioBase": 450,
     "entradaCasa": 78000,
-    "entrada_carro": 2500
+    "entrada_carro": 2500,
+    "precoCasa": 260000
   },
   {
     "bandeira": "🇨🇴",
@@ -1971,7 +2064,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 370,
     "entradaCasa": 11000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 55000
   },
   {
     "bandeira": "🇵🇷",
@@ -1992,7 +2086,8 @@
     "months_to_house_down": 47.1,
     "salarioBase": 1550,
     "entradaCasa": 29000,
-    "entrada_carro": 3000
+    "entrada_carro": 3000,
+    "precoCasa": 145000
   },
   {
     "bandeira": "🇧🇴",
@@ -2013,7 +2108,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 350,
     "entradaCasa": 10000,
-    "entrada_carro": 4500
+    "entrada_carro": 4500,
+    "precoCasa": 50000
   },
   {
     "bandeira": "🇧🇩",
@@ -2034,7 +2130,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 120,
     "entradaCasa": 8000,
-    "entrada_carro": 6500
+    "entrada_carro": 6500,
+    "precoCasa": 40000
   },
   {
     "bandeira": "🇦🇷",
@@ -2055,7 +2152,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 650,
     "entradaCasa": 17000,
-    "entrada_carro": 7000
+    "entrada_carro": 7000,
+    "precoCasa": 85000
   },
   {
     "bandeira": "🇳🇬",
@@ -2076,7 +2174,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 95,
     "entradaCasa": 7600,
-    "entrada_carro": 5000
+    "entrada_carro": 5000,
+    "precoCasa": 38000
   },
   {
     "bandeira": "🇧🇷",
@@ -2097,7 +2196,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 550,
     "entradaCasa": 13000,
-    "entrada_carro": 6500
+    "entrada_carro": 6500,
+    "precoCasa": 65000
   },
   {
     "bandeira": "🇵🇪",
@@ -2118,7 +2218,8 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 390,
     "entradaCasa": 14000,
-    "entrada_carro": 4000
+    "entrada_carro": 4000,
+    "precoCasa": 70000
   },
   {
     "bandeira": "🇿🇦",
@@ -2139,7 +2240,8 @@
     "months_to_house_down": 2640,
     "salarioBase": 360,
     "entradaCasa": 12000,
-    "entrada_carro": 2500
+    "entrada_carro": 2500,
+    "precoCasa": 60000
   },
   {
     "bandeira": "🇻🇪",
@@ -2160,6 +2262,7 @@
     "months_to_house_down": "Infinity",
     "salarioBase": 75,
     "entradaCasa": 5600,
-    "entrada_carro": 6000
+    "entrada_carro": 6000,
+    "precoCasa": 28000
   }
 ]
