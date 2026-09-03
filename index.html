@@ -510,6 +510,12 @@
         </div>
       </div>
 
+      <select id="capitalFilter" class="lang-select" onchange="onCapitalFilterChange()" style="min-width:150px;">
+        <option value="all" id="optCapitalAll">Todas as cidades</option>
+        <option value="capital" id="optCapitalOnly">Apenas capitais</option>
+        <option value="noncapital" id="optNonCapitalOnly">Apenas não-capitais</option>
+      </select>
+
       <div class="btn-group-toolbar">
         <div class="multi-select-container" id="columnsFilterContainer" style="position:relative;">
           <div class="multi-select-btn" onclick="toggleColumnsFilter()" style="min-width:160px;">
@@ -669,6 +675,7 @@
     let currentDisplayMode = localStorage.getItem('ivfr_display') || 'USD';
     document.getElementById('displayMode').value = currentDisplayMode;
     let selectedCountries = new Set();
+    let capitalFilterMode = localStorage.getItem('ivfr_capital_filter') || 'all';
 
     // Colunas opcionais (persistidas)
     let visibleOptionalCols = JSON.parse(localStorage.getItem('ivfr_optional_cols') || '{"housePrice":false,"carInstallment":false,"carPrice":false}');
@@ -691,6 +698,9 @@
         filterSelected: "selecionados",
         selectAll: "Todos",
         selectNone: "Nenhum",
+        optCapitalAll: "Todas as cidades",
+        optCapitalOnly: "Apenas capitais",
+        optNonCapitalOnly: "Apenas não-capitais",
         btnAddCity: "➕ Adicionar",
         columnsLabel: "Colunas",
         colHousePrice: "Preço Casa",
@@ -763,6 +773,9 @@
         filterSelected: "selected",
         selectAll: "All",
         selectNone: "None",
+        optCapitalAll: "All cities",
+        optCapitalOnly: "Capitals only",
+        optNonCapitalOnly: "Non-capitals only",
         btnAddCity: "➕ Add City",
         columnsLabel: "Columns",
         colHousePrice: "House Price",
@@ -835,6 +848,9 @@
         filterSelected: "seleccionados",
         selectAll: "Todos",
         selectNone: "Ninguno",
+        optCapitalAll: "Todas las ciudades",
+        optCapitalOnly: "Solo capitales",
+        optNonCapitalOnly: "Solo no capitales",
         btnAddCity: "➕ Añadir",
         columnsLabel: "Columnas",
         colHousePrice: "Precio Casa",
@@ -971,7 +987,8 @@
         iphone: Number(item.iphone) || Number(item.eletronico) || 1000,
         entrada: Number(item.entrada) || Number(item.entrada_carro) || 4000,
         entradaCasa: Number(item.entradaCasa) || Number(item.entrada_casa_20pct) || Number(item.casa) || 50000,
-        precoCasa: Number(item.preco_casa) || Number(item.precoCasa) || 0
+        precoCasa: Number(item.preco_casa) || Number(item.precoCasa) || 0,
+        isCapital: item.isCapital !== false  // default true for legacy data
       };
     }
 
@@ -1085,6 +1102,9 @@
       document.getElementById("columnsFilterLabel").innerText = t.columnsLabel;
       document.getElementById("btnSelectAll").innerText = t.selectAll;
       document.getElementById("btnSelectNone").innerText = t.selectNone;
+      document.getElementById("optCapitalAll").innerText = t.optCapitalAll;
+      document.getElementById("optCapitalOnly").innerText = t.optCapitalOnly;
+      document.getElementById("optNonCapitalOnly").innerText = t.optNonCapitalOnly;
 
       document.getElementById("lblFlag").innerText = t.lblFlag;
       document.getElementById("lblCity").innerText = t.lblCity;
@@ -1216,6 +1236,12 @@
     function onBuscaChange() {
       renderizarTabela();
       filtrarOpcoesPaises();
+    }
+
+    function onCapitalFilterChange() {
+      capitalFilterMode = document.getElementById("capitalFilter").value;
+      localStorage.setItem('ivfr_capital_filter', capitalFilterMode);
+      renderizarTabela();
     }
 
     function filtrarOpcoesPaises() {
@@ -1414,6 +1440,8 @@
         }))
         .filter(item => {
           if (selectedCountries.size > 0 && !selectedCountries.has(item.paisNome)) return false;
+          if (capitalFilterMode === 'capital' && !item.isCapital) return false;
+          if (capitalFilterMode === 'noncapital' && item.isCapital) return false;
           const searchString = `${item.paisNome} ${item.cidade}`.toLowerCase();
           return searchString.includes(termoBusca);
         });
@@ -1634,7 +1662,8 @@
         iphone: toUSD(parseFloat(document.getElementById("iphone").value) || 0, rate),
         entrada: toUSD(parseFloat(document.getElementById("entrada").value) || 0, rate),
         entradaCasa: entradaCasaVal,
-        entrada_casa_20pct: entradaCasaVal
+        entrada_casa_20pct: entradaCasaVal,
+        isCapital: existente.isCapital !== undefined ? existente.isCapital : true
       };
 
       if (index >= 0) baseDados[index] = dados;
@@ -1791,6 +1820,7 @@
     const tokenSalvo = localStorage.getItem("gh_pat");
     if (tokenSalvo) document.getElementById("ghToken").value = tokenSalvo;
     atualizarBotaoTema();
+    document.getElementById("capitalFilter").value = capitalFilterMode;
     mudarIdioma(idiomaAtual);
     popularFiltroColunas();
     carregarDoGitHub();
